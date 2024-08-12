@@ -22,7 +22,7 @@
         </div>
         <div class="users-card">
             <div class="card-info">
-                <h3>Inacttive Users</h3>
+                <h3>Inactive Users</h3>
                 <h2>53 <span class="percentage">(+18%)</span></h2>
                 <p>Last week analytics</p>
             </div>
