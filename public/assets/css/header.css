@@ -1,0 +1,252 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 280px; /* Sesuaikan dengan margin kiri yang diinginkan */
+    right: 0;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000; /* Memastikan header berada di atas elemen lain */
+    background-color: #FCFBE8; /* Background dengan warna yang diinginkan */
+    opacity: 0.9;
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 50%; /* Setengah bagian bawah tidak diblur */
+    background: inherit; /* Mengambil background yang sama */
+    z-index: -1; /* Memastikan efek blur berada di belakang konten header */
+    pointer-events: none; /* Membuat efek blur tidak mengganggu interaksi */
+}
+
+.header h2 {
+    font-size: 36px;
+    margin: 0;
+    color: #101041; /* Warna teks dari Dashboard */
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+    /* border: 1px solid #CCCCCC; */
+    border-radius: 8px;
+    padding: 10px 15px;
+    width: 670px; /* Lebar search bar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sedikit bayangan */
+}
+
+.search-bar i {
+    color: #CCCCCC; /* Warna ikon search */
+    margin-right: 10px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+}
+
+.notifications {
+    display: flex;
+    align-items: center;
+}
+
+/* Styling dasar untuk notification wrapper */
+.notification-wrapper {
+    position: relative;
+}
+
+.notifications a {
+    color: #101041;
+    font-size: 20px;
+    margin-left: 20px;
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Sesuaikan ukuran kotak ikon */
+    height: 40px; /* Sesuaikan ukuran kotak ikon */
+    border: 2px solid #101041;
+    border-radius: 8px;
+    
+}
+
+.notifications a:first-child::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid #FCFBE8; /* Sama dengan warna latar belakang */
+    display: none; /* Awalnya disembunyikan */
+}
+
+/* Show the red dot if there are notifications */
+.has-notifications #notification-icon::after {
+    display: block;
+}
+
+/* Penanda jumlah notifikasi */
+.notification-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 1px 4px;
+    font-size: 9px; /* Ukuran font lebih kecil */
+    font-weight: bold;
+    border: 1.5px solid #FCFBE8; /* Kurangi ketebalan border */
+}
+
+/* Styling untuk dropdown notification */
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    z-index: 1001;
+}
+
+.notification-dropdown h4 {
+    padding: 15px;
+    margin: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #CCCCCC;
+    color: #101041;
+}
+
+.notification-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-dropdown ul li {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.notification-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #101041;
+}
+
+.notification-item small {
+    display: block;
+    color: #7A7A7A;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+/* Styling untuk "View All Notifications" */
+.notification-dropdown a.view-all {
+    display: flex;
+    text-align: left;
+    padding: -10px;
+    color: #FF5C5C;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;
+    border: 0px;
+    left: 10px;
+}
+
+
+/* Show dropdown when it has the open class */
+.notification-dropdown.open {
+    display: block;
+}
+
+.notifications a:last-child {
+    margin-left: 20px; /* Menambahkan margin kiri pada ikon terakhir */
+    i {
+        margin-bottom: 3px;
+    }
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.toggle input[type="checkbox"] {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    
+    background: linear-gradient(90deg, #F71983 0%, #FF8D52 100%);
+
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.toggle input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 3px;
+    left: 3px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.41);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+}
+
+.toggle input[type="checkbox"]:checked {
+    background: #CCCCCC;}
+
+.toggle input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #FFF;
+}
+
+body.dark-mode .header {
+    background-color: #444;
+}
+
+body.dark-mode .search-bar {
+    background-color: #555;
+    border-color: #666;
+}
+
+body.dark-mode .notifications a {
+    color: #FFF;
+    border-color: #666;
+}
+
+body.dark-mode .toggle input[type="checkbox"]:checked {
+    background: linear-gradient(90deg, #F71983 0%, #FF8D52 100%);
+}

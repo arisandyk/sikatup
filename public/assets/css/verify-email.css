@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+.container-fluid {
+    padding: 0;
+    overflow: hidden;
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.col-md-7:first-child {
+    text-align: center;
+    background-color: transparent;
+}
+
+.col-md-7 h2 {
+    color: #101041;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.form-control {
+    border-radius: 0px;
+    border-bottom: 1px solid #101041;
+    border-top: 1px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
+    border-right: 1px solid #FFFFFF;
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    width: 100%;
+}
+
+.form-group label {
+    color: #101041;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    text-align: left;
+}
+
+.btn-primary {
+    background-color: #101041;
+    border-color: #101041;
+    padding: 10px 30px;
+    font-size: 16px;
+    border-radius: 20px;
+    width: auto;
+    color: white;
+}
+
+.resend-otp {
+    color: #101041 !important;
+    text-decoration: underline;
+    font-weight: light;
+}
+
+.card-right {
+    background: linear-gradient(90deg, #FFFA80 0%, #FFF500 100%);
+    text-align: center;
+    border-top-left-radius: 240px;
+    border-bottom-left-radius: 180px;
+    height: auto;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.25); 
+    padding: 40px;
+}
+
+.card-right h2 {
+    color: #101041;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.card-right p {
+    color: #101041;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.card-right .btn {
+    background-color: #101041;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-size: 16px;
+    border: none;
+    width: auto;
+}
