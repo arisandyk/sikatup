@@ -31,3 +31,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const emailToggle = document.getElementById('emailToggle');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const contactInput = document.getElementById('contact_input');
+        const inputLabel = document.getElementById('inputLabel');
+
+        emailToggle.addEventListener('click', function () {
+            emailToggle.classList.add('active');
+            mobileToggle.classList.remove('active');
+            inputLabel.textContent = 'Email Address';
+            contactInput.placeholder = 'admin@mail.com';
+            contactInput.type = 'email';
+        });
+
+        mobileToggle.addEventListener('click', function () {
+            mobileToggle.classList.add('active');
+            emailToggle.classList.remove('active');
+            inputLabel.textContent = 'Mobile Phone';
+            contactInput.placeholder = '+62 8765432123';
+            contactInput.type = 'tel';
+        });
+    });
+</script>
