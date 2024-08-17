@@ -11,7 +11,7 @@
                 <button id="emailToggle" class="toggle-button active">Email</button>
                 <button id="mobileToggle" class="toggle-button">Mobile Number</button>
             </div>
-            <form wire:submit.prevent="requestPasswordReset" class="w-100" style="max-width: 400px;">
+            <form wire:submit.prevent="requestReset" class="w-100" style="max-width: 400px;">
                 @csrf
                 <div class="form-group">
                     <label id="inputLabel" for="contact_input">Email Address</label>

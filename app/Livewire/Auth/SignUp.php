@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Auth;
 
+use Livewire\Component;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Component;
+
 
 class SignUp extends Component
 {
@@ -15,10 +17,7 @@ class SignUp extends Component
     public $mobile_number;
     public $title;
 
-    public function mount()
-    {
-        $this->title = 'Sign Up';
-    }
+
 
     public function register()
     {
@@ -43,7 +42,12 @@ class SignUp extends Component
             session()->flash('error', 'Something went wrong during registration.');
         }
 
-        return redirect()->route('login');
+        return redirect()->route('sign-in');
+    }
+
+    public function mount()
+    {
+        $this->title = 'Sign Up';
     }
 
     public function render()

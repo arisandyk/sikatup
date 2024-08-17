@@ -12,12 +12,12 @@
             <div class="text-center mb-4">
                 <img src="{{ asset('images/electricians.png') }}" alt="Sign Up Image" class="img-fluid">
             </div>
-            <form wire:submit.prevent="signUp" class="w-100" style="max-width: 400px;">
+            <form wire:submit.prevent="register" class="w-100" style="max-width: 400px;">
                 @csrf
                 <div class="form-group">
                     <label for="full_name">Full Name</label>
-                    <input type="text" id="full_name" wire:model.lazy="full_name" class="form-control" placeholder="Your full name" required>
-                    @error('full_name') <span class="text-danger">{{ $message }}</span> @enderror
+                    <input type="text" id="name" wire:model.lazy="name" class="form-control" placeholder="Your full name" required>
+                    @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group mt-3">
                     <label for="email">Email Address</label>
@@ -31,8 +31,8 @@
                 </div>
                 <div class="form-group mt-3">
                     <label for="access_key">Access Key</label>
-                    <input type="password" id="access_key" wire:model.lazy="access_key" class="form-control" placeholder="********" required>
-                    @error('access_key') <span class="text-danger">{{ $message }}</span> @enderror
+                    <input type="password" id="password" wire:model.lazy="password" class="form-control" placeholder="********" required>
+                    @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mt-4">Sign Up</button>
             </form>
