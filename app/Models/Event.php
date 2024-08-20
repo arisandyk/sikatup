@@ -28,7 +28,8 @@ class Event extends Model
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
-    public function cast():array {
+    public function cast(): array
+    {
         return [
             'created_at' => 'timestamp',
             'updated_at' => 'timestamp',
@@ -38,11 +39,17 @@ class Event extends Model
 
     public function bays()
     {
-        return $this->belongsTo(Bay::class, 'bay_id');
+        return $this->belongsTo(Bay::class, 'bay_id', 'id');
     }
 
     public function alarms()
     {
-        return $this->hasMany(Alarm::class, 'event_id');
+        return $this->hasMany(Alarm::class, 'event_id', 'id');
+    }
+
+    // Jika Anda ingin memformat date_log saat mengambil data:
+    public function getDateLogAttribute()
+    {
+        return $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : $this->created_at->format('Y-m-d H:i:s');
     }
 }

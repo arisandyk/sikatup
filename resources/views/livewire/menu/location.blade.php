@@ -6,7 +6,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Users</h3>
-                        <h2>59 <span class="percentage">(+29%)</span></h2>
+                        <h2>{{ $totalUsers }} <span class="percentage">({{ $totalUsersPercentage }})</span></h2>
                         <p>Total Users</p>
                     </div>
                     <div class="card-icon">
@@ -24,7 +24,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Devices</h3>
-                        <h2>567 <span class="percentage">(+18%)</span></h2>
+                        <h2>{{ $devices }} <span class="percentage">({{ $devicesPercentage }})</span></h2>
                         <p>Total Devices</p>
                     </div>
                     <div class="card-icon">
@@ -43,7 +43,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Locations</h3>
-                        <h2>160 <span class="percentage">(+14%)</span></h2>
+                        <h2>{{ $location }} <span class="percentage">({{ $locationsPercentage }})</span></h2>
                         <p>Total Places</p>
                     </div>
                     <div class="card-icon">
@@ -61,7 +61,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Alarm Log</h3>
-                        <h2>1237 <span class="percentage">(+42%)</span></h2>
+                        <h2>{{ $alarms }} <span class="percentage">({{ $alarmsPercentage }})</span></h2>
                         <p>A day ago</p>
                     </div>
                     <div class="card-icon">
@@ -88,24 +88,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="first-section">TRF#1 150/20kV</td>
-                        <td class="first-section">PLN Gardu Induk 150KV Bandung selatan II, Soreang Simpang Selegong No.31, Gajahmekar, Kec. Kutawaringin, Kabupaten Bandung, Jawa Barat 40911</td>
-                        <td class="first-section">-6.240621099999999</td>
-                        <td class="first-section">106.8033483</td>
+                    @foreach ($locations as $location)
+                    <tr></tr>
+                        <td class="">{{ $location->gardu_induks->name }}</td>
+                        <td class="">{{ $location->address }}</td>
+                        <td class="">{{ $location->latitude }}</td>
+                        <td class="">{{ $location->longitude }}</td>
                     </tr>
-                    <tr>
-                        <td>TRF#1 150/20kV</td>
-                        <td>PLN Gardu Induk 150KV Bandung selatan II, Soreang Simpang Selegong No.31, Gajahmekar, Kec. Kutawaringin, Kabupaten Bandung, Jawa Barat 40911</td>
-                        <td>-6.240621099999999</td>
-                        <td>106.8033483</td>
-                    </tr>
-                    <tr>
-                        <td class="first-section">TRF#1 150/20kV</td>
-                        <td class="first-section">PLN Gardu Induk 150KV Bandung selatan II, Soreang Simpang Selegong No.31, Gajahmekar, Kec. Kutawaringin, Kabupaten Bandung, Jawa Barat 40911</td>
-                        <td class="first-section">-6.240621099999999</td>
-                        <td class="first-section">106.8033483</td>
-                    </tr>
+                    @endforeach
+
                 </tbody>
             </table>
         </div>

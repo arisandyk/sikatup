@@ -29,11 +29,11 @@ class Basecamp extends Model
 
     public function apps()
     {
-        return $this->belongsTo(App::class,'app_id');
+        return $this->belongsTo(App::class,'app_id', 'id');
     }
 
     public function gardu_induks()
     {
-        return $this->hasMany(GarduInduk::class,'gi_id');
+        return $this->hasMany(GarduInduk::class,'basecamp_id', 'id');
     }
 }

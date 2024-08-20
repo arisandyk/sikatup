@@ -26,7 +26,7 @@
 
     @php
         // Define the routes that require the sidebar and header
-        $routesWithSidebarAndHeader = ['dashboard', 'users', 'control', 'alarm', 'location', 'profile'];
+        $routesWithSidebarAndHeader = ['dashboard', 'users', 'control', 'alarm', 'location', 'profile', 'edit-profile'];
     @endphp
 
     @if(in_array(Route::currentRouteName(), $routesWithSidebarAndHeader))

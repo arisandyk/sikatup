@@ -222,11 +222,39 @@ body {
     background-color: #bafdca;
     color: #06be31;
     font-weight: 600;
-    border-radius: 2px;
-    font-size: 14px;
-    width: 40px;
-    height: 20px;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    padding: 0.2rem 0.6rem;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.2;
 }
+
+.status-pending {
+    background-color: #ffe4b3;
+    color: #ff9800;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    padding: 0.2rem 0.6rem;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.status-inactive {
+    background-color: #ffc1c1;
+    color: #ff0000;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    padding: 0.2rem 0.6rem;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.2;
+}
+
+
 
 .pagination-container {
     display: flex;
@@ -271,4 +299,27 @@ body {
     background-color: transparent;
     border:none;
     color: #101041;
+}
+
+.modal-content {
+    border-radius: 0.5rem;
+}
+
+.modal-header, .modal-footer {
+    border-color: #dee2e6;
+}
+
+.modal-title {
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+.btn-close {
+    background: transparent;
+    border: 0;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
 }

@@ -1,5 +1,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 @if (Route::is('sign-in'))
     {{-- <script src="{{ asset('assets/js/sign-in.js') }}"></script> --}}
 @elseif (Route::is('sign-up'))
@@ -13,7 +13,8 @@
         Route::is('alarm') ||
         Route::is('control') ||
         Route::is('location') ||
-        Route::is('profile'))
+        Route::is('profile') ||
+        Route::is('edit-profile'))
     <script src="{{ asset('assets/js/header.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     @if (Route::is('dashboard'))
@@ -28,5 +29,7 @@
         <script src="{{ asset('assets/js/location.js') }}"></script>
     @elseif(Route::is('profile'))
         <script src="{{ asset('assets/js/profile.js') }}"></script>
+    @elseif(Route::is('edit-profile'))
+        <script src="{{ asset('assets/js/edit-profile.js') }}"></script>
     @endif
 @endif

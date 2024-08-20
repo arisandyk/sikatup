@@ -2,7 +2,7 @@
     <div class="modal-content">
         <div class="flex flex-column items-center">
             <img src="{{ asset('images/user.png') }}" alt="User Image" class="profile-img rounded-circle">
-            <h5 class="text-lg font-semibold mt-2">Ari Sandy K.</h5>
+            <h5 class="text-lg font-semibold mt-2">{{ Auth::user()->name }}</h5>
         </div>
         <p class="text-center">Are you sure you want to log out?</p>
         <div class="flex justify-between">

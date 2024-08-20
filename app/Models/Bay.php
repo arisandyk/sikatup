@@ -38,16 +38,21 @@ class Bay extends Model
 
     public function gardu_induks()
     {
-        return $this->belongsTo(GarduInduk::class, 'gi_id');
+        return $this->belongsTo(GarduInduk::class, 'gi_id', 'id');
     }
 
     public function tegangans()
     {
-        return $this->belongsTo(Tegangan::class, 'tegangan_id');
+        return $this->belongsTo(Tegangan::class, 'tegangan_id', 'id');
     }
 
     public function trafos()
     {
-        return $this->belongsTo(Trafo::class, 'trafo_id');
+        return $this->belongsTo(Trafo::class, 'trafo_id', 'id');
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'bay_id', 'id');
     }
 }

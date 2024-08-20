@@ -14,11 +14,12 @@ class ResetPassword extends Component
     public $token;
     public $email;
     public $password;
+    public $otp; // Tambahkan variabel otp jika memang digunakan untuk proses verifikasi
+    public $new_password; // Tambahkan variabel new_password sesuai dengan form
     public $title;
 
     public function resetPassword()
     {
-        // Membuat instance dari ResetPasswordRequest
         $request = new ResetPasswordRequest();
 
         // Validasi data menggunakan instance dari ResetPasswordRequest
@@ -30,12 +31,14 @@ class ResetPassword extends Component
 
         if (!$passwordReset || !Hash::check($validatedData['token'], $passwordReset->token)) {
             session()->flash('error', 'Invalid token.');
+            $this->emit('passwordResetFailed');
             return;
         }
 
         if (Carbon::parse($passwordReset->created_at)->addMinutes(5)->isPast()) {
             DB::table('password_reset_tokens')->where('email', $passwordReset->email)->delete();
             session()->flash('error', 'Token has expired.');
+            $this->emit('passwordResetFailed');
             return;
         }
 
@@ -43,6 +46,7 @@ class ResetPassword extends Component
 
         if (!$user) {
             session()->flash('error', 'User not found.');
+            $this->emit('passwordResetFailed');
             return;
         }
 
@@ -52,12 +56,14 @@ class ResetPassword extends Component
         DB::table('password_reset_tokens')->where('email', $passwordReset->email)->delete();
 
         session()->flash('success', 'Password reset successfully.');
+        $this->emit('passwordResetSuccess'); // Emit event success
     }
 
     public function mount()
     {
         $this->title = 'Create New Access Key';
     }
+
     public function render()
     {
         return view('livewire.auth.reset-password')->layout('components.layouts.app', ['title' => $this->title]);

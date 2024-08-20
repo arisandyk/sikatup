@@ -8,7 +8,7 @@
     </div>
     <div class="user-info">
         <img src="{{ asset('images/user.png') }}" alt="User Image">
-        <span>Hello 👋 Ari Sandy K.</span>
+        <span>Hello 👋 {{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
     </div>
     <ul class="menu">
         <h4>Menu</h4>

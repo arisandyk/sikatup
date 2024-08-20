@@ -2,6 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\App;
+use App\Models\Basecamp;
+use App\Models\Direktorat;
+use App\Models\GarduInduk;
+use App\Models\UnitInduk;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -56,5 +61,80 @@ class DatabaseSeeder extends Seeder
             'last_workplace' => 'Unit Induk Transmisi Jawa Bagian Tengah, App Karawang, Basecamp Karawang, Gardu Induk Telukjambe Timur',
             'online_status' => 'offline',
         ]);
+
+        //Direktorat
+        Direktorat::create([
+            'name' => 'Direktorat Pembangkit Listrik',
+            'created_by' => 'Admin 1',
+        ]);
+
+        //Unit Induk
+        UnitInduk::create([
+            'name' => 'Unit Induk Transmisi Jawa Bagian Barat',
+            'direktorat_id' => 1, // Direktorat Jaringan
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Additional unit induk as needed
+        UnitInduk::create([
+            'name' => 'Unit Induk Transmisi Jawa Bagian Tengah',
+            'direktorat_id' => 1, // Direktorat Jaringan
+            'created_by' => 'Admin 1',
+        ]);
+
+        //App
+        App::create([
+            'name' => 'App Karawang',
+            'unit_id' => 1, // Unit Induk Transmisi Jawa Bagian Barat
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Additional app as needed
+        App::create([
+            'name' => 'App Bekasi',
+            'unit_id' => 1, // Unit Induk Transmisi Jawa Bagian Barat
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Basecamp
+        Basecamp::create([
+            'name' => 'Basecamp Telukjambe Timur',
+            'app_id' => 1, // App Karawang
+            'created_by' => 'Admin 1',
+        ]);
+        // Additional basecamp as needed
+        Basecamp::create([
+            'name' => 'Basecamp Telukjambe Barat',
+            'app_id' => 1, // App Karawang
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Additional basecamp as needed
+        Basecamp::create([
+            'name' => 'Basecamp Bekasi',
+            'app_id' => 2, // App Karawang
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Gardu Induk
+        GarduInduk::create([
+            'name' => 'Gardu Induk Telukjambe Timur',
+            'basecamp_id' => 1, // Basecamp Karawang
+            'created_by' => 'Admin 1',
+        ]);
+        // Additional gardu induk as needed
+        GarduInduk::create([
+            'name' => 'Gardu Induk Telukjambe Barat',
+            'basecamp_id' => 1, // Basecamp Karawang
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Additional gardu induk as needed
+        GarduInduk::create([
+            'name' => 'Gardu Induk Cikarang Pusat',
+            'basecamp_id' => 2, // Basecamp Bekasi
+            'created_by' => 'Admin 1',
+        ]);
+
     }
 }

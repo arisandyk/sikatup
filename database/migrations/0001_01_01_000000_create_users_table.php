@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('image')->nullable();
+            $table->string('nip')->nullable();
             $table->enum('account_status', ['pending', 'approved','active', 'inactive'])->default('pending');
             $table->enum('work_status',['pending','active', 'resigned'])->nullable();
             $table->string('current_workplace')->nullable();

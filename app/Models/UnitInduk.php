@@ -28,11 +28,11 @@ class UnitInduk extends Model
 
     public function direktorat()
     {
-        return $this->belongsTo(Direktorat::class, 'direktorat_id');
+        return $this->belongsTo(Direktorat::class, 'direktorat_id','id');
     }
 
     public function apps()
     {
-        return $this->hasMany(App::class, 'unit_id');
+        return $this->hasMany(App::class, 'unit_id','id');
     }
 }

@@ -27,13 +27,13 @@ class App extends Model
         ];
     }
 
-    public function unit_induks()
+    public function unitInduk()
     {
-        return $this->belongsTo(UnitInduk::class,'unit_id');
+        return $this->belongsTo(UnitInduk::class,'unit_id', 'id');
     }
 
     public function basecamps()
     {
-        return $this->hasMany(Basecamp::class,'app_id');
+        return $this->hasMany(Basecamp::class,'app_id','id');
     }
 }

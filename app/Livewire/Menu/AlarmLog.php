@@ -2,51 +2,63 @@
 
 namespace App\Livewire\Menu;
 
-use App\Models\Alarm;
 use App\Models\Bay;
-use App\Models\Location;
 use App\Models\User;
+use App\Models\Location;
+use App\Models\Alarm;
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\Event;
 
-class Dashboard extends Component
+class AlarmLog extends Component
 {
     public $title;
 
     public function mount()
     {
-        $this->title = 'Dashboard';
+        $this->title = 'Alarm';
     }
 
     public function render()
     {
-
         // Fetch the required data from your models
         $totalUsers = User::count();
         $devices = Bay::count();
         $locations = Location::count();
-        $alarms = Alarm::count();
+        $alarm = Alarm::count();
 
-        // Example previous day data, you should replace this with real historical data
+        // You should replace these previous values with real historical data
         $yesterday = Carbon::yesterday();
-        $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
-        $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
-        $previousLocations = Location::whereDate('created_at', $yesterday)->count();
-        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
+        $previousTotalUsers = User::whereDate('created_at', $yesterday)->count(); // Example previous total users count
+        $previousDevices = Bay::whereDate('created_at', $yesterday)->count();    // Example previous devices count
+        $previousLocations = Location::whereDate('created_at', $yesterday)->count();  // Example previous locations count
+        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();  // Example previous alarms count
 
         // Calculate the percentages based on real current and previous values
         $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);
         $devicesPercentage = $this->calculatePercentageChange($devices, $previousDevices);
         $locationsPercentage = $this->calculatePercentageChange($locations, $previousLocations);
-        $alarmsPercentage = $this->calculatePercentageChange($alarms, $previousAlarms);
-        return view('livewire.menu.dashboard', [
+        $alarmsPercentage = $this->calculatePercentageChange($alarm, $previousAlarms);
+
+        // Fetch the latest events
+        $alarms = Alarm::with('events') // Mengambil relasi 'bays'
+            ->latest('updated_at') // Mengambil alarm terbaru
+            ->get();
+
+        // Periksa apakah ada alarm untuk menghindari null values
+        $latestAlarm = $alarms->first();
+
+        // Pass the data to the view
+        return view('livewire.menu.alarm-log', [
             'totalUsers' => $totalUsers,
             'totalUsersPercentage' => $totalUsersPercentage,
             'devices' => $devices,
             'devicesPercentage' => $devicesPercentage,
             'locations' => $locations,
             'locationsPercentage' => $locationsPercentage,
+            'alarm' => $alarm,
             'alarms' => $alarms,
+            'latestAlarm' => $latestAlarm, // Menyediakan event terbaru
             'alarmsPercentage' => $alarmsPercentage,
         ])->layout('components.layouts.app', ['title' => $this->title]);
     }

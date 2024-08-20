@@ -29,11 +29,11 @@ class Location extends Model
 
     public function gardu_induks()
     {
-        return $this->belongsTo(GarduInduk::class, 'gi_id');
+        return $this->belongsTo(GarduInduk::class, 'gi_id', 'id');
     }
 
     public function alarms()
     {
-        return $this->hasMany(Alarm::class,'location_id');
+        return $this->hasMany(Alarm::class,'location_id', 'id');
     }
 }

@@ -6,7 +6,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Users</h3>
-                        <h2>59 <span class="percentage">(+29%)</span></h2>
+                        <h2>{{ $totalUsers }} <span class="percentage">({{ $totalUsersPercentage }})</span></h2>
                         <p>Total Users</p>
                     </div>
                     <div class="card-icon">
@@ -24,7 +24,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Devices</h3>
-                        <h2>567 <span class="percentage">(+18%)</span></h2>
+                        <h2>{{ $devices }} <span class="percentage">({{ $devicesPercentage }})</span></h2>
                         <p>Total Devices</p>
                     </div>
                     <div class="card-icon">
@@ -43,7 +43,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Locations</h3>
-                        <h2>160 <span class="percentage">(+14%)</span></h2>
+                        <h2>{{ $locations }} <span class="percentage">({{ $locationsPercentage }})</span></h2>
                         <p>Total Places</p>
                     </div>
                     <div class="card-icon">
@@ -61,7 +61,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Alarm Log</h3>
-                        <h2>1237 <span class="percentage">(+42%)</span></h2>
+                        <h2>{{ $alarm }} <span class="percentage">({{ $alarmsPercentage }})</span></h2>
                         <p>A day ago</p>
                     </div>
                     <div class="card-icon">
@@ -89,33 +89,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="first-section">2024-06-07 14:51:38.137</td>
-                        <td class="first-section">GI 150KV Bandung Selatan</td>
-                        <td class="first-section">TRF#1 150/20kV</td>
-                        <td class="first-section">Open By Device</td>
-                        <td class="first-section">
-                        <button class="print-alarm-button">Print</button>
-                        </td>
-                    </tr>
-                    <tr>
-                    <td class="">2024-06-07 14:51:38.137</td>
-                        <td class="">GI 150KV Bandung Selatan</td>
-                        <td class="">TRF#1 150/20kV</td>
-                        <td class="">Open By Device</td>
-                        <td class="">
-                        <button class="print-alarm-button">Print</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-section">2024-06-07 14:51:38.137</td>
-                        <td class="first-section">GI 150KV Bandung Selatan</td>
-                        <td class="first-section">TRF#1 150/20kV</td>
-                        <td class="first-section">Open By Device</td>
-                        <td class="first-section">
-                        <button class="print-alarm-button">Print</button>
-                        </td>
-                    </tr>
+                    @foreach ($alarms as $alarm)
+                        <tr>
+                            <td class="first-section">{{ $alarm->events->updated_at }}</td>
+                            <td class="first-section">{{ $alarm->locations->name ?? 'Unknown Location' }}</td>
+                            <td class="first-section">{{ $alarm->events->bays->name ?? 'Unknown Device' }}</td>
+                            <td class="first-section">{{ $alarm->events->event ?? 'Unknown Event' }}</td>
+                            <td class="first-section">
+                                <button class="print-alarm-button">Print</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

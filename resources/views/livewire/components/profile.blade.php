@@ -17,7 +17,7 @@
                                         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                                     </svg>
                                 </i>
-                                <strong>Full Name:</strong> John Doe
+                                <strong>Full Name:</strong> {{ Auth::user()->name }}
                             </li>
                             <li>
                                 <i>
@@ -29,7 +29,7 @@
                                         <path d="M5 12l5 5l10 -10" />
                                     </svg>
                                 </i>
-                                <strong>Status:</strong> Active
+                                <strong>Status:</strong> {{ ucfirst(Auth::user()->account_status) }}
                             </li>
                             <li>
                                 <i>
@@ -41,7 +41,7 @@
                                         <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
                                     </svg>
                                 </i>
-                                <strong>Role:</strong> Developer
+                                <strong>Role:</strong> {{ ucfirst(Auth::user()->role) }}
                             </li>
                             <li>
                                 <i>
@@ -73,7 +73,14 @@
                                         <path d="M15 7v13" />
                                     </svg>
                                 </i>
-                                <strong>Unit Induk:</strong> Jawa Bagian Tengah
+                                @php
+                                    $workplace = Auth::user()->current_workplace;
+                                    $unitInduk = explode(',', $workplace)[0];
+                                    $unitInduk = str_replace('Unit Induk ', '', $unitInduk);
+                                    $app = explode(',', $workplace)[1];
+                                    $app = str_replace('App ', '', $app);
+                                @endphp
+                                <strong>Unit Induk:</strong> {{ $unitInduk }}
                             </li>
                             <li>
                                 <i>
@@ -95,10 +102,8 @@
                                         <path d="M17 16v0" />
                                     </svg>
                                 </i>
-                                <strong>
-                                    App:
-                                </strong>
-                                Bandung
+
+                                <strong>App:</strong> {{ $app }}
                             </li>
 
                         </ul>
@@ -123,7 +128,7 @@
                                         <path d="M4 16h3" />
                                     </svg>
                                 </i>
-                                <strong>Contact:</strong> +62 812-8082-5190
+                                <strong>Contact:</strong> {{ Auth::user()->mobile_number }}
                             </li>
                             <li>
                                 <i>
@@ -137,7 +142,7 @@
                                         <path d="M3 7l9 6l9 -6" />
                                     </svg>
                                 </i>
-                                <strong>Email:</strong> arisandyk32@gmail.com
+                                <strong>Email:</strong> {{ Auth::user()->email }}
                             </li>
                         </ul>
                     </div>

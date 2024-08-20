@@ -6,7 +6,7 @@
                 <div class="profile-info">
                     <img src="{{ asset('images/user.png') }}" alt="User Image" class="profile-img">
                     <div class="profile-details">
-                        <h1>Ari Sandy K</h1>
+                        <h1>{{ Auth::user()->name }}</h1>
                         <p>
                             <span>
                                 <i>
@@ -21,7 +21,7 @@
                                     </svg>
                                 </i>
                             </span>
-                            UX Designer
+                            {{ ucfirst(Auth::user()->role) }}
                             <span>
                                 <i>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -35,7 +35,12 @@
                                     </svg>
                                 </i>
                             </span>
-                            Karawang City
+                            @php
+                                $workplace = Auth::user()->current_workplace;
+                                $city = explode(',', $workplace)[1];
+                                $city = str_replace('App', '', $city);
+                            @endphp
+                            {{ $city }}
                             <span>
                                 <i>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -53,11 +58,18 @@
                                     </svg>
                                 </i>
                             </span>
-                            Joined April 2021
+                            @php
+                                $formattedDate = \Carbon\Carbon::parse(Auth::user()->created_at)->format('d F Y');
+                            @endphp
+
+                            Joined {{ $formattedDate }}
                         </p>
                     </div>
                 </div>
-                <button class="btn-connect">Edit</button>
+                <button class="btn-connect">
+                    <a href="{{ route('edit-profile') }}" style="color: inherit; text-decoration: none;">Edit</a>
+                </button>
+
             </div>
         </div>
     </div>
@@ -71,8 +83,8 @@
                             wire:click="$set('activeTab', 'profile')">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($activeTab === 'request') active @endif"
-                            wire:click="$set('activeTab', 'request')">Request</a>
+                        <a class="nav-link @if ($activeTab === 'user-request') active @endif"
+                            wire:click="$set('activeTab', 'user-request')">Request</a>
                     </li>
                 </ul>
             </div>
@@ -81,8 +93,8 @@
             <div class="tab-content">
                 @if ($activeTab === 'profile')
                     <livewire:components.profile />
-                @elseif($activeTab === 'request')
-                    <livewire:components.request />
+                @elseif($activeTab === 'user-request')
+                    <livewire:components.user-request />
                 @endif
             </div>
         </div>

@@ -1,3 +1,4 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -16,7 +17,9 @@
         Route::is('alarm') ||
         Route::is('control') ||
         Route::is('location') ||
-        Route::is('profile'))
+        Route::is('profile') ||
+        Route::is('edit-profile')||
+        Route::is('user-request'))
     <link href="{{ asset('assets/css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/header.css') }}" rel="stylesheet">
     @if (Route::is('dashboard'))
@@ -31,5 +34,9 @@
         <link href="{{ asset('assets/css/location.css') }}" rel="stylesheet">
     @elseif(Route::is('profile'))
         <link href="{{ asset('assets/css/profile.css') }}" rel="stylesheet">
+    @elseif(Route::is('edit-profile'))
+        <link href="{{ asset('assets/css/edit-profile.css') }}" rel="stylesheet">
+    @elseif(Route::is('user-request'))
+        <link href="{{ asset('assets/css/user-request.css') }}" rel="stylesheet">
     @endif
 @endif

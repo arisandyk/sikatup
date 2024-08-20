@@ -6,7 +6,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Users</h3>
-                        <h2>59 <span class="percentage">(+29%)</span></h2>
+                        <h2>{{ $totalUsers }} <span class="percentage">({{ $totalUsersPercentage }})</span></h2>
                         <p>Total Users</p>
                     </div>
                     <div class="card-icon">
@@ -24,7 +24,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Devices</h3>
-                        <h2>567 <span class="percentage">(+18%)</span></h2>
+                        <h2>{{ $devices }} <span class="percentage">({{ $devicesPercentage }})</span></h2>
                         <p>Total Devices</p>
                     </div>
                     <div class="card-icon">
@@ -43,7 +43,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Locations</h3>
-                        <h2>160 <span class="percentage">(+14%)</span></h2>
+                        <h2>{{ $locations }} <span class="percentage">({{ $locationsPercentage }})</span></h2>
                         <p>Total Places</p>
                     </div>
                     <div class="card-icon">
@@ -61,7 +61,7 @@
                 <div class="dashboard-card">
                     <div class="card-info">
                         <h3>Alarm Log</h3>
-                        <h2>1237 <span class="percentage">(+42%)</span></h2>
+                        <h2>{{ $alarms }} <span class="percentage">({{ $alarmsPercentage }})</span></h2>
                         <p>A day ago</p>
                     </div>
                     <div class="card-icon">

@@ -31,3 +31,16 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        Livewire.on('passwordResetSuccess', function() {
+            alert('Password reset successfully. You will be redirected to the sign-in page.');
+            window.location.href = "{{ route('sign-in') }}";
+        });
+
+        Livewire.on('passwordResetFailed', function() {
+            alert('Password reset failed. Please try again.');
+        });
+    </script>
+@endpush

@@ -28,16 +28,16 @@ class GarduInduk extends Model
 
     public function basecamps()
     {
-        return $this->belongsTo(Basecamp::class, 'basecamp_id');
+        return $this->belongsTo(Basecamp::class, 'basecamp_id', 'id');
     }
 
     public function locations()
     {
-        return $this->hasOne(Location::class, 'gi_id');
+        return $this->hasOne(Location::class, 'gi_id', 'id');
     }
 
     public function bays()
     {
-        return $this->hasMany(Bay::class, 'gi_id');
+        return $this->hasMany(Bay::class, 'gi_id', 'id');
     }
 }
