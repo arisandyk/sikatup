@@ -3,7 +3,6 @@
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +15,7 @@ class SignIn extends Component
 
     protected $rules = [
         'email' => 'required|email',
-        'password' => 'required|min:6',
+        'password' => 'required|min:8',
     ];
 
     public function signIn()

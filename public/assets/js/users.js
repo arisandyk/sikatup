@@ -64,3 +64,44 @@ document.getElementById('editUserForm').addEventListener('submit', function(even
 
 console.log(document.getElementById('select-all')); // Harus tidak null
 console.log(Livewire); // Harus terdefinisi
+
+
+Livewire.on('copyUsers', function(event) {
+    const users = event.users;
+    const formattedUsers = users.map(user => `${user.name}\t${user.email}\t${user.role}`).join('\n');
+    navigator.clipboard.writeText(formattedUsers).then(() => {
+        alert('Users copied to clipboard.');
+    });
+});
+
+Livewire.on('printUsers', function(event) {
+    const users = event.users;
+    let printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Print Users</title></head><body>');
+    printWindow.document.write('<table border="1"><thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead><tbody>');
+    users.forEach(user => {
+        printWindow.document.write(`<tr><td>${user.name}</td><td>${user.email}</td><td>${user.role}</td></tr>`);
+    });
+    printWindow.document.write('</tbody></table></body></html>');
+    printWindow.document.close();
+    printWindow.print();
+});
+
+
+document.addEventListener('livewire:load', function () {
+    Livewire.on('print-data', event => {
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(event.content);
+        newWindow.print();
+    });
+    
+    Livewire.on('copy-to-clipboard', event => {
+        const textArea = document.createElement("textarea");
+        textArea.value = event.content;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        alert('Data copied to clipboard');
+    });
+});

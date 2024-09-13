@@ -52,4 +52,6 @@ class Event extends Model
     {
         return $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : $this->created_at->format('Y-m-d H:i:s');
     }
+
+    
 }

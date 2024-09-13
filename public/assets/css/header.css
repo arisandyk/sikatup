@@ -124,6 +124,14 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 300px;
     z-index: 1001;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease
+}
+
+.notification-dropdown.open {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .notification-dropdown h4 {
@@ -226,6 +234,7 @@
 
 .toggle input[type="checkbox"]:checked::before {
     transform: translateX(20px);
+    transition: transform 0.4s ease, background-color 0.3s ease;
 }
 
 body.dark-mode {
@@ -249,4 +258,162 @@ body.dark-mode .notifications a {
 
 body.dark-mode .toggle input[type="checkbox"]:checked {
     background: linear-gradient(90deg, #F71983 0%, #FF8D52 100%);
+}
+
+body.dark-mode .header h2 {
+    color: #FFF;
+}
+
+body.dark-mode .notification-dropdown {
+    background-color: #555;
+    color: #FFF;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .notification-dropdown h4 {
+    color: #FFF;
+    border-bottom: 1px solid #666;
+}
+
+body.dark-mode .notification-item p {
+    color: #FFF;
+}
+
+body.dark-mode .notification-item small {
+    color: #CCC;
+}
+
+body.dark-mode .view-all {
+    color: #FF5C5C;
+}
+
+.notifications a:hover i, 
+.notifications a:hover svg {
+    stroke: #FF5C5C;
+    transition: stroke 0.2s ease-in-out;
+}
+
+.notifications a .icon {
+    transition: transform 0.3s ease;
+}
+
+.notifications a:hover .icon {
+    transform: scale(1.1);
+}
+
+
+@media (max-width: 1024px) {
+    .header {
+        left: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .search-bar {
+        width: 100%;
+        margin-right: 20px;
+    }
+    
+    .notifications a {
+        margin-left: 10px;
+    }
+}
+
+.notifications a:hover {
+    background-color: #F5F5F5;
+    transition: background-color 0.3s ease;
+}
+
+.notification-dropdown ul li:hover {
+    background-color: #f9f9f9;
+}
+
+.toggle input[type="checkbox"]:hover::before {
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Atur padding, margin, dan lebar input sesuai search bar */
+.search-bar-wrapper input {
+    width: 100%;
+    border: none;
+    box-sizing: border-box; /* Pastikan padding dihitung dalam lebar elemen */
+}
+
+.search-results, .search-history {
+    position: absolute;
+    top: 100%; /* Posisi tepat di bawah input */
+    left: 0;
+    right: 0;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+    z-index: 1000;
+    box-sizing: border-box; /* Pastikan padding tidak melebihi lebar elemen */
+    overflow: hidden; /* Menghindari bagian yang berlebihan keluar */
+}
+
+.search-results li, .search-history li {
+    padding: 10px 15px; /* Sesuaikan padding dengan search bar */
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    box-sizing: border-box; /* Sama dengan input */
+}
+
+.search-results li:last-child, .search-history li:last-child {
+    border-bottom: none;
+}
+
+.search-results li a, .search-history li a {
+    text-decoration: none;
+    color: #101041;
+    display: block; /* Pastikan link mengisi penuh area li */
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.search-results li:hover, .search-history li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Atur ukuran ikon pencarian agar proporsional dengan input */
+.search-bar i {
+    color: #CCCCCC;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Atur ukuran container input dan daftar hasil sesuai dengan search bar */
+.search-bar-wrapper {
+    position: relative;
+    width: 100%; /* Pastikan wrapper mengisi penuh search bar */
+}
+
+
+.search-history {
+    margin-top: 5px;
+    width: 100%;
+}
+
+.search-history li {
+    padding: 10px;
+    width:100%;
+}
+
+.search-history li strong {
+    font-size: 14px;
+    color: #333;
+}
+
+.search-history li button {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
 }

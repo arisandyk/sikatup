@@ -1,26 +1,31 @@
-<div class="container-fluid">
-    <div class="row min-vh-100">
-        <div class="col-md-7 d-flex align-items-center justify-content-center flex-column p-4">
-            <h2 class="text-center mb-4">Verify OTP</h2>
-            <div class="text-center mb-4">
-                <img src="{{ asset('images/electricians-verify.png') }}" alt="Verify OTP Image" class="img-fluid">
-            </div>
-            <form wire:submit.prevent="verifyOtp" class="w-100" style="max-width: 400px;">
-                @csrf
-                <div class="form-group">
-                    <label for="otp">Enter OTP</label>
-                    <input type="text" id="otp" wire:model.lazy="otp" class="form-control" placeholder="00-00-00" required>
-                    @error('otp') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <a href="{{ route('resend-otp') }}" class="d-block mt-2 mb-3 text-primary resend-otp">Don't receive an OTP? Resend it</a>
-                <button type="submit" class="btn btn-primary w-100">Verify</button>
-            </form>
-        </div>
-        <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center card-right">
-            <div class="text-center px-4">
-                <h2 class="mt-5">Verify Your Email!</h2>
-                <p>We have sent you an OTP to your email. Please enter the code to verify your email address.</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="{{ asset('css/verify-email.css') }}">
+</head>
+
+<body>
+    <div class="container-fluid {{ $status }}">
+        <div class="row min-vh-100">
+            <div class="col-md-14 d-flex align-items-center justify-content-center flex-column p-4">
+                @if($status === 'success')
+                <div class="icon">&#10003;</div> <!-- Checkmark Icon -->
+                <div class="title">Email Verified</div>
+                <div class="message">Your email address was successfully verified.</div>
+                <a href="{{ route('sign-in') }}" class="button">Back to Sign-In</a>
+                @elseif($status === 'error')
+                <div class="icon">&#10005;</div> <!-- Cross Icon -->
+                <div class="title">Email Verification Failed</div>
+                <div class="message">We're sorry, something has gone wrong. Please try again.</div>
+                <a href="{{ route('sign-up') }}" class="button">Done</a>
+                @endif
             </div>
         </div>
     </div>
-</div>
+</body>
+
+</html>

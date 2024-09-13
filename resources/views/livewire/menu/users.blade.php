@@ -85,71 +85,52 @@
     <div class="table-container mt-4">
         <table class="users-table">
             <thead>
-                <div class="header-actions">
-                    <h2>Filters</h2>
-                    <tr>
+                <tr>
 
-                        <div class="row filter-search">
-                            <!-- Role Filter -->
-                            <div class="col-md-4">
-                                <select wire:model="filterRole" class="filter-select">
-                                    <option value="">Select Role</option>>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">User</option>
-                                </select>
-                            </div>
-                            <!-- Plan Filter -->
-                            <div class="col-md-4">
-                                <select wire:model="filterPlan" class="filter-select">
-                                    <option value="">Select Plan</option>
-                                    <option value="enterprise">Enterprise</option>
-                                    <option value="basic">Basic</option>
-                                    <option value="team">Team</option>
-                                    <option value="company">Company</option>
-                                </select>
-                            </div>
-                            <!-- Status Filter -->
-                            <div class="col-md-4">
-                                <select wire:model="filterStatus" class="filter-select">
-                                    <option value="">Select Status</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="pending">Pending</option>
-                                </select>
-                            </div>
+                    <div class="row filter-search">
+                        <div class="col-md-4">
+                            <select wire:model.live="filterRole" class="filter-select">
+                                <option value="">Select Role</option>
+                                @foreach ($availableRoles as $role)
+                                    <option value="{{ $role }}">{{ ucfirst($role) }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </tr>
-                    <tr>
-                        <div class="row mt-3">
-                            <div class="col-md-2">
-                                <select class="filter-select">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 offset-md-2">
-                                <!-- Search Box -->
-                                <input type="text" wire:model="search" class="search-box"
-                                    placeholder="Search User">
-                            </div>
-                            <div class="col-md-4 text-right">
-                                <div class="action-buttons">
-                                    <select name="export-button" id="export-button">
-                                        <option value="">Export</option>
-                                        <option value="print"><button class="print">Print</button></option>
-                                        <option value="csv"><button class="csv">Csv</button></option>
-                                        <option value="excel"><button class="excel">Excel</button></option>
-                                        <option value="pdf"><button class="pdf">Pdf</button></option>
-                                        <option value="copy"><button class="copy">Copy</button></option>
-                                    </select>
-                                    <button class="add-user-button">+ Add New User</button>
-                                </div>
-                            </div>
+                        <div class="col-md-4">
+                            <select wire:model.live="filterUnitInduk" class="filter-select">
+                                <option value="">Select Unit Induk</option>
+                                @foreach ($availableUnits as $unit)
+                                    <option value="{{ $unit }}">{{ $unit }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </tr>
-                </div>
+                        <div class="col-md-4">
+                            <select wire:model.live="filterStatus" class="filter-select">
+                                <option value="">Select Status</option>
+                                @foreach ($availableStatuses as $status)
+                                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <select wire:model.live="perPage" class="per-page-select">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" wire:model.live.debounce.300ms="search" class="search-box"
+                                placeholder="Search User">
+                        </div>
+                        <livewire:components.export />
+                    </div>
+                </tr>
                 <tr>
                     <th><input type="checkbox" id="select-all"></th>
                     <th>User</th>
@@ -160,15 +141,13 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-
             <tbody>
                 @foreach ($users as $user)
-                    <!-- Example Rows (Replace with dynamic data) -->
                     <tr>
                         <td><input type="checkbox" class="user-checkbox"></td>
                         <td>
                             <div class="user-info">
-                                <img src="{{ $user->avatar }}" alt="User Name" class="user-avatar">
+                                <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="user-avatar">
                                 <span>{{ $user->name }}</span>
                             </div>
                         </td>
@@ -176,19 +155,14 @@
                         <td><span>{{ $user->unit_name }}</span></td>
                         <td><span>{{ $user->app_name }}</span></td>
                         <td>
-                            <span
-                                class="{{ $user->account_status === 'active'
-                                    ? 'status-active'
-                                    : ($user->account_status === 'pending'
-                                        ? 'status-pending'
-                                        : 'status-inactive') }}">
+                            <span class="status-{{ $user->account_status }}">
                                 {{ ucfirst($user->account_status) }}
                             </span>
                         </td>
                         <td>
                             <div class="row action">
-                                {{-- Delete Button --}}
-                                <button class="action-button col-md-4" onclick="handleDelete({{ $user->id }})">
+                                <button wire:click="triggerDeleteModal({{ $user->id }})"
+                                    class="btn btn-danger delete">
                                     <i>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -203,41 +177,6 @@
                                         </svg>
                                     </i>
                                 </button>
-                                {{-- Visible Button --}}
-                                <button class="action-button col-md-4" onclick="handleView({{ $user->id }})">
-                                    <i>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                            <path
-                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                        </svg>
-                                    </i>
-                                </button>
-                                {{-- More Function Button --}}
-                                <div class="dropdown col-md-4">
-                                    <button class="action-button dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                                <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                                <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                            </svg>
-                                        </i>
-                                    </button>
-                                    {{-- Edit Button --}}
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li><button class="dropdown-item edit-user-btn" data-user-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#editModal" >Edit</button></li>
-                                    </ul>
-                                </div>
                             </div>
                         </td>
                     </tr>
@@ -250,6 +189,8 @@
     <div class="pagination-container">
         {{ $users->links() }}
     </div>
-    <livewire:components.edit-user />
+    <div class="total-records">
+        Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} records
+    </div>
+    <livewire:components.delete-user-modal />
 </div>
-

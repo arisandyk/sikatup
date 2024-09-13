@@ -12,9 +12,11 @@ class Alarm extends Model
 
     protected $table = 'alarms';
 
-    protected $fillable = ['date_log', 'location_id', 'event_id', 'voice'];
+    protected $fillable = ['date_log', 'location_id', 'event_id', 'event_type', 'voice'];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
+
+    protected $dates = ['date_log'];
 
     protected function cast(): array
     {
@@ -34,5 +36,40 @@ class Alarm extends Model
     public function events()
     {
         return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    public function getEventType()
+    {
+        // Event type mapping based on your description
+        $openKeywords = ['Opened'];
+        $closeKeywords = ['Closed'];
+
+        if (!$this->event_type) {
+            return 'unknown';  // Default to 'unknown' if event_type is null
+        }
+
+        // Check if event_type contains any "Opened" keyword
+        foreach ($openKeywords as $keyword) {
+            if (stripos($this->event_type, $keyword) !== false) {
+                return 'open';
+            }
+        }
+
+        // Check if event_type contains any "Closed" keyword
+        foreach ($closeKeywords as $keyword) {
+            if (stripos($this->event_type, $keyword) !== false) {
+                return 'close';
+            }
+        }
+
+        // Return 'undefined' if it's neither open nor close
+        return 'undefined';
+    }
+
+
+    public function getDateLogAttribute($value)
+    {
+        // Jika date_log ada, format; jika tidak, kembalikan 'Unknown Time'
+        return $value ? \Carbon\Carbon::parse($value)->format('H:i') : 'Unknown Time';
     }
 }

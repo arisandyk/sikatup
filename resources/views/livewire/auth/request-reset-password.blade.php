@@ -19,8 +19,8 @@
         <!-- Left Section (Buttons and Form) -->
         <div class="col-md-6 d-flex align-items-center justify-content-center flex-column">
             <div class="form-group toggle-button-group">
-                <button id="emailToggle" class="toggle-button active" wire:click="$set('is_email', true)">Email</button>
-                <button id="mobileToggle" class="toggle-button" wire:click="$set('is_email', false)">Mobile Number</button>
+                <button id="emailToggle" class="toggle-button {{ $is_email ? 'active' : '' }}" wire:click="toggleMethod('email')">Email</button>
+                <button id="mobileToggle" class="toggle-button {{ !$is_email ? 'active' : '' }}" wire:click="toggleMethod('mobile')">Mobile Number</button>
             </div>
             <form wire:submit.prevent="requestReset" class="w-100" style="max-width: 400px;">
                 @csrf
@@ -42,28 +42,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const emailToggle = document.getElementById('emailToggle');
-        const mobileToggle = document.getElementById('mobileToggle');
-        const contactInput = document.getElementById('contact_input');
-        const inputLabel = document.getElementById('inputLabel');
-
-        emailToggle.addEventListener('click', function () {
-            emailToggle.classList.add('active');
-            mobileToggle.classList.remove('active');
-            inputLabel.textContent = 'Email Address';
-            contactInput.placeholder = 'admin@mail.com';
-            contactInput.type = 'email';
-        });
-
-        mobileToggle.addEventListener('click', function () {
-            mobileToggle.classList.add('active');
-            emailToggle.classList.remove('active');
-            inputLabel.textContent = 'Mobile Phone';
-            contactInput.placeholder = '+62 8765432123';
-            contactInput.type = 'tel';
-        });
-    });
-</script>

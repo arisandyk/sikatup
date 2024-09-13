@@ -1,4 +1,9 @@
 <div class="header">
+    @if (session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <h2>{{ $title }}</h2>
     <div class="search-bar">
         <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -8,8 +13,9 @@
                 <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                 <path d="M21 21l-6 -6" />
             </svg></i>
-        <input type="text" placeholder="Search Anything Here...">
+        @livewire('components.header-search')
     </div>
+
     <div class="notifications">
         <div class="toggle">
             <input type="checkbox" id="toggle-light-dark">
@@ -29,6 +35,7 @@
                 </i>
                 <span class="notification-count">6</span>
             </a>
+
             <div class="notification-dropdown">
                 <h4>Notifications</h4>
                 <ul>

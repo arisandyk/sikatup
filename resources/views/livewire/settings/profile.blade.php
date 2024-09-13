@@ -82,10 +82,10 @@
                         <a class="nav-link @if ($activeTab === 'profile') active @endif"
                             wire:click="$set('activeTab', 'profile')">Profile</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link @if ($activeTab === 'user-request') active @endif"
                             wire:click="$set('activeTab', 'user-request')">Request</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

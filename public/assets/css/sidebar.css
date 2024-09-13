@@ -246,8 +246,9 @@
     color: #ffffff;
 }
 
-.btn-damger:hover {
+.btn-danger:hover {
     background-color: #e54343; /* Slightly darker on hover */
+    color:#ffffff
 }
 
 /* "Yes" Button Style */

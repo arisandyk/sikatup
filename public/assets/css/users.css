@@ -149,37 +149,23 @@ body {
     font-size: 14px;
     color: #101041;
     margin-right: 10px;
-    
-}
+    margin-left: 0px;
 
-#search {
-    margin-left: 540px;
 }
 
 
 #export-button {
-    background-color: #ececec;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-    color: #9c9b9b;
-    margin-bottom: 15px;
-    margin-right: 5px;
-    margin-left: 230px;
-
-}
-
-.add-user-button {
     background-color: #FFC107;
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
     border: none;
-    color: #FFFFFF;
+    color: #FCFBE8;
     margin-bottom: 15px;
+    margin-right: 5px;
+    margin-left: 390px;
+
 }
 
 .users-table {
@@ -207,7 +193,7 @@ body {
 .user-info {
     display: flex;
     align-items: center;
-    color: #101041;
+    color: #fff;
     margin-top: 10px;
 }
 
@@ -289,7 +275,8 @@ body {
     margin-bottom: 20px;
     margin-left: 50px;
 }
-.action-button{
+
+.action-button {
     width: 50px;
     height: 50px;
     border-radius: 15px;
@@ -297,7 +284,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    border:none;
+    border: none;
     color: #101041;
 }
 
@@ -305,7 +292,8 @@ body {
     border-radius: 0.5rem;
 }
 
-.modal-header, .modal-footer {
+.modal-header,
+.modal-footer {
     border-color: #dee2e6;
 }
 
@@ -322,4 +310,214 @@ body {
 .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
+}
+
+/* Delete Modal */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1002;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-top: -70px;
+    border: 4px solid #ffffff;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.delete {
+    display: flex;
+    align-items: center;
+    margin-left: 35px;
+}
+
+.export{
+    background-color: #FFC107;
+    color: #ffffff;
+    border: none;
+    padding: 0;
+    margin-bottom: 20px;
+    margin-top: -4px;
+}
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 45%;
+    border: 0;
+}
+
+.btn-danger {
+    background-color: #ff4f4f;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #e54343;
+}
+
+.btn-secondary {
+    background-color: #ffff9f;
+    color: #101041;
+}
+
+.btn-secondary:hover {
+    background-color: #dbd401bd;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.text-lg {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* New styles for pagination and row selection */
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+.per-page-select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.pagination-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-container nav {
+    display: inline-block;
+}
+
+.pagination-container ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-container li {
+    margin: 0 5px;
+}
+
+.pagination-container li a, 
+.pagination-container li span {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #FFFFFF;
+    color: #101041;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-container li.active span {
+    background-color: #101041;
+    color: #FFFFFF;
+}
+
+.pagination-container li a:hover {
+    background-color: #FFFDC3;
+}
+
+.total-records {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 14px;
+    color: #7A7A7A;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input, .per-page-select {
+        width: 100%;
+    }
+
+    .pagination-container ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }

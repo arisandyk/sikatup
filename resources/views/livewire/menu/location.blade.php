@@ -78,102 +78,157 @@
                     </div>
                 </div>
             </div>
-            <table class="custom-table">
-                <thead>
-                    <tr class="title-row">
-                        <th>GI/GITET</th>
-                        <th>Address</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($locations as $location)
-                    <tr></tr>
-                        <td class="">{{ $location->gardu_induks->name }}</td>
-                        <td class="">{{ $location->address }}</td>
-                        <td class="">{{ $location->latitude }}</td>
-                        <td class="">{{ $location->longitude }}</td>
-                    </tr>
-                    @endforeach
+            <div class="table-container">
+                <div class="table-controls">
+                    <input type="text" wire:model.debounce.300ms="search" placeholder="Search..."
+                        class="search-input">
+                    <select wire:model="perPage" class="per-page-select">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <table class="custom-table">
+                    <thead>
+                        <tr class="title-row">
+                            <th>GI/GITET</th>
+                            <th>Address</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($locations as $location)
+                            <tr></tr>
+                            <td class="">{{ $location->gardu_induks->name }}</td>
+                            <td class="">{{ $location->address }}</td>
+                            <td class="">{{ $location->latitude }}</td>
+                            <td class="">{{ $location->longitude }}</td>
+                            </tr>
+                        @endforeach
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    {{ $locations->links() }}
+                </div>
+
+                <!-- Total Records -->
+                <div class="total-records">
+                    Showing {{ $locations->firstItem() }} to {{ $locations->lastItem() }} of
+                    {{ $locations->total() }} records
+                </div>
+            </div>
         </div>
 
         <!-- Right Column (md-3) -->
         <div class="col-md-3">
             <div class="user-alerts">
-                <!-- Requests Section -->
-                <div class="section-header">
-                    <h3>Request</h3>
-                    <a href="#" class="view-all">View all</a>
-                </div>
-                <div class="request-list card">
-                    <div class="request-item">
-                        <img src="{{ asset('images/jaquilline.png') }}" alt="Jaquiline" class="avatar-img">
-                        <div class="request-info">
-                            <h4>Jaquiline</h4>
-                            <p>Ubah Gardu Induk</p>
-                        </div>
+                @if (Auth::user()->role == 'admin')
+                    <!-- Requests Section -->
+                    <div class="section-header">
+                        <h3>Request</h3>
+                        <!-- Updated <a> tag with wire:click to show the modal -->
+                        <a href="#" class="view-all" wire:click.prevent="showModal">View all</a>
                     </div>
-                    <div class="request-item">
-                        <img src="{{ asset('images/sennorita.png') }}" alt="Sennorita" class="avatar-img">
-                        <div class="request-info">
-                            <h4>Sennorita</h4>
-                            <p>Ubah Unit Induk</p>
-                        </div>
-                    </div>
-                    <div class="request-item">
-                        <img src="{{ asset('images/firoz.png') }}" alt="Firoz" class="avatar-img">
-                        <div class="request-info">
-                            <h4>Firoz</h4>
-                            <p>Ubah APP</p>
-                        </div>
-                    </div>
-                </div>
+                    <div class="request-list card">
+                        @if ($recentPendingUsers->isEmpty())
+                            <p class="text-center">No pending requests.</p>
+                        @else
+                            @foreach ($recentPendingUsers as $user)
+                                <div class="request-item d-flex align-items-center">
+                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
+                                        class="avatar-img">
+                                    <div class="request-info">
+                                        <h4>{{ $user->name }}</h4>
+                                        <p>{{ $user->email }}</p>
+                                        <!-- Buttons to accept or reject user -->
+                                        <div class="action-buttons mt-2">
+                                            <button class="btn btn-success btn-sm"
+                                                wire:click="acceptUser({{ $user->id }})">Accept</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                wire:click="rejectUser({{ $user->id }})">Reject</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                @endif
+            </div>
 
-                <!-- Alerts Section -->
-                <div class="section-header">
-                    <h3>Alert</h3>
-                    <a href="#" class="view-all">View all</a>
-                </div>
-                <div class="alert-list">
-                    <div class="alert-item">
-                        <span class="alert-icon green-dot"></span>
-                        <div class="alert-content">
-                            <p>Air Conditioner</p>
-                            <small>Turned on • Jaquiline</small>
+            <!-- Modal -->
+            <div class="modal fade @if ($showModal) show @endif" tabindex="-1" role="dialog"
+                style="display: @if ($showModal) block @else none @endif;"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pending User Requests</h5>
+                            <button type="button" class="close" wire:click="closeModal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <span class="alert-time">03:20</span>
-                    </div>
-                    <div class="alert-item">
-                        <span class="alert-icon green-dot"></span>
-                        <div class="alert-content">
-                            <p>Refrigerator</p>
-                            <small>Turned on • Firoz</small>
+                        <div class="modal-body">
+                            @foreach ($pendingUsers as $user)
+                                <div class="request-item d-flex align-items-center mb-2">
+                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
+                                        class="avatar-img">
+                                    <div class="request-info">
+                                        <h4>{{ $user->name }}</h4>
+                                        <p>{{ $user->email }}</p>
+                                        <div class="action-buttons mt-2">
+                                            <button class="btn btn-success btn-sm"
+                                                wire:click="acceptUser({{ $user->id }})">Accept</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                wire:click="rejectUser({{ $user->id }})">Reject</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            @if ($pendingUsers->isEmpty())
+                                <p class="text-center">No pending requests.</p>
+                            @endif
                         </div>
-                        <span class="alert-time">01:48</span>
-                    </div>
-                    <div class="alert-item">
-                        <span class="alert-icon red-dot"></span>
-                        <div class="alert-content">
-                            <p>Air Conditioner</p>
-                            <small>Turned off • Jaquiline</small>
-                        </div>
-                        <span class="alert-time">11:36</span>
-                    </div>
-                    <div class="alert-item">
-                        <span class="alert-icon red-dot"></span>
-                        <div class="alert-content">
-                            <p>Coffee Machine</p>
-                            <small>Turned off • Jaquiline</small>
-                        </div>
-                        <span class="alert-time">09:15</span>
                     </div>
                 </div>
             </div>
 
+
+            <!-- Alerts Section -->
+            <div class="section-header">
+                <h3>Alert</h3>
+                <a href="#" class="view-all">View all</a>
+            </div>
+
+            @if ($recentAlarms->isEmpty())
+                <div class="alert-item">
+                    <div class="alert-content">
+                        <p>No alarms found.</p>
+                    </div>
+                </div>
+            @else
+                <div class="alert-list">
+                    @foreach ($recentAlarms as $alarm)
+                        <div class="alert-item">
+                            <span
+                                class="alert-icon {{ $alarm->getEventType() === 'open' ? 'green-dot' : ($alarm->getEventType() === 'close' ? 'red-dot' : 'undefined-dot') }}"></span>
+                            <div class="alert-content">
+                                <p>{{ $alarm->event_type }}</p>
+                                <small>
+                                    {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                                    {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                                </small>
+                            </div>
+                            <span class="alert-time">{{ $alarm->date_log }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
         </div>
+
     </div>
 </div>

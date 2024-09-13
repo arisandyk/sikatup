@@ -10,10 +10,11 @@ class VerifyEmail extends Component
 {
     public $userId;
     public $hash;
+    public $status; // Menyimpan status (success atau error)
 
-    public function mount($userId, $hash)
+    public function mount($id, $hash)
     {
-        $this->userId = $userId;
+        $this->userId = $id;
         $this->hash = $hash;
     }
 
@@ -22,27 +23,27 @@ class VerifyEmail extends Component
         $user = User::findOrFail($this->userId);
 
         if (!hash_equals($this->hash, sha1($user->getEmailForVerification()))) {
-            session()->flash('error', 'Invalid verification link.');
+            $this->status = 'error';
             return;
         }
 
         if ($user->hasVerifiedEmail()) {
-            session()->flash('error', 'Email already verified.');
+            $this->status = 'success';
             return;
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
-            session()->flash('success', 'Email verified successfully!');
+            $this->status = 'success';
         } else {
-            session()->flash('error', 'Failed to verify email.');
+            $this->status = 'error';
         }
-
-        return redirect()->route('login');
     }
 
     public function render()
     {
-        return view('livewire.auth.verify-email');
+        $this->verify();
+        return view('livewire.auth.verify-email')
+            ->layout('components.layouts.app', ['title' => 'Email Verification']);
     }
 }

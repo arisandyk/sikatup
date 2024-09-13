@@ -42,10 +42,13 @@ class Control extends Component
     {
         $this->reset(['selectedApp', 'selectedBasecamp', 'selectedGarduInduk', 'apps', 'basecamps', 'garduInduks']);
         $this->breadcrumb = [];
+
         if ($this->selectedUnitInduk) {
             $this->apps = App::where('unit_id', $this->selectedUnitInduk)->get();
+            $this->updateBreadcrumb();  // Update breadcrumb after selection
         }
     }
+
 
 
     public function fetchApps()
@@ -63,25 +66,29 @@ class Control extends Component
     public function selectApp($appId)
     {
         $this->selectedApp = $appId;
-        $this->reset(['selectedBasecamp', 'selectedGarduInduk', 'basecamps', 'garduInduks']);
-        $this->basecamps = Basecamp::where('app_id', $appId)->get();
+        $this->reset(['selectedBasecamp', 'selectedGarduInduk', 'basecamps', 'garduInduks', 'bays']);
+        $this->basecamps = Basecamp::where('app_id', $appId)->with('gardu_induks.bays.events')->get();
+        $this->currentView = 'basecamps';
         $this->updateBreadcrumb();
     }
 
     public function selectBasecamp($basecampId)
     {
         $this->selectedBasecamp = $basecampId;
-        $this->reset(['selectedGarduInduk', 'garduInduks']);
-        $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)->get();
+        $this->reset(['selectedGarduInduk', 'garduInduks', 'bays']);
+        $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)->with('bays.events')->get();
+        $this->currentView = 'gardu_induks';
         $this->updateBreadcrumb();
     }
 
     public function selectGarduInduk($garduIndukId)
     {
         $this->selectedGarduInduk = $garduIndukId;
-        $this->bays = Bay::where('gardu_induk_id', $garduIndukId)->get();
+        $this->bays = Bay::where('gi_id', $garduIndukId)->with('events')->get();
+        $this->currentView = 'bays';
         $this->updateBreadcrumb();
     }
+
 
     public function resetSelection()
     {
@@ -89,6 +96,36 @@ class Control extends Component
         $this->selectedBasecamp = null;
         $this->selectedGarduInduk = null;
         $this->currentView = 'apps';
+    }
+
+    public function breadcrumbSelect($level)
+    {
+        switch ($level) {
+            case 'unitInduk':
+                $this->resetSelection();  // Resets all selections to the unit level
+                $this->breadcrumb = array_slice($this->breadcrumb, 0, 1);
+                break;
+
+            case 'app':
+                $this->selectedBasecamp = null;
+                $this->selectedGarduInduk = null;
+                $this->bays = [];
+                $this->currentView = 'basecamps';
+                $this->breadcrumb = array_slice($this->breadcrumb, 0, 2);  // Keep only "Unit Induk" and "App"
+                break;
+
+            case 'basecamp':
+                $this->selectedGarduInduk = null;
+                $this->bays = [];
+                $this->currentView = 'gardu_induks';
+                $this->breadcrumb = array_slice($this->breadcrumb, 0, 3);  // Keep "Unit Induk", "App", and "Basecamp"
+                break;
+
+            case 'garduInduk':
+                $this->currentView = 'bays';
+                $this->breadcrumb = array_slice($this->breadcrumb, 0, 4);  // Keep everything up to "Gardu Induk"
+                break;
+        }
     }
 
     private function updateBreadcrumb()
@@ -133,6 +170,11 @@ class Control extends Component
         $locationsPercentage = $this->calculatePercentageChange($locations, $previousLocations);
         $alarmsPercentage = $this->calculatePercentageChange($alarms, $previousAlarms);
 
+        // Fetch the 4 most recent alarms
+        $recentAlarms = Alarm::orderBy('created_at', 'desc')
+            ->take(2)
+            ->get();
+
         return view('livewire.menu.control', [
             'totalUsers' => $totalUsers,
             'totalUsersPercentage' => $totalUsersPercentage,
@@ -150,6 +192,7 @@ class Control extends Component
             'selectedApp' => $this->selectedApp,
             'selectedBasecamp' => $this->selectedBasecamp,
             'selectedGarduInduk' => $this->selectedGarduInduk,
+            'recentAlarms' => $recentAlarms,
         ])->layout('components.layouts.app', array('title' => $this->title));
     }
 

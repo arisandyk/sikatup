@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Livewire\Auth;
 
-use App\Http\Requests\Auth\RequestPasswordResetRequest;
 use App\Models\User;
 use App\Notifications\ResetPasswordOtpNotification;
 use Illuminate\Support\Facades\DB;
@@ -19,17 +19,19 @@ class RequestPasswordReset extends Component
 
     public function requestReset()
     {
-        // Validasi berdasarkan pilihan (email atau mobile number)
+        // Memetakan contact_input ke variabel yang sesuai
         if ($this->is_email) {
+            $this->email = $this->contact_input;
             $validatedData = $this->validate([
-                'contact_input' => 'required|email',
+                'email' => 'required|email',
             ]);
-            $user = User::where('email', $validatedData['contact_input'])->first();
+            $user = User::where('email', $validatedData['email'])->first();
         } else {
+            $this->mobile_number = $this->contact_input;
             $validatedData = $this->validate([
-                'contact_input' => 'required|regex:/^[\+]?[0-9]{10,15}$/',
+                'mobile_number' => 'required|regex:/^[\+]?[0-9]{10,15}$/',
             ]);
-            $user = User::where('mobile_number', $validatedData['contact_input'])->first();
+            $user = User::where('mobile_number', $validatedData['mobile_number'])->first();
         }
 
         // Cek apakah user ada di database
@@ -49,7 +51,13 @@ class RequestPasswordReset extends Component
         // Kirim OTP melalui email atau SMS (sesuai kebutuhan)
         $user->notify(new ResetPasswordOtpNotification($otp));
 
-        // Flash message dan redirect
+        // Simpan email atau mobile number di session flash
+        if ($this->is_email) {
+            session()->flash('email', $validatedData['email']);
+        } else {
+            session()->flash('mobile_number', $validatedData['mobile_number']);
+        }
+
         session()->flash('success', 'Password reset ' . ($this->is_email ? 'email' : 'SMS') . ' sent.');
 
         return redirect()->route('reset-password');
@@ -58,6 +66,12 @@ class RequestPasswordReset extends Component
     public function mount()
     {
         $this->title = 'Reset Access Key';
+    }
+
+    public function toggleMethod($method)
+    {
+        $this->is_email = $method === 'email';
+        $this->contact_input = ''; // Reset input saat metode diubah
     }
 
     public function render()

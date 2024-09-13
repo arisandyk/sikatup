@@ -17,11 +17,12 @@ use App\Models\{
     User
 };
 use App\Observers\GeneralObserver;
+use App\Services\MqttService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use PhpMqtt\Client\MqttClient;
 use PhpMqtt\Client\ConnectionSettings;
+use PhpMqtt\Client\MqttClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,33 +32,38 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(MqttClient::class, function ($app) {
-            $host = config('mqtt.host');
-            $port = config('mqtt.port');
-            $clientId = config('mqtt.client_id');
-            $username = config('mqtt.username');
-            $password = config('mqtt.password');
-            $keepAlive = config('mqtt.keep_alive');
-            $cleanSession = config('mqtt.clean_session');
-            $protocol = config('mqtt.protocol');
-    
-            $connectionSettings = (new ConnectionSettings)
-                ->setUsername($username)
-                ->setPassword($password)
-                ->setKeepAliveInterval($keepAlive)
-                ->setUseTls(true);;
-    
-            $mqttClient = new MqttClient($host, $port, $clientId, MqttClient::MQTT_3_1_1);
-            $mqttClient->connect($connectionSettings, $cleanSession);
-    
+            $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
+                ->setUsername(config('mqtt.username'))
+                ->setPassword(config('mqtt.password'))
+                ->setKeepAliveInterval(config('mqtt.keep_alive'))
+                // Hilangkan setCleanSession atau gantikan dengan metode lain
+                ->setUseTls(false) // Set to true if your broker uses TLS
+                ->setTlsSelfSignedAllowed(true); // Only if self-signed certificates are allowed
+
+            $mqttClient = new \PhpMqtt\Client\MqttClient(
+                config('mqtt.host'),
+                config('mqtt.port'),
+                config('mqtt.client_id') // Set client_id here if the library supports it directly in the constructor
+            );
+
+            // Set clean session secara manual dalam parameter connect jika diperlukan
+            $mqttClient->connect($connectionSettings, config('mqtt.clean_session'));
+
             return $mqttClient;
+        });
+
+        $this->app->singleton(MqttService::class, function ($app) {
+            return new MqttService($app->make(MqttClient::class));
         });
     }
 
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(MqttService $mqttService): void
     {
+        // $mqttService->subscribe();
+
         $models = [
             User::class,
             Direktorat::class,

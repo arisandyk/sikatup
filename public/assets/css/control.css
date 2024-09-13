@@ -204,6 +204,7 @@ body {
     color: #7A7A7A;
     display: block;
     margin-top: 2px;
+    font-size: 11px;
 }
 
 .alert-time {
@@ -348,4 +349,9 @@ body {
 
 .red-pill {
     background-color: #FF5C5C;
+}
+
+a {
+    color: #101041;
+    text-decoration: none;
 }

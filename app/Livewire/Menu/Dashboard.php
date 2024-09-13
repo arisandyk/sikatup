@@ -12,6 +12,7 @@ use Livewire\Component;
 class Dashboard extends Component
 {
     public $title;
+    public $showModal = false;
 
     public function mount()
     {
@@ -20,25 +21,41 @@ class Dashboard extends Component
 
     public function render()
     {
-
         // Fetch the required data from your models
         $totalUsers = User::count();
         $devices = Bay::count();
         $locations = Location::count();
         $alarms = Alarm::count();
 
-        // Example previous day data, you should replace this with real historical data
+        // Fetch previous day data
         $yesterday = Carbon::yesterday();
         $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
         $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
         $previousLocations = Location::whereDate('created_at', $yesterday)->count();
         $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
 
-        // Calculate the percentages based on real current and previous values
+        // Calculate percentage changes
         $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);
         $devicesPercentage = $this->calculatePercentageChange($devices, $previousDevices);
         $locationsPercentage = $this->calculatePercentageChange($locations, $previousLocations);
         $alarmsPercentage = $this->calculatePercentageChange($alarms, $previousAlarms);
+
+        // Fetch pending user requests
+        $pendingUsers = User::where('account_status', 'pending')->get();
+
+        // Fetch the 3 most recent pending user requests
+        $recentPendingUsers = User::where('account_status', 'pending')
+            ->orderBy('created_at', 'asc')
+            ->take(3)
+            ->get();
+
+        $recentAlarms = Alarm::with(['locations', 'events.bays'])
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
+
+
         return view('livewire.menu.dashboard', [
             'totalUsers' => $totalUsers,
             'totalUsersPercentage' => $totalUsersPercentage,
@@ -48,7 +65,44 @@ class Dashboard extends Component
             'locationsPercentage' => $locationsPercentage,
             'alarms' => $alarms,
             'alarmsPercentage' => $alarmsPercentage,
+            'pendingUsers' => $pendingUsers, // Pass all pending users to the view for modal
+            'recentPendingUsers' => $recentPendingUsers, // Pass recent pending users to the view for request list
+            'recentAlarms' => $recentAlarms,
         ])->layout('components.layouts.app', ['title' => $this->title]);
+    }
+
+    public function acceptUser($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->account_status = 'active';
+            $user->work_status = 'active';
+            $user->save();
+            session()->flash('success', 'User accepted successfully.');
+        } else {
+            session()->flash('error', 'User not found.');
+        }
+    }
+
+    public function rejectUser($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->delete();
+            session()->flash('success', 'User rejected and deleted successfully.');
+        } else {
+            session()->flash('error', 'User not found.');
+        }
+    }
+
+    public function showModal()
+    {
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
     }
 
     private function calculatePercentageChange($current, $previous)

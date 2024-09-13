@@ -74,39 +74,62 @@
                 <h3>Alert</h3>
                 <a href="#" class="view-all">View all</a>
             </div>
-            <div class="alert-list">
-                <div class="alert-item">
-                    <span class="alert-icon green-dot"></span>
-                    <div class="alert-content">
-                        <p>Refrigerator</p>
-                        <small>Turned on • Firoz</small>
-                    </div>
-                    <span class="alert-time">01:48</span>
-                </div>
-                <div class="alert-item">
-                    <span class="alert-icon red-dot"></span>
-                    <div class="alert-content">
-                        <p>Coffee Machine</p>
-                        <small>Turned off • Jaquiline</small>
-                    </div>
-                    <span class="alert-time">09:15</span>
+
+            @if ($recentAlarms->isEmpty())
+            <div class="alert-item">
+                <div class="alert-content">
+                    <p>No alarms found.</p>
                 </div>
             </div>
+            @else
+            <div class="alert-list">
+                @foreach ($recentAlarms as $alarm)
+                <div class="alert-item">
+                    <span class="alert-icon {{ $alarm->getEventType() === 'open' ? 'green-dot' : ($alarm->getEventType() === 'close' ? 'red-dot' : 'undefined-dot') }}"></span>
+                    <div class="alert-content">
+                        <p>{{ $alarm->event_type }}</p>
+                        <small>
+                            {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                            {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                        </small>
+                    </div>
+                    <span class="alert-time">{{ $alarm->date_log }}</span>
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
 
     <table class="custom-table">
         <thead>
             <tr class="title-row">
-                <th colspan="12" id="title">
+                <th colspan="14" id="title">
                     <div class="row">
                         <div class="col-md-7">
-                            <h2>
+                            <h3>
                                 Trans JBT
-                                @foreach ($breadcrumb as $item)
-                                    -> {{ $item }}
+                                @foreach ($breadcrumb as $key => $item)
+                                @if ($key === 0)
+                                <!-- Unit Induk -->
+                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('unitInduk')">->
+                                    {{ $item }}</a>
+                                @elseif ($key === 1)
+                                <!-- App -->
+                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('app')">->
+                                    {{ $item }}</a>
+                                @elseif ($key === 2)
+                                <!-- Basecamp -->
+                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('basecamp')">->
+                                    {{ $item }}</a>
+                                @elseif ($key === 3)
+                                <!-- Gardu Induk -->
+                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('garduInduk')">->
+                                    {{ $item }}</a>
+                                @endif
                                 @endforeach
-                            </h2>
+                            </h3>
+
                         </div>
                         <div class="col-md-5 text-right flex-end">
                             <div class="filter-pill">
@@ -114,7 +137,7 @@
                                 <select class="pill-dropdown" wire:model="selectedUnitInduk" wire:change='$refresh'>
                                     <option value="">Pilih Unit Induk</option>
                                     @foreach ($unitInduks as $unitInduk)
-                                        <option value="{{ $unitInduk->id }}">{{ $unitInduk->name }}</option>
+                                    <option value="{{ $unitInduk->id }}">{{ $unitInduk->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -125,16 +148,16 @@
             <tr>
                 <th rowspan="2">
                     @if ($selectedGarduInduk)
-                        Bay Name
+                    Bay Name
                     @elseif($selectedBasecamp)
-                        Gardu Induk Name
+                    Gardu Induk Name
                     @elseif($selectedApp)
-                        Basecamp Name
+                    Basecamp Name
                     @else
-                        App Name
+                    App Name
                     @endif
                 </th>
-                <th colspan="9">Kejadian Buka-Tutup (Kali)</th>
+                <th colspan="10">Kejadian Buka-Tutup (Kali)</th>
                 <th rowspan="2">Jumlah</th>
                 <th rowspan="2">Kejadian Terakhir</th>
             </tr>
@@ -147,154 +170,160 @@
                 <th>CBR</th>
                 <th>OBL</th>
                 <th>CBL</th>
+                <th>OBT</th>
                 <th>UND</th>
             </tr>
         </thead>
         <tbody>
             @if ($currentView === 'apps')
-                @foreach ($apps as $app)
-                    @foreach ($app->basecamps as $basecamp)
-                        @foreach ($basecamp->gardu_induks as $gardu_induk)
-                            @foreach ($gardu_induk->bays as $bay)
-                                @php
-                                    $latestEvent = $bay->events->last();
-                                @endphp
-                                <tr>
-                                    <td class="name">APP {{ $app->name }}</td>
-                                    @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'] as $eventType)
-                                        <td
-                                            class="{{ $latestEvent && $latestEvent->$eventType ? 'highlighted' : '' }}">
-                                            {{ $latestEvent->$eventType ?? 0 }}
-                                        </td>
-                                    @endforeach
-                                    <td class="jumlah">
-                                        {{ collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'])->sum(fn($eventType) => $latestEvent->$eventType ?? 0) }}
-                                    </td>
-                                    <td>{{ $latestEvent ? $latestEvent->getDateLogAttribute() : '-' }}</td>
-                                </tr>
-                                <tr class="total-row">
-                                    <td>Total</td>
-                                    @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'] as $eventType)
-                                        <td class="total-{{ $eventType }}">
-                                            {{ collect($apps)->sum(fn($app) => collect($app->basecamps)->sum(fn($basecamp) => collect($basecamp->gardu_induks)->sum(fn($garduInduk) => collect($garduInduk->bays)->sum(fn($bay) => collect($bay->events)->sum($eventType))))) }}
-                                        </td>
-                                    @endforeach
-                                    <td class="total-jumlah">
-                                        {{ collect($apps)->sum(fn($app) => collect($app->basecamps)->sum(fn($basecamp) => collect($basecamp->gardu_induks)->sum(fn($garduInduk) => collect($garduInduk->bays)->sum(fn($bay) => collect($bay->events)->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'])->sum(fn($eventType) => $event->$eventType ?? 0)))))) }}
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            @endforeach
-                        @endforeach
-                    @endforeach
+            @foreach ($apps as $app)
+            <tr>
+                <td class="name">
+                    <a href="javascript:void(0);" wire:click="selectApp({{ $app->id }})">APP
+                        {{ $app->name }}</a>
+                </td>
+                @php
+                $appTotals = collect($app->basecamps)->flatMap(function ($basecamp) {
+                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
+                return collect($garduInduk->bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                });
+                });
+                $lastEvent = $appTotals->last();
+                @endphp
+                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                <td class="highlighted">{{ $appTotals->sum($eventType) }}</td>
                 @endforeach
-            @elseif($currentView === 'basecamps' && $selectedApp)
-                @foreach ($selectedApp->basecamps as $basecamp)
-                    @foreach ($basecamp->gardu_induks as $gardu_induk)
-                        @foreach ($gardu_induk->bays as $bay)
-                            @php
-                                $latestEvent = $bay->events->last();
-                            @endphp
-                            <tr>
-                                <td class="name">Basecamp {{ $basecamp->name }}</td>
-                                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'] as $eventType)
-                                    <td class="{{ $latestEvent && $latestEvent->$eventType ? 'highlighted' : '' }}">
-                                        {{ $latestEvent->$eventType ?? 0 }}
-                                    </td>
-                                @endforeach
-                                <td class="jumlah">
-                                    {{ collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'])->sum(fn($eventType) => $latestEvent->$eventType ?? 0) }}
-                                </td>
-                                <td>{{ $latestEvent ? $latestEvent->getDateLogAttribute() : '-' }}</td>
-                            </tr>
-                            <tr class="total-row">
-                                <td>Total</td>
-                                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'] as $eventType)
-                                    <td class="total-{{ $eventType }}">
-                                        {{ collect($apps)->sum(fn($app) => collect($app->basecamps)->sum(fn($basecamp) => collect($basecamp->gardu_induks)->sum(fn($garduInduk) => collect($garduInduk->bays)->sum(fn($bay) => collect($bay->events)->sum($eventType))))) }}
-                                    </td>
-                                @endforeach
-                                <td class="total-jumlah">
-                                    {{ collect($apps)->sum(fn($app) => collect($app->basecamps)->sum(fn($basecamp) => collect($basecamp->gardu_induks)->sum(fn($garduInduk) => collect($garduInduk->bays)->sum(fn($bay) => collect($bay->events)->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'])->sum(fn($eventType) => $event->$eventType ?? 0)))))) }}
-                                </td>
-                                <td></td>
-                            </tr>
-                        @endforeach
-                    @endforeach
+                <td class="jumlah">
+                    {{ $appTotals->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $event->$type ?? 0)) }}
+                </td>
+                <td>{{ $lastEvent ? $lastEvent->getDateLogAttribute() : '-' }}</td>
+            </tr>
+            @endforeach
+            @elseif($currentView === 'basecamps')
+            @foreach ($basecamps as $basecamp)
+            <tr>
+                <td class="name">
+                    <a href="javascript:void(0);" wire:click="selectBasecamp({{ $basecamp->id }})">Basecamp
+                        {{ $basecamp->name }}</a>
+                </td>
+                @php
+                $basecampTotals = collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
+                return collect($garduInduk->bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                });
+                $lastEvent = $basecampTotals->last();
+                @endphp
+                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                <td class="highlighted">{{ $basecampTotals->sum($eventType) }}</td>
                 @endforeach
-                <!-- Kondisi untuk menampilkan data berdasarkan seleksi -->
-            @elseif($currentView === 'gardu_induks' && $selectedBasecamp)
-                @foreach ($selectedBasecamp->gardu_induks as $gardu_induk)
-                    @foreach ($gardu_induk->bays as $bay)
-                        @php
-                            $latestEvent = $bay->events->last();
-                        @endphp
-                        <tr>
-                            <td>{{ $bay->name }}</td>
-                            @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'] as $eventType)
-                                <td class="{{ $latestEvent && $latestEvent->$eventType ? 'highlighted' : '' }}">
-                                    {{ $latestEvent->$eventType ?? 0 }}
-                                </td>
-                            @endforeach
-                            <td class="jumlah">
-                                {{ collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'])->sum(fn($eventType) => $latestEvent->$eventType ?? 0) }}
-                            </td>
-                            <td>{{ $latestEvent ? $latestEvent->getDateLogAttribute() : '-' }}</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Total</td>
-                            @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'] as $eventType)
-                                <td class="total-{{ $eventType }}">
-                                    {{ collect($apps)->sum(fn($app) => collect($app->basecamps)->sum(fn($basecamp) => collect($basecamp->gardu_induks)->sum(fn($garduInduk) => collect($garduInduk->bays)->sum(fn($bay) => collect($bay->events)->sum($eventType))))) }}
-                                </td>
-                            @endforeach
-                            <td class="total-jumlah">
-                                {{ collect($apps)->sum(fn($app) => collect($app->basecamps)->sum(fn($basecamp) => collect($basecamp->gardu_induks)->sum(fn($garduInduk) => collect($garduInduk->bays)->sum(fn($bay) => collect($bay->events)->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'und'])->sum(fn($eventType) => $event->$eventType ?? 0)))))) }}
-                            </td>
-                            <td></td>
-                        </tr>
-                    @endforeach
+                <td class="jumlah">
+                    {{ $basecampTotals->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $event->$type ?? 0)) }}
+                </td>
+                <td>{{ $lastEvent ? $lastEvent->getDateLogAttribute() : '-' }}</td>
+            </tr>
+            @endforeach
+            @elseif($currentView === 'gardu_induks')
+            @foreach ($garduInduks as $garduInduk)
+            <tr>
+                <td class="name">
+                    <a href="javascript:void(0);" wire:click="selectGarduInduk({{ $garduInduk->id }})">Gardu
+                        Induk {{ $garduInduk->name }}</a>
+                </td>
+                @php
+                $garduIndukTotals = collect($garduInduk->bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                $lastEvent = $garduIndukTotals->last();
+                @endphp
+                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                <td class="highlighted">{{ $garduIndukTotals->sum($eventType) }}</td>
                 @endforeach
+                <td class="jumlah">
+                    {{ $garduIndukTotals->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $event->$type ?? 0)) }}
+                </td>
+                <td>{{ $lastEvent ? $lastEvent->getDateLogAttribute() : '-' }}</td>
+            </tr>
+            @endforeach
+            @elseif($currentView === 'bays')
+            @foreach ($bays as $bay)
+            @php
+            $latestEvent = $bay->events->last();
+            @endphp
+            <tr>
+                <td>{{ $bay->name }}</td>
+                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                <td class="{{ $latestEvent && $latestEvent->$eventType ? 'highlighted' : '' }}">
+                    {{ $latestEvent->$eventType ?? 0 }}
+                </td>
+                @endforeach
+                <td class="jumlah">
+                    {{ collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($eventType) => $latestEvent->$eventType ?? 0) }}
+                </td>
+                <td>{{ $latestEvent ? $latestEvent->getDateLogAttribute() : '-' }}</td>
+            </tr>
+            @endforeach
             @endif
             <tr class="total-row">
                 <td>Total</td>
                 @php
-                    $totalObd = $totalCbd = $totalObp = $totalCbp = $totalObr = $totalCbr = $totalObl = $totalCbl = $totalUnd = 0;
-                @endphp
-                @foreach ($apps as $app)
-                    @foreach ($app->basecamps as $basecamp)
-                        @foreach ($basecamp->gardu_induks as $gardu_induk)
-                            @foreach ($gardu_induk->bays as $bay)
-                                @foreach ($bay->events as $event)
-                                    @php
-                                        $totalObd += $event->obd ?? 0;
-                                        $totalCbd += $event->cbd ?? 0;
-                                        $totalObp += $event->obp ?? 0;
-                                        $totalCbp += $event->cbp ?? 0;
-                                        $totalObr += $event->obr ?? 0;
-                                        $totalCbr += $event->cbr ?? 0;
-                                        $totalObl += $event->obl ?? 0;
-                                        $totalCbl += $event->cbl ?? 0;
-                                        $totalUnd += $event->und ?? 0;
-                                    @endphp
-                                @endforeach
-                            @endforeach
-                        @endforeach
-                    @endforeach
-                @endforeach
+                $totals = [
+                'obd' => 0,
+                'cbd' => 0,
+                'obp' => 0,
+                'cbp' => 0,
+                'obr' => 0,
+                'cbr' => 0,
+                'obl' => 0,
+                'cbl' => 0,
+                'obt' => 0,
+                'und' => 0,
+                ];
+                $eventsCollection = collect();
 
-                <td class="total-obd">{{ $totalObd }}</td>
-                <td class="total-cbd">{{ $totalCbd }}</td>
-                <td class="total-obp">{{ $totalObp }}</td>
-                <td class="total-cbp">{{ $totalCbp }}</td>
-                <td class="total-obr">{{ $totalObr }}</td>
-                <td class="total-cbr">{{ $totalCbr }}</td>
-                <td class="total-obl">{{ $totalObl }}</td>
-                <td class="total-cbl">{{ $totalCbl }}</td>
-                <td class="total-und">{{ $totalUnd }}</td>
-                <td class="total-jumlah">
-                    {{ $totalObd + $totalCbd + $totalObp + $totalCbp + $totalObr + $totalCbr + $totalObl + $totalCbl + $totalUnd }}
-                </td>
+                if ($currentView === 'apps') {
+                $eventsCollection = collect($apps)->flatMap(function ($app) {
+                return collect($app->basecamps)->flatMap(function ($basecamp) {
+                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
+                return collect($garduInduk->bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                });
+                });
+                });
+                } elseif ($currentView === 'basecamps') {
+                $eventsCollection = collect($basecamps)->flatMap(function ($basecamp) {
+                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
+                return collect($garduInduk->bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                });
+                });
+                } elseif ($currentView === 'gardu_induks') {
+                $eventsCollection = collect($garduInduks)->flatMap(function ($garduInduk) {
+                return collect($garduInduk->bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                });
+                } elseif ($currentView === 'bays') {
+                $eventsCollection = collect($bays)->flatMap(function ($bay) {
+                return collect($bay->events);
+                });
+                }
+
+                foreach ($eventsCollection as $event) {
+                foreach (array_keys($totals) as $key) {
+                $totals[$key] += $event->$key ?? 0;
+                }
+                }
+                @endphp
+
+                @foreach ($totals as $total)
+                <td>{{ $total }}</td>
+                @endforeach
+                <td class="total-jumlah">{{ array_sum($totals) }}</td>
                 <td></td>
             </tr>
         </tbody>

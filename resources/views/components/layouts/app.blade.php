@@ -29,16 +29,17 @@
         $routesWithSidebarAndHeader = ['dashboard', 'users', 'control', 'alarm', 'location', 'profile', 'edit-profile'];
     @endphp
 
-    @if(in_array(Route::currentRouteName(), $routesWithSidebarAndHeader))
+    @if (in_array(Route::currentRouteName(), $routesWithSidebarAndHeader))
         @include('components.layouts.partials.sidebar')
         @include('components.layouts.partials.header', ['title' => $title ?? 'Default Title'])
+        <livewire:components.alarm-notifier />
     @endif
 
     <div class="{{ in_array(Route::currentRouteName(), $routesWithSidebarAndHeader) ? 'main-content' : '' }}">
         {{ $slot }}
     </div>
 
-    
+
     @include('components.layouts.partials.js')
     @livewireScripts
 </body>

@@ -4,8 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\App;
 use App\Models\Basecamp;
+use App\Models\Bay;
 use App\Models\Direktorat;
+use App\Models\Event;
 use App\Models\GarduInduk;
+use App\Models\Tegangan;
+use App\Models\Trafo;
 use App\Models\UnitInduk;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -136,5 +140,110 @@ class DatabaseSeeder extends Seeder
             'created_by' => 'Admin 1',
         ]);
 
+        // Tegangan
+        $tegangan1 = Tegangan::create([
+            'name' => 'Tegangan 150 kV',
+            'created_by' => 'Admin 1',
+        ]);
+
+        $tegangan2 = Tegangan::create([
+            'name' => 'Tegangan 70 kV',
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Trafo
+        $trafo1 = Trafo::create([
+            'name_plate' => 'Trafo 1',
+            'deklarasi' => 'D',
+            'available' => true,
+            'created_by' => 'Admin 1',
+        ]);
+
+        $trafo2 = Trafo::create([
+            'name_plate' => 'Trafo 2',
+            'deklarasi' => 'D',
+            'available' => true,
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Bay
+        $bay1 = Bay::create([
+            'gi_id' => 1, // Gardu Induk Telukjambe Timur
+            'name' => 'Bay A',
+            'status' => 'Operasi',
+            'tanggal_operasi' => now(),
+            'tegangan_id' => $tegangan1->id,
+            'trafo_id' => $trafo1->id,
+            'nomor_series' => '123456789',
+            'keterangan' => 'Keterangan Bay A',
+            'created_by' => 'Admin 1',
+        ]);
+
+        $bay2 = Bay::create([
+            'gi_id' => 2, // Gardu Induk Telukjambe Barat
+            'name' => 'Bay B',
+            'status' => 'Operasi',
+            'tanggal_operasi' => now(),
+            'tegangan_id' => $tegangan2->id,
+            'trafo_id' => $trafo2->id,
+            'nomor_series' => '987654321',
+            'keterangan' => 'Keterangan Bay B',
+            'created_by' => 'Admin 1',
+        ]);
+
+        $bay3 = Bay::create([
+            'gi_id' => 3, // Gardu Induk Cikarang Pusat
+            'name' => 'Bay C',
+            'status' => 'Operasi',
+            'tanggal_operasi' => now(),
+            'tegangan_id' => $tegangan1->id,
+            'trafo_id' => $trafo1->id,
+            'nomor_series' => '192837465',
+            'keterangan' => 'Keterangan Bay C',
+            'created_by' => 'Admin 1',
+        ]);
+
+        // Event
+        Event::create([
+            'bay_id' => $bay1->id,
+            'obd' => 5,
+            'cbd' => 3,
+            'obp' => 2,
+            'cbp' => 4,
+            'obr' => 1,
+            'cbr' => 1,
+            'obl' => 0,
+            'cbl' => 0,
+            'obt' => 0,
+            'und' => 0,
+        ]);
+
+        Event::create([
+            'bay_id' => $bay2->id,
+            'obd' => 6,
+            'cbd' => 2,
+            'obp' => 3,
+            'cbp' => 5,
+            'obr' => 1,
+            'cbr' => 2,
+            'obl' => 0,
+            'cbl' => 1,
+            'obt' => 0,
+            'und' => 1,
+        ]);
+
+        Event::create([
+            'bay_id' => $bay3->id,
+            'obd' => 4,
+            'cbd' => 4,
+            'obp' => 2,
+            'cbp' => 3,
+            'obr' => 0,
+            'cbr' => 1,
+            'obl' => 1,
+            'cbl' => 0,
+            'obt' => 0,
+            'und' => 0,
+        ]);
     }
 }

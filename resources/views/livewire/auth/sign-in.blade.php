@@ -5,6 +5,23 @@
             <div class="text-center mb-4">
                 <img src="{{ asset('images/electricians.png') }}" alt="Sign In Image" class="img-fluid">
             </div>
+
+            <!-- Flash Messages -->
+            @if (session('status'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            <!-- End Flash Messages -->
+
             <form wire:submit.prevent="signIn" class="w-100" style="max-width: 400px;">
                 @csrf
                 <div class="form-group">
