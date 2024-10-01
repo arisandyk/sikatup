@@ -1,0 +1,158 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #FCFBE8;
+    color: #333;
+}
+
+.profile-edit-container {
+    max-width: 80%;
+    margin-left: 280px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-lg {
+    padding: 14px 24px;
+    font-size: 18px;
+}
+
+.btn-primary {
+    background-color: #ffff9f;
+    color: #101041;
+    border: none;
+    width: 49%;
+}
+
+.btn-primary:hover {
+    background-color: #dbd401bd; /* Slightly darker on hover */
+    color: #101041;
+}
+
+.btn-secondary {
+    background-color: #ff4f4f;
+    color: white;
+    border: none;
+    width: 49%;
+    margin-left: 1.5%;
+}
+
+.btn-secondary:hover {
+    background-color: #e54343; /* Slightly darker on hover */
+    color: #fff;
+}
+
+.btn-outline-primary {
+    border-color: #101041;
+    color: #101041;
+}
+
+.btn-danger {
+    background-color: #ff4f4f;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #e54343; /* Slightly darker on hover */
+    color: white;
+}
+
+.profile-image-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin-top: 100px;
+    margin-left: 130px;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-input {
+    display: none;
+}
+
+.upload {
+    width: 200px;
+    margin-top: -80px;
+    background-color: #101041;
+    color: #fff;
+}
+
+.upload:hover {
+    background-color: #ffff9f;
+    color: #101041;
+}
+.nav-tabs {
+    margin-bottom: 20px;
+    border: none;
+    margin-top: 40px;
+}
+
+.nav-tabs .nav-item {
+    margin-right: 10px;
+    border: none;
+}
+
+.nav-tabs .nav-link {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #101041;
+    border: 0px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #101041;
+    color: #fff;
+    border-color: #ddd #ddd #fff;
+}

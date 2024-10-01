@@ -1,0 +1,286 @@
+.sidebar {
+    width: 250px;
+    background-color: #101041;
+    color: #FFFFFF;
+    position: fixed;
+    top: 20px;
+    height: 96vh;
+    padding: 20px;
+    left: 20px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border: 0px;
+    border-radius: 20px;
+
+    transition: width 0.3s ease-out;
+    ;
+}
+
+.sidebar-header {
+    text-align: left;
+    margin-bottom: 40px;
+    display: flex;
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #FFF;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .toggle-btn {
+        background: transparent;
+        border: none;
+        color: #FFF;
+        cursor: pointer;
+        font-size: 24px;
+        margin-left: auto;
+    }
+
+    span {
+        margin-right: 10px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+}
+
+.user-info {
+    margin-top: 60px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #FFF;
+
+    span {
+        font-size: 18px;
+        margin: 0;
+        margin-bottom: 0px;
+        margin-left: 10px;
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+}
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    h4 {
+        font-size: 20px;
+    }
+}
+
+.menu li {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+.menu a {
+    color: #FFFFFF;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.menu a i {
+    display: flex;
+    margin-right: 10px;
+}
+
+.menu a:hover,
+.menu a.active {
+    color: #FFF500;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+
+    h4 {
+        font-size: 20px;
+    }
+}
+
+.sidebar-footer a {
+    color: #FFFFFF;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.sidebar-footer a i {
+    margin-right: 10px;
+}
+
+.sidebar-footer a:hover,
+.sidebar-footer a.active {
+    color: #FFF500;
+}
+
+/* Sidebar dalam keadaan menyempit */
+.sidebar.collapsed {
+    width: 80px;
+    transition: width 0.3s ease-in-out;
+}
+
+.sidebar.collapsed .logo span,
+.sidebar.collapsed .user-info span,
+.sidebar.collapsed .menu span,
+.sidebar.collapsed .sidebar-footer h4,
+.sidebar.collapsed .sidebar-footer a span,
+.sidebar.collapsed .menu h4 {
+    display: none;
+}
+
+.sidebar.collapsed .logo img {
+    display: none;
+}
+
+.sidebar.collapsed .toggle-btn {
+    margin: 0 auto;
+}
+
+.sidebar.collapsed .menu a,
+.sidebar.collapsed .sidebar-footer a {
+    justify-content: left;
+    position: static;
+}
+
+.sidebar.collapsed .menu a i,
+.sidebar.collapsed .sidebar-footer a i {
+    margin-right: 0;
+}
+
+.sidebar.collapsed .user-info img {
+    margin: 0 auto;
+}
+
+.sidebar.collapsed .sidebar-footer {
+    text-align: left;
+}
+
+/* Modal Background */
+.logout-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Slightly dark overlay */
+    z-index: 1002;
+}
+
+/* Modal Content */
+.logout-container .modal-content {
+    background-color: #ffffff;
+    border-radius: 20px; /* Smooth, rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+    padding: 2rem;
+    max-width: 400px; /* Centered modal size */
+    width: 100%;
+    text-align: center; /* Center the content */
+    position: relative;
+    height: 200px;
+}
+
+/* Profile Image */
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-top: -70px; /* Pull image upward */
+    border: 4px solid #ffffff; /* Add white border */
+    object-fit: cover; /* Ensure image is fully contained */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Spacing Utilities */
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+/* Action Buttons */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 12px; /* Rounded buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 45%;
+    border: 0px;
+}
+
+/* "No" Button Style */
+.btn-danger {
+    background-color: #ff4f4f; /* Bright red */
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #e54343; /* Slightly darker on hover */
+    color:#ffffff
+}
+
+/* "Yes" Button Style */
+.btn-secondary {
+    background-color: #ffff9f; /* Bright yellow */
+    color: #101041; /* Darker text for contrast */
+}
+
+.btn-secondary:hover {
+    background-color: #dbd401bd; /* Slightly brighter on hover */
+    color: #101041;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+/* Typography Utilities */
+.text-lg {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.font-semibold {
+    font-weight: 600;
+}

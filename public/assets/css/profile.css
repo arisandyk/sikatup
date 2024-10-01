@@ -1,0 +1,230 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #FCFBE8;
+}
+
+.container {
+    margin-top: 50px;
+    padding: 20px;
+    max-width: 85.4%;
+    margin-left: 280px;
+    margin-right: auto;
+}
+
+.profile-header {
+    position: relative;
+    margin-bottom: 30px;
+    margin-top: 20px ;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-background {
+    height: 200px;
+    background: linear-gradient(135deg, #F7E43E 0%,  #FFFDC3 100%);
+    border-radius: 10px 10px 0 0;
+}
+
+.profile-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    
+}
+
+.profile-info {
+    margin-top: 0px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border: 5px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+    background: #fff;
+    margin-top: -90px;
+}
+
+.profile-details h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #101041;
+}
+
+.profile-details p {
+    margin: 5px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.profile-details p span {
+    margin: 0 5px;
+}
+
+.btn-connect {
+    background-color: #101041;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav {
+    margin-top: -10px;
+    border: 0px;
+}
+.nav-tabs .nav-item {
+    margin-right: 10px;
+}
+
+.nav-tabs .nav-link {
+    color: #101041;
+    font-weight: bold;
+    cursor: pointer;
+    :hover {
+        border : 0px;
+    }
+}
+
+.nav-tabs .nav-link.active {
+    color: white;
+    background-color: #101041;
+    border-radius: 5px;
+}
+
+.card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+h4 {
+    margin-bottom: 20px;
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+.list ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.list ul li {
+    margin-bottom: 10px;
+}
+
+.list ul li i {
+    margin-right: 10px;
+    color: #101041; /* Atur warna ikon sesuai kebutuhan */
+}
+
+.timeline {
+    position: relative;
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.timeline ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.timeline ul li {
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline ul li::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline ul li::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 10px;
+    bottom: -10px;
+    width: 2px;
+    background-color: #0001;
+    z-index: 0;
+}
+
+.timeline-content {
+    padding: 10px 20px;
+    background-color: #fff;
+    border: 0px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-content strong {
+    font-size: 16px;
+    color: #101041;
+}
+
+.timeline-content p {
+    margin: 5px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.timeline-content .timeline-date {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 12px;
+    color: #6c757d; /* Abu-abu */
+}
+
+/* Warna lingkaran berdasarkan tipe aktivitas */
+.timeline-item.design::before {
+    background-color: #3498db; /* Blue for design */
+}
+
+.timeline-item.development::before {
+    background-color: #e67e22; /* Orange for development */
+}
+
+.timeline-item.conference::before {
+    background-color: #9b59b6; /* Purple for conference */
+}
+
+.timeline-item.promotion::before {
+    background-color: #2ecc71; /* Green for promotion */
+}
+
+.timeline-item.join::before {
+    background-color: #e74c3c; /* Red for joining */
+}
+
+.about {
+    height: 409px;
+}
