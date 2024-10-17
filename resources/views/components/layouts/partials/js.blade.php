@@ -10,6 +10,7 @@
     <script src="{{ asset('assets/js/reset-password.js') }}"></script>
 @elseif (Route::is('dashboard') ||
         Route::is('users') ||
+        Route::is('devices') ||
         Route::is('alarm') ||
         Route::is('control') ||
         Route::is('location') ||
@@ -21,6 +22,8 @@
         <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     @elseif(Route::is('users'))
         <script src="{{ asset('assets/js/users.js') }}"></script>
+    @elseif(Route::is('devices'))
+        <script src="{{ asset('assets/js/devices.js') }}"></script>
     @elseif(Route::is('alarm'))
         <script src="{{ asset('assets/js/alarm.js') }}"></script>
     @elseif(Route::is('control'))

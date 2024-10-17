@@ -276,9 +276,8 @@ class Users extends Component
 
     public function exportToExcel()
     {
-        $filename = 'users_' . now()->format('YmdHis') . '.xlsx';
-        $users = User::all(); // Mendapatkan semua data pengguna
-        return Excel::download(new UsersExport($users), $filename, \Maatwebsite\Excel\Excel::XLSX);
+        $users = $this->loadUsers(); // This should return the filtered alarms
+        return Excel::download(new UsersExport($users), 'users.xlsx');
     }
 
     public function exportToPDF()

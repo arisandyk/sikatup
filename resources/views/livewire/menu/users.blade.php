@@ -81,57 +81,53 @@
         </div>
     </div>
 
-    <!-- User Table -->
-    <div class="table-container mt-4">
-        <table class="users-table">
-            <thead>
-                <tr>
+    <div class="top-bar">
+        <!-- Filter Dropdowns -->
+        <div class="filter-container">
+            <select wire:model.live="filterRole" class="filter-select">
+                <option value="">Select Role</option>
+                @foreach ($availableRoles as $role)
+                    <option value="{{ $role }}">{{ ucfirst($role) }}</option>
+                @endforeach
+            </select>
+            <select wire:model.live="filterUnitInduk" class="filter-select">
+                <option value="">Select Unit Induk</option>
+                @foreach ($availableUnits as $unit)
+                    <option value="{{ $unit }}">{{ $unit }}</option>
+                @endforeach
+            </select>
+            <select wire:model.live="filterStatus" class="filter-select">
+                <option value="">Select Status</option>
+                @foreach ($availableStatuses as $status)
+                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                @endforeach
+            </select>
+        </div>
 
-                    <div class="row filter-search">
-                        <div class="col-md-4">
-                            <select wire:model.live="filterRole" class="filter-select">
-                                <option value="">Select Role</option>
-                                @foreach ($availableRoles as $role)
-                                    <option value="{{ $role }}">{{ ucfirst($role) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select wire:model.live="filterUnitInduk" class="filter-select">
-                                <option value="">Select Unit Induk</option>
-                                @foreach ($availableUnits as $unit)
-                                    <option value="{{ $unit }}">{{ $unit }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select wire:model.live="filterStatus" class="filter-select">
-                                <option value="">Select Status</option>
-                                @foreach ($availableStatuses as $status)
-                                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <select wire:model.live="perPage" class="per-page-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" wire:model.live.debounce.300ms="search" class="search-box"
-                                placeholder="Search User">
-                        </div>
-                        <livewire:components.export />
-                    </div>
-                </tr>
-                <tr>
+        <!-- Export Button -->
+        <div class="export-button-container">
+            <button class="export-button" onclick="toggleExportDropdown()">Export</button>
+            <div id="exportDropdown" class="dropdown-content" style="display: none;">
+                <button wire:click="exportToExcel" class="export-option">Export to Excel</button>
+                <button wire:click="exportToPDF" class="export-option">Export to PDF</button>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <!-- Search and Per Page Selection -->
+        <div class="table-controls">
+            <input type="text" wire:model.debounce.300ms="search" placeholder="Search..." class="search-input">
+            <select wire:model="perPage" class="per-page-select">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+
+        <table class="custom-table">
+            <thead>
+                <tr class="title-row">
                     <th><input type="checkbox" id="select-all"></th>
                     <th>User</th>
                     <th>Role</th>
@@ -146,7 +142,7 @@
                     <tr>
                         <td><input type="checkbox" class="user-checkbox"></td>
                         <td>
-                            <div class="user-info">
+                            <div class="user-name">
                                 <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="user-avatar">
                                 <span>{{ $user->name }}</span>
                             </div>
@@ -183,14 +179,15 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
 
-    <!-- Pagination -->
-    <div class="pagination-container">
-        {{ $users->links() }}
+        <!-- Pagination -->
+        <div class="pagination-container">
+            {{ $users->links() }}
+        </div>
+        <div class="total-records">
+            Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} records
+        </div>
     </div>
-    <div class="total-records">
-        Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} records
-    </div>
+    <!-- User Table -->
     <livewire:components.delete-user-modal />
 </div>

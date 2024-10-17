@@ -11,6 +11,7 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Menu\Dashboard;
 use App\Livewire\Menu\Users;
 use App\Livewire\Menu\Control;
+use App\Livewire\Menu\Devices;
 use App\Livewire\Menu\Location;
 use App\Livewire\Settings\EditProfile;
 use App\Livewire\Settings\Profile;
@@ -43,5 +44,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::middleware([UserRole::class . ':admin'])->group(function () {
         Route::get('/users', Users::class)->name('users');
+        Route::get('/devices', Devices::class)->name('devices');
     });
 });

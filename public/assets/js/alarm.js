@@ -1,17 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const exportButton = document.querySelector('.export-button');
-    const dropdownContent = document.querySelector('.dropdown-content');
+function toggleExportDropdown() {
+    var dropdown = document.getElementById("exportDropdown");
+    if (dropdown.style.display === "none") {
+        dropdown.style.display = "block";
+    } else {
+        dropdown.style.display = "none";
+    }
+}
 
-    // Toggle dropdown saat tombol Export diklik
-    exportButton.addEventListener('click', function(event) {
-        event.stopPropagation();
-        dropdownContent.classList.toggle('show');
-    });
-
-    // Tutup dropdown saat klik di luar elemen
-    document.addEventListener('click', function(event) {
-        if (!exportButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-            dropdownContent.classList.remove('show');
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.export-button')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.style.display === "block") {
+                openDropdown.style.display = "none";
+            }
         }
-    });
-});
+    }
+}

@@ -82,37 +82,42 @@
             <div class="top-bar">
                 <!-- Filter Dropdowns -->
                 <div class="filter-container">
-                    <select class="filter-select" wire:model.live="selectedLocation" wire:change="loadAlarms">
+                    <select class="filter-select" wire:model="selectedLocation" wire:change="loadAlarms">
                         <option value="">Filter by Location</option>
                         @foreach ($locationsList as $location)
                             <option value="{{ $location->id }}">{{ $location->address }}</option>
                         @endforeach
                     </select>
-                    <select class="filter-select" wire:model.live="selectedDevice" wire:change="loadAlarms">
-                        <option value="">Filter by Device</option>
+                    <select class="filter-select" wire:model="selectedDevice" wire:change="loadAlarms">
+                        <option value="">Filter by Bay</option>
                         @foreach ($devicesList as $device)
                             <option value="{{ $device->id }}">{{ $device->name }}</option>
                         @endforeach
                     </select>
-                    <select class="filter-select" wire:model.live="selectedEvent" wire:change="loadAlarms">
+                    <select class="filter-select" wire:model="selectedEvent" wire:change="loadAlarms">
                         <option value="">Filter by Event</option>
-                        @foreach ($eventTypes as $eventType)
-                            <option value="{{ $eventType->event_type }}">{{ $eventType->event_type }}</option>
-                        @endforeach
+                        <option value="Opened By Device">Opened By Device</option>
+                        <option value="Opened By Protection">Opened By Protection</option>
+                        <option value="Opened By Remote">Opened By Remote</option>
+                        <option value="Opened By Local">Opened By Local</option>
+                        <option value="Opened By Teleporter">Opened By Teleporter</option>
+                        <option value="Close By Device">Close By Device</option>
+                        <option value="Close By Protection">Close By Protection</option>
+                        <option value="Close By Remote">Close By Remote</option>
+                        <option value="Close By Local">Close By Local</option>
+                        <option value="Undefined">Undefined</option>
                     </select>
-
                 </div>
 
                 <!-- Export Button -->
                 <div class="export-button-container">
-                    <button class="export-button">Export</button>
-                    <div class="dropdown-content">
+                    <button class="export-button" onclick="toggleExportDropdown()">Export</button>
+                    <div id="exportDropdown" class="dropdown-content" style="display: none;">
                         <button wire:click="exportToExcel" class="export-option">Export to Excel</button>
                         <button wire:click="exportToPDF" class="export-option">Export to PDF</button>
                     </div>
                 </div>
             </div>
-
 
             <div class="table-container">
                 <!-- Search and Per Page Selection -->
@@ -133,7 +138,8 @@
                         <tr class="title-row">
                             <th>Date Log</th>
                             <th>Location</th>
-                            <th>Device</th>
+                            <th>Gardu Induk</th>
+                            <th>Bay</th>
                             <th>Event</th>
                         </tr>
                     </thead>
@@ -144,6 +150,8 @@
                                     {{ \Carbon\Carbon::parse($alarm->date_log)->format('d-m-Y H:i') }}
                                 </td>
                                 <td class="first-section">{{ $alarm->locations->address ?? 'Unknown Location' }}</td>
+                                <td class="first-section">
+                                    {{ $alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk' }}</td>
                                 <td class="first-section">{{ $alarm->events->bays->name ?? 'Unknown Device' }}</td>
                                 <td class="first-section">{{ $alarm->event_type ?? 'Unknown Event' }}</td>
                             </tr>
@@ -164,7 +172,6 @@
         </div>
     </div>
 
-    <!-- Right Column (md-3) -->
     <!-- Right Column (md-3) -->
     <div class="col-md-3">
         <div class="user-alerts">

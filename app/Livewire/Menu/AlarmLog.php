@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class AlarmLog extends Component
 {
@@ -87,7 +87,7 @@ class AlarmLog extends Component
     }
 
     // Load alarms based on filters
-    private function loadAlarms()
+    public function loadAlarms()
     {
         $query = Alarm::query()
             ->when($this->selectedLocation, function ($q) {
@@ -118,6 +118,7 @@ class AlarmLog extends Component
 
         return $query->paginate($this->perPage);
     }
+
 
     public function render()
     {
@@ -205,16 +206,26 @@ class AlarmLog extends Component
 
     public function exportToExcel()
     {
-        $filename = 'alarms_' . now()->format('YmdHis') . '.xlsx';
-        $export = new AlarmsExport($this->alarms);
-        $export->store($filename);
-
-        return response()->download(storage_path('app/public/' . $filename));
+        $alarms = $this->loadAlarms(); // This should return the filtered alarms
+        return Excel::download(new AlarmsExport($alarms), 'alarms.xlsx');
     }
 
     public function exportToPDF()
     {
-        $pdf = PDF::loadView('exports.alarms_pdf', ['alarms' => $this->alarms]);
+        $alarms = $this->loadAlarms();
+
+        // Ensure UTF-8 encoding for each alarm's data
+        $alarms = $alarms->map(function ($alarm) {
+            return [
+                'date_log' => mb_convert_encoding($alarm->date_log, 'UTF-8', 'UTF-8'),
+                'location' => mb_convert_encoding($alarm->locations->address ?? 'Unknown Location', 'UTF-8', 'UTF-8'),
+                'gardu_induk' => mb_convert_encoding($alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk', 'UTF-8', 'UTF-8'),
+                'bay' => mb_convert_encoding($alarm->events->bays->name ?? 'Unknown Device', 'UTF-8', 'UTF-8'),
+                'event_type' => mb_convert_encoding($alarm->event_type, 'UTF-8', 'UTF-8'),
+            ];
+        });
+
+        $pdf = Pdf::loadView('exports.alarms_pdf', ['alarms' => $alarms]);
         return $pdf->download('alarms.pdf');
     }
 }

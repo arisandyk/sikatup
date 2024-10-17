@@ -14,6 +14,7 @@
     <link href="{{ asset('assets/css/reset-password.css') }}" rel="stylesheet">
 @elseif(Route::is('dashboard') ||
         Route::is('users') ||
+        Route::is('devices') ||
         Route::is('alarm') ||
         Route::is('control') ||
         Route::is('location') ||
@@ -26,6 +27,8 @@
         <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
     @elseif(Route::is('users'))
         <link href="{{ asset('assets/css/users.css') }}" rel="stylesheet">
+    @elseif(Route::is('devices'))
+        <link href="{{ asset('assets/css/device.css') }}" rel="stylesheet">
     @elseif(Route::is('alarm'))
         <link href="{{ asset('assets/css/alarm.css') }}" rel="stylesheet">
     @elseif(Route::is('control'))
