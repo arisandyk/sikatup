@@ -49,7 +49,7 @@ class Dashboard extends Component
             ->take(3)
             ->get();
 
-        $recentAlarms = Alarm::with(['locations', 'events.bays'])
+        $recentAlarms = Alarm::with(['locations', 'controls.bays'])
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();

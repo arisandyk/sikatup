@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000; /* Memastikan header berada di atas elemen lain */
+    z-index: 40; /* Memastikan header berada di atas elemen lain */
     background-color: #FCFBE8; /* Background dengan warna yang diinginkan */
     opacity: 0.9;
 }

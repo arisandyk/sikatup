@@ -76,27 +76,28 @@
             </div>
 
             @if ($recentAlarms->isEmpty())
-            <div class="alert-item">
-                <div class="alert-content">
-                    <p>No alarms found.</p>
-                </div>
-            </div>
-            @else
-            <div class="alert-list">
-                @foreach ($recentAlarms as $alarm)
                 <div class="alert-item">
-                    <span class="alert-icon {{ $alarm->getEventType() === 'open' ? 'green-dot' : ($alarm->getEventType() === 'close' ? 'red-dot' : 'undefined-dot') }}"></span>
                     <div class="alert-content">
-                        <p>{{ $alarm->event_type }}</p>
-                        <small>
-                            {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                            {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
-                        </small>
+                        <p>No alarms found.</p>
                     </div>
-                    <span class="alert-time">{{ $alarm->date_log }}</span>
                 </div>
-                @endforeach
-            </div>
+            @else
+                <div class="alert-list">
+                    @foreach ($recentAlarms as $alarm)
+                        <div class="alert-item">
+                            <span
+                                class="alert-icon {{ $alarm->getEventType() === 'open' ? 'green-dot' : ($alarm->getEventType() === 'close' ? 'red-dot' : 'undefined-dot') }}"></span>
+                            <div class="alert-content">
+                                <p>{{ $alarm->event_type }}</p>
+                                <small>
+                                    {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                                    {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                                </small>
+                            </div>
+                            <span class="alert-time">{{ $alarm->date_log }}</span>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>
@@ -110,23 +111,23 @@
                             <h3>
                                 Trans JBT
                                 @foreach ($breadcrumb as $key => $item)
-                                @if ($key === 0)
-                                <!-- Unit Induk -->
-                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('unitInduk')">->
-                                    {{ $item }}</a>
-                                @elseif ($key === 1)
-                                <!-- App -->
-                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('app')">->
-                                    {{ $item }}</a>
-                                @elseif ($key === 2)
-                                <!-- Basecamp -->
-                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('basecamp')">->
-                                    {{ $item }}</a>
-                                @elseif ($key === 3)
-                                <!-- Gardu Induk -->
-                                <a href="javascript:void(0);" wire:click="breadcrumbSelect('garduInduk')">->
-                                    {{ $item }}</a>
-                                @endif
+                                    @if ($key === 0)
+                                        <!-- Unit Induk -->
+                                        <a href="javascript:void(0);" wire:click="breadcrumbSelect('unitInduk')">->
+                                            {{ $item }}</a>
+                                    @elseif ($key === 1)
+                                        <!-- App -->
+                                        <a href="javascript:void(0);" wire:click="breadcrumbSelect('app')">->
+                                            {{ $item }}</a>
+                                    @elseif ($key === 2)
+                                        <!-- Basecamp -->
+                                        <a href="javascript:void(0);" wire:click="breadcrumbSelect('basecamp')">->
+                                            {{ $item }}</a>
+                                    @elseif ($key === 3)
+                                        <!-- Gardu Induk -->
+                                        <a href="javascript:void(0);" wire:click="breadcrumbSelect('garduInduk')">->
+                                            {{ $item }}</a>
+                                    @endif
                                 @endforeach
                             </h3>
 
@@ -137,7 +138,7 @@
                                 <select class="pill-dropdown" wire:model="selectedUnitInduk" wire:change='$refresh'>
                                     <option value="">Pilih Unit Induk</option>
                                     @foreach ($unitInduks as $unitInduk)
-                                    <option value="{{ $unitInduk->id }}">{{ $unitInduk->name }}</option>
+                                        <option value="{{ $unitInduk->id }}">{{ $unitInduk->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -148,13 +149,13 @@
             <tr>
                 <th rowspan="2">
                     @if ($selectedGarduInduk)
-                    Bay Name
+                        Bay Name
                     @elseif($selectedBasecamp)
-                    Gardu Induk Name
+                        Gardu Induk Name
                     @elseif($selectedApp)
-                    Basecamp Name
+                        Basecamp Name
                     @else
-                    App Name
+                        App Name
                     @endif
                 </th>
                 <th colspan="10">Kejadian Buka-Tutup (Kali)</th>
@@ -178,164 +179,138 @@
         </thead>
         <tbody>
             @if ($currentView === 'apps')
-            @foreach ($apps as $app)
-            <tr>
-                <td class="name">
-                    <a href="javascript:void(0);" wire:click="selectApp({{ $app->id }})">APP
-                        {{ $app->name }}</a>
-                </td>
-                @php
-                $appTotals = collect($app->basecamps)->flatMap(function ($basecamp) {
-                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
-                return collect($garduInduk->bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                });
-                });
-                $lastEvent = $appTotals->last();
-                @endphp
-                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
-                <td class="highlighted">{{ $appTotals->sum($eventType) }}</td>
+                @foreach ($apps as $app)
+                    <tr>
+                        <td class="name">
+                            <a href="javascript:void(0);" wire:click="selectApp({{ $app->id }})">APP
+                                {{ $app->name }}</a>
+                        </td>
+                        @php
+                            $appTotals = collect($app->basecamps)->flatMap(function ($basecamp) {
+                                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
+                                    return collect($garduInduk->bays)->flatMap(function ($bay) {
+                                        return collect($bay->controls);
+                                    });
+                                });
+                            });
+                            $lastControl = $appTotals->last();
+                        @endphp
+                        @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                            <td class="highlighted">{{ $appTotals->sum($eventType) }}</td>
+                        @endforeach
+                        <td class="jumlah">
+                            {{ $appTotals->sum(fn($control) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $control->$type ?? 0)) }}
+                        </td>
+                        <td>{{ $lastControl ? $lastControl->updated_at->format('Y-m-d H:i:s') : '-' }}</td>
+                    </tr>
                 @endforeach
-                <td class="jumlah">
-                    {{ $appTotals->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $event->$type ?? 0)) }}
-                </td>
-                <td>{{ $lastEvent ? $lastEvent->getDateLogAttribute() : '-' }}</td>
-            </tr>
-            @endforeach
             @elseif($currentView === 'basecamps')
-            @foreach ($basecamps as $basecamp)
-            <tr>
-                <td class="name">
-                    <a href="javascript:void(0);" wire:click="selectBasecamp({{ $basecamp->id }})">Basecamp
-                        {{ $basecamp->name }}</a>
-                </td>
-                @php
-                $basecampTotals = collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
-                return collect($garduInduk->bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                });
-                $lastEvent = $basecampTotals->last();
-                @endphp
-                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
-                <td class="highlighted">{{ $basecampTotals->sum($eventType) }}</td>
+                @foreach ($basecamps as $basecamp)
+                    <tr>
+                        <td class="name">
+                            <a href="javascript:void(0);" wire:click="selectBasecamp({{ $basecamp->id }})">Basecamp
+                                {{ $basecamp->name }}</a>
+                        </td>
+                        @php
+                            $basecampTotals = collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
+                                return collect($garduInduk->bays)->flatMap(function ($bay) {
+                                    return collect($bay->controls);
+                                });
+                            });
+                            $lastControl = $basecampTotals->last();
+                        @endphp
+                        @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                            <td class="highlighted">{{ $basecampTotals->sum($eventType) }}</td>
+                        @endforeach
+                        <td class="jumlah">
+                            {{ $basecampTotals->sum(fn($control) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $control->$type ?? 0)) }}
+                        </td>
+                        <td>{{ $lastControl ? $lastControl->updated_at->format('Y-m-d H:i:s') : '-' }}</td>
+                    </tr>
                 @endforeach
-                <td class="jumlah">
-                    {{ $basecampTotals->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $event->$type ?? 0)) }}
-                </td>
-                <td>{{ $lastEvent ? $lastEvent->getDateLogAttribute() : '-' }}</td>
-            </tr>
-            @endforeach
             @elseif($currentView === 'gardu_induks')
-            @foreach ($garduInduks as $garduInduk)
-            <tr>
-                <td class="name">
-                    <a href="javascript:void(0);" wire:click="selectGarduInduk({{ $garduInduk->id }})">Gardu
-                        Induk {{ $garduInduk->name }}</a>
-                </td>
-                @php
-                $garduIndukTotals = collect($garduInduk->bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                $lastEvent = $garduIndukTotals->last();
-                @endphp
-                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
-                <td class="highlighted">{{ $garduIndukTotals->sum($eventType) }}</td>
+                @foreach ($garduInduks as $garduInduk)
+                    <tr>
+                        <td class="name">
+                            <a href="javascript:void(0);" wire:click="selectGarduInduk({{ $garduInduk->id }})">Gardu
+                                Induk {{ $garduInduk->name }}</a>
+                        </td>
+                        @php
+                            $garduIndukTotals = collect($garduInduk->bays)->flatMap(function ($bay) {
+                                return collect($bay->controls);
+                            });
+                            $lastControl = $garduIndukTotals->last();
+                        @endphp
+                        @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                            <td class="highlighted">{{ $garduIndukTotals->sum($eventType) }}</td>
+                        @endforeach
+                        <td class="jumlah">
+                            {{ $garduIndukTotals->sum(fn($control) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $control->$type ?? 0)) }}
+                        </td>
+                        <td>{{ $lastControl ? $lastControl->updated_at->format('Y-m-d H:i:s') : '-' }}</td>
+                    </tr>
                 @endforeach
-                <td class="jumlah">
-                    {{ $garduIndukTotals->sum(fn($event) => collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($type) => $event->$type ?? 0)) }}
-                </td>
-                <td>{{ $lastEvent ? $lastEvent->getDateLogAttribute() : '-' }}</td>
-            </tr>
-            @endforeach
             @elseif($currentView === 'bays')
-            @foreach ($bays as $bay)
-            @php
-            $latestEvent = $bay->events->last();
-            @endphp
-            <tr>
-                <td>{{ $bay->name }}</td>
-                @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
-                <td class="{{ $latestEvent && $latestEvent->$eventType ? 'highlighted' : '' }}">
-                    {{ $latestEvent->$eventType ?? 0 }}
-                </td>
+                @foreach ($bays as $bay)
+                    @php
+                        $latestControl = $bay->controls->last();
+                    @endphp
+                    <tr>
+                        <td>{{ $bay->name }}</td>
+                        @foreach (['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'] as $eventType)
+                            <td class="{{ $latestControl && $latestControl->$eventType ? 'highlighted' : '' }}">
+                                {{ $latestControl->$eventType ?? 0 }}
+                            </td>
+                        @endforeach
+                        <td class="jumlah">
+                            {{ collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($eventType) => $latestControl->$eventType ?? 0) }}
+                        </td>
+                        <td>{{ $latestControl ? $latestControl->updated_at->format('Y-m-d H:i:s') : '-' }}</td>
+                    </tr>
                 @endforeach
-                <td class="jumlah">
-                    {{ collect(['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'])->sum(fn($eventType) => $latestEvent->$eventType ?? 0) }}
-                </td>
-                <td>{{ $latestEvent ? $latestEvent->getDateLogAttribute() : '-' }}</td>
-                <td>
-                    <button class="btn btn-sm btn-warning" wire:click="resetEvent({{ $latestEvent->id }})">Reset</button>
-                </td>
-                <td>
-                    {{ $latestEvent && $latestEvent->reset_by ? App\Models\User::find($latestEvent->reset_by)->name : '-' }}
-                </td>        
-            </tr>
-            @endforeach
             @endif
             <tr class="total-row">
                 <td>Total</td>
                 @php
-                $totals = [
-                'obd' => 0,
-                'cbd' => 0,
-                'obp' => 0,
-                'cbp' => 0,
-                'obr' => 0,
-                'cbr' => 0,
-                'obl' => 0,
-                'cbl' => 0,
-                'obt' => 0,
-                'und' => 0,
-                ];
-                $eventsCollection = collect();
-
-                if ($currentView === 'apps') {
-                $eventsCollection = collect($apps)->flatMap(function ($app) {
-                return collect($app->basecamps)->flatMap(function ($basecamp) {
-                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
-                return collect($garduInduk->bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                });
-                });
-                });
-                } elseif ($currentView === 'basecamps') {
-                $eventsCollection = collect($basecamps)->flatMap(function ($basecamp) {
-                return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
-                return collect($garduInduk->bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                });
-                });
-                } elseif ($currentView === 'gardu_induks') {
-                $eventsCollection = collect($garduInduks)->flatMap(function ($garduInduk) {
-                return collect($garduInduk->bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                });
-                } elseif ($currentView === 'bays') {
-                $eventsCollection = collect($bays)->flatMap(function ($bay) {
-                return collect($bay->events);
-                });
-                }
-
-                foreach ($eventsCollection as $event) {
-                foreach (array_keys($totals) as $key) {
-                $totals[$key] += $event->$key ?? 0;
-                }
-                }
+                    $totals = [
+                        'obd' => 0,
+                        'cbd' => 0,
+                        'obp' => 0,
+                        'cbp' => 0,
+                        'obr' => 0,
+                        'cbr' => 0,
+                        'obl' => 0,
+                        'cbl' => 0,
+                        'obt' => 0,
+                        'und' => 0,
+                    ];
+                    $controlsCollection = collect();
+            
+                    if ($currentView === 'apps') {
+                        $controlsCollection = collect($apps)->flatMap(fn($app) => $app->basecamps->flatMap(fn($basecamp) => $basecamp->gardu_induks->flatMap(fn($gi) => $gi->bays->flatMap(fn($bay) => $bay->controls))));
+                    } elseif ($currentView === 'basecamps') {
+                        $controlsCollection = collect($basecamps)->flatMap(fn($basecamp) => $basecamp->gardu_induks->flatMap(fn($gi) => $gi->bays->flatMap(fn($bay) => $bay->controls)));
+                    } elseif ($currentView === 'gardu_induks') {
+                        $controlsCollection = collect($garduInduks)->flatMap(fn($gi) => $gi->bays->flatMap(fn($bay) => $bay->controls));
+                    } elseif ($currentView === 'bays') {
+                        $controlsCollection = collect($bays)->flatMap(fn($bay) => $bay->controls);
+                    }
+            
+                    foreach ($controlsCollection as $control) {
+                        foreach (array_keys($totals) as $key) {
+                            $totals[$key] += $control->$key ?? 0;
+                        }
+                    }
                 @endphp
-
+            
                 @foreach ($totals as $total)
-                <td>{{ $total }}</td>
+                    <td>{{ $total }}</td>
                 @endforeach
                 <td class="total-jumlah">{{ array_sum($totals) }}</td>
                 <td></td>
                 <td></td>
                 <td></td>
-            </tr>
+            </tr>            
         </tbody>
     </table>
 

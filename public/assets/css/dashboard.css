@@ -10,7 +10,7 @@ body {
     background-color: #FCFBE8;
     min-height: 100vh;
     margin-top: 70px;
-    margin-right: 340px;
+    /* margin-right: 340px; */
     max-width: 100%;
 }
 
@@ -157,7 +157,7 @@ body {
     /* border-left: solid 1px rgba(0,0,0,0.25); */
 }
 
-.col-md-9 {
+.col-md-12 {
     width: 100%;
 }
 

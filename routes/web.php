@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\AlarmTriggered;
 use App\Http\Middleware\UserRole;
 use App\Livewire\Auth\RequestPasswordReset;
 use App\Livewire\Menu\AlarmLog;
@@ -15,6 +16,7 @@ use App\Livewire\Menu\Devices;
 use App\Livewire\Menu\Location;
 use App\Livewire\Settings\EditProfile;
 use App\Livewire\Settings\Profile;
+use App\Models\Alarm;
 
 Route::get('/', SignIn::class)->name('sign-in');
 
@@ -45,5 +47,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware([UserRole::class . ':admin'])->group(function () {
         Route::get('/users', Users::class)->name('users');
         Route::get('/devices', Devices::class)->name('devices');
+    });
+
+    Route::post('/send', function() {
+        $alarm = Alarm::withTrashed()->where('deleted_at', null)->first();
+    
+        if ($alarm) {
+            event(new AlarmTriggered($alarm));
+            return response()->json(['message' => 'Message has been send'], 200);
+        } else {
+            return response()->json(['error' => 'No active alarm found'], 404);
+        }
     });
 });

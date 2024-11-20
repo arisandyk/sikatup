@@ -90,8 +90,8 @@
                             <div class="alert-content">
                                 <p>{{ $alarm->event_type }}</p>
                                 <small>
-                                    {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                                    {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                                    {{ $alarm->controls->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                                    {{ $alarm->controls->bays->name ?? 'Unknown Bay' }}
                                 </small>
                             </div>
                             <span class="alert-time">{{ $alarm->date_log }}</span>
@@ -162,7 +162,7 @@
                             $appTotals = collect($app->basecamps)->flatMap(function ($basecamp) {
                                 return collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
                                     return collect($garduInduk->bays)->flatMap(function ($bay) {
-                                        return collect($bay->events);
+                                        return collect($bay->controls);
                                     });
                                 });
                             });
@@ -187,7 +187,7 @@
                         @php
                             $basecampTotals = collect($basecamp->gardu_induks)->flatMap(function ($garduInduk) {
                                 return collect($garduInduk->bays)->flatMap(function ($bay) {
-                                    return collect($bay->events);
+                                    return collect($bay->controls);
                                 });
                             });
                             $lastEvent = $basecampTotals->last();
@@ -210,7 +210,7 @@
                         </td>
                         @php
                             $garduIndukTotals = collect($garduInduk->bays)->flatMap(function ($bay) {
-                                return collect($bay->events);
+                                return collect($bay->controls);
                             });
                             $lastEvent = $garduIndukTotals->last();
                         @endphp
@@ -226,7 +226,7 @@
             @elseif($currentView === 'bays')
                 @foreach ($bays as $bay)
                     @php
-                        $latestEvent = $bay->events->last();
+                        $latestEvent = $bay->controls->last();
                     @endphp
                     <tr>
                         <td>{{ $bay->name }}</td>

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use App\Models\Alarm;
@@ -7,6 +8,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -23,6 +25,8 @@ class AlarmTriggered implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('alarms');
+        return [
+            new Channel('channel-reverb')
+        ];
     }
 }

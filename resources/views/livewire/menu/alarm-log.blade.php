@@ -152,7 +152,7 @@
                                 <td class="first-section">{{ $alarm->locations->address ?? 'Unknown Location' }}</td>
                                 <td class="first-section">
                                     {{ $alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk' }}</td>
-                                <td class="first-section">{{ $alarm->events->bays->name ?? 'Unknown Device' }}</td>
+                                <td class="first-section">{{ $alarm->controls->bays->name ?? 'Unknown Device' }}</td>
                                 <td class="first-section">{{ $alarm->event_type ?? 'Unknown Event' }}</td>
                             </tr>
                         @endforeach
@@ -174,7 +174,7 @@
 
     <!-- Right Column (md-3) -->
     <div class="col-md-3">
-        <div class="user-alerts">
+        {{-- <div class="user-alerts">
             @if (Auth::user()->role == 'admin')
                 <!-- Requests Section -->
                 <div class="section-header">
@@ -243,9 +243,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-
+        </div> --}}
+        
         <!-- Alerts Section -->
         <div class="section-header">
             <h3>Alert</h3>
@@ -267,8 +266,8 @@
                         <div class="alert-content">
                             <p>{{ $alarm->event_type }}</p>
                             <small>
-                                {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                                {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                                {{ $alarm->controls->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                                {{ $alarm->controls->bays->name ?? 'Unknown Bay' }}
                             </small>
                         </div>
                         <span class="alert-time">{{ $alarm->date_log }}</span>

@@ -42,7 +42,7 @@ class AlarmLog extends Component
 
     public function mount()
     {
-        $this->title = 'Alarm';
+        $this->title = 'Alert';
 
         // Load all locations, devices, and event types at the start
         $this->locationsList = Location::all();
@@ -96,7 +96,7 @@ class AlarmLog extends Component
                 });
             })
             ->when($this->selectedDevice, function ($q) {
-                $q->whereHas('events.bays', function ($subq) {
+                $q->whereHas('controls.bays', function ($subq) {
                     $subq->where('id', $this->selectedDevice);
                 });
             })
@@ -109,7 +109,7 @@ class AlarmLog extends Component
                         ->orWhereHas('locations', function ($locationq) {
                             $locationq->where('address', 'like', '%' . $this->search . '%');
                         })
-                        ->orWhereHas('events.bays', function ($bayq) {
+                        ->orWhereHas('controls.bays', function ($bayq) {
                             $bayq->where('name', 'like', '%' . $this->search . '%');
                         });
                 });
@@ -143,7 +143,7 @@ class AlarmLog extends Component
         // Get recent pending users and alarms
         $pendingUsers = User::where('account_status', 'pending')->get();
         $recentPendingUsers = User::where('account_status', 'pending')->orderBy('created_at', 'asc')->take(3)->get();
-        $recentAlarms = Alarm::with(['locations', 'events.bays'])->orderBy('created_at', 'desc')->take(4)->get();
+        $recentAlarms = Alarm::with(['locations', 'controls.bays'])->orderBy('created_at', 'desc')->take(4)->get();
 
         return view('livewire.menu.alarm-log', [
             'alarms' => $this->alarms,
@@ -220,7 +220,7 @@ class AlarmLog extends Component
                 'date_log' => mb_convert_encoding($alarm->date_log, 'UTF-8', 'UTF-8'),
                 'location' => mb_convert_encoding($alarm->locations->address ?? 'Unknown Location', 'UTF-8', 'UTF-8'),
                 'gardu_induk' => mb_convert_encoding($alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk', 'UTF-8', 'UTF-8'),
-                'bay' => mb_convert_encoding($alarm->events->bays->name ?? 'Unknown Device', 'UTF-8', 'UTF-8'),
+                'bay' => mb_convert_encoding($alarm->controls->bays->name ?? 'Unknown Device', 'UTF-8', 'UTF-8'),
                 'event_type' => mb_convert_encoding($alarm->event_type, 'UTF-8', 'UTF-8'),
             ];
         });

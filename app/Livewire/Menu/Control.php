@@ -35,7 +35,23 @@ class Control extends Component
     public function mount()
     {
         $this->title = 'Control';
-        $this->unitInduks = UnitInduk::all();
+
+        if (auth()->user()->role === 'admin') {
+            $this->unitInduks = UnitInduk::all(); // Admin bisa melihat semua data
+        } else {
+            $this->unitInduks = UnitInduk::whereHas('apps.basecamps.gardu_induks', function ($query) {
+                $query->where('name', 'LIKE', '%' . $this->getGarduIndukFromWorkplace() . '%');
+            })->get();
+        }
+    }
+    private function getGarduIndukFromWorkplace()
+    {
+        $workplace = auth()->user()->current_workplace;
+        if ($workplace) {
+            $parts = explode(',', $workplace);
+            return trim(end($parts)); // Mengambil nama Gardu Induk terakhir dari string
+        }
+        return null;
     }
 
     public function updatedSelectedUnitInduk()
@@ -54,7 +70,7 @@ class Control extends Component
     public function fetchApps()
     {
         // Pastikan data yang difilter hanya diambil jika selectedUnitInduk telah dipilih
-        $this->apps = App::with(['basecamps.gardu_induks.bays.events'])
+        $this->apps = App::with(['basecamps.gardu_induks.bays.controls'])
             ->when($this->selectedUnitInduk !== 'Pilih' && $this->selectedUnitInduk != null, function ($query) {
                 $query->where('unit_id', $this->selectedUnitInduk);
             })
@@ -76,7 +92,16 @@ class Control extends Component
     {
         $this->selectedBasecamp = $basecampId;
         $this->reset(['selectedGarduInduk', 'garduInduks', 'bays']);
-        $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)->with('bays.events')->get();
+
+        if (auth()->user()->role === 'admin') {
+            $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)->with('bays.events')->get();
+        } else {
+            $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)
+                ->where('name', $this->getGarduIndukFromWorkplace())
+                ->with('bays.events')
+                ->get();
+        }
+
         $this->currentView = 'gardu_induks';
         $this->updateBreadcrumb();
     }
@@ -84,7 +109,9 @@ class Control extends Component
     public function selectGarduInduk($garduIndukId)
     {
         $this->selectedGarduInduk = $garduIndukId;
-        $this->bays = Bay::where('gi_id', $garduIndukId)->with('events')->get();
+
+        $this->bays = Bay::where('gi_id', $garduIndukId)->with('controls')->get();
+
         $this->currentView = 'bays';
         $this->updateBreadcrumb();
     }

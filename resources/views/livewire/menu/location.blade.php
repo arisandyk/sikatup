@@ -1,7 +1,7 @@
 <div class="dashboard-container">
     <div class="row">
         <!-- Left Column (md-9) -->
-        <div class="col-md-9">
+        <div class="col-12">
             <div class="dashboard-cards">
                 <div class="dashboard-card">
                     <div class="card-info">
@@ -124,7 +124,7 @@
         </div>
 
         <!-- Right Column (md-3) -->
-        <div class="col-md-3">
+        {{-- <div class="col-md-3">
             <div class="user-alerts">
                 @if (Auth::user()->role == 'admin')
                     <!-- Requests Section -->
@@ -218,8 +218,8 @@
                             <div class="alert-content">
                                 <p>{{ $alarm->event_type }}</p>
                                 <small>
-                                    {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                                    {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                                    {{ $alarm->controls->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                                    {{ $alarm->controls->bays->name ?? 'Unknown Bay' }}
                                 </small>
                             </div>
                             <span class="alert-time">{{ $alarm->date_log }}</span>
@@ -228,7 +228,7 @@
                 </div>
             @endif
 
-        </div>
+        </div> --}}
 
     </div>
 </div>

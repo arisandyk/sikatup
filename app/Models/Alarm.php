@@ -33,9 +33,9 @@ class Alarm extends Model
         return $this->belongsTo(Location::class, 'location_id');
     }
 
-    public function events()
+    public function controls()
     {
-        return $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Control::class, 'control_id');
     }
 
     public function getEventType()

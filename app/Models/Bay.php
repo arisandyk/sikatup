@@ -55,4 +55,9 @@ class Bay extends Model
     {
         return $this->hasMany(Event::class, 'bay_id', 'id');
     }
+
+    public function controls()
+    {
+        return $this->hasMany(Control::class, 'bay_id', 'id');
+    }
 }
