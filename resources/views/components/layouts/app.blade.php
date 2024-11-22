@@ -43,15 +43,12 @@
     @if (in_array(Route::currentRouteName(), $routesWithSidebarAndHeader))
         @include('components.layouts.partials.sidebar')
         @include('components.layouts.partials.header', ['title' => $title ?? 'Default Title'])
-        {{-- <livewire:components.alarm-notifier  /> --}}
     @endif
 
     <div id="alert"
-        class="w-full h-screen bg-black/50 overflow-hidden absolute top-0 left-0 z-50 hidden justify-center items-center">
-        <div class="max-w-lg w-full bg-white rounded-lg p-4">
-            <div>
-                <button id="shut-button">Ok</button>
-            </div>
+        class="w-full h-screen bg-black/50 overflow-hidden fixed top-0 z-50 hidden justify-center items-center p-4">
+        <div class="max-w-screen-xl w-full">
+            <livewire:components.alarm-notifier />
         </div>
     </div>
 
@@ -68,7 +65,7 @@
         function monitorAlert() {
             const alertElement = document.getElementById('alert');
             let interval;
-            let previousAlertId = JSON.parse(localStorage.getItem('alert'))?.alarm?.id || null;
+            let previousAlert = JSON.parse(localStorage.getItem('alert')) || null;
 
             const sound = (voice) => {
                 const howlSound = new Howl({
@@ -109,28 +106,116 @@
                 }
             }
 
+            async function shutAlert(id) {
+                try {
+                    const response = await fetch(`{{ url('/alarm/${id}') }}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch alert')
+                    } else {
+                        notify("Alarm shut successfully", "{{ url('/alarm') }}")
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+
             window.onload = () => {
                 const channel = Echo.channel('channel-reverb');
                 channel.listen("AlarmTriggered", (data) => handleAlert(data.alarm));
             };
 
+            function notify(message, targetURL, alertSound = null) {
+                if (!Notification) {
+                    alert('Browser kamu belum mendukung web notifikasi.');
+                    return;
+                }
+
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission();
+                } else {
+                    var notifikasi = new Notification("{{ url('/') }}", {
+                        body: message,
+                    });
+
+                    if (alertSound) alertSound.play()
+
+                    notifikasi.onclick = function() {
+                        window.open(targetURL);
+                    };
+                    setTimeout(function() {
+                        notifikasi.close();
+                    }, 10000);
+                }
+            }
+
             function handleAlert(alertData) {
-                if (alertData.id !== previousAlertId) {
-                    previousAlertId = alertData.id;
+                if (alertData.id !== previousAlert.id || alertData.deleted_at == null && previousAlert.deleted_at == null) {
+                    previousAlert = alertData;
                     localStorage.setItem('alert', JSON.stringify({
                         alarm: alertData
                     }));
 
                     const alertSound = sound(alertData.voice);
                     alertUI.show();
-                    alertSound.play();
+                    // alertSound.play();
 
-                    document.getElementById('shut-button').onclick = (e) => {
-                        e.preventDefault();
-                        alertUI.hide();
-                        alertSound.stop();
-                        interval = setInterval(checkAlert, 5000);
-                    };
+                    notify(`New event detected from bays ${alertData.event.bays.name}`, "{{ url('/alarm') }}", alertSound)
+
+                    Livewire.dispatch('new-alarm', {
+                        data: alertData
+                    });
+
+
+                    let holdTimeout;
+
+                    document.body.addEventListener('mousedown', function(e) {
+                        if (e.target && e.target.id === 'shut-button') {
+                            e.preventDefault();
+
+                            holdTimeout = setTimeout(() => {
+                                shutAlert(alertData.id);
+                                alertUI.hide();
+                                alertSound.stop();
+                                interval = setInterval(checkAlert, 5000);
+                            }, 3000);
+                        }
+                    });
+
+                    document.body.addEventListener('mouseup', function(e) {
+                        if (e.target && e.target.id === 'shut-button') {
+                            clearTimeout(holdTimeout);
+                        }
+                    });
+
+                    document.body.addEventListener('mouseleave', function(e) {
+                        if (e.target && e.target.id === 'shut-button') {
+                            clearTimeout(holdTimeout);
+                        }
+                    });
+
+                    document.body.addEventListener('touchstart', function(e) {
+                        if (e.target && e.target.id === 'shut-button') {
+                            e.preventDefault();
+
+                            holdTimeout = setTimeout(() => {
+                                shutAlert(alertData.id);
+                                alertUI.hide();
+                                alertSound.stop();
+                                interval = setInterval(checkAlert, 5000);
+                            }, 3000);
+                        }
+                    });
+
+                    document.body.addEventListener('touchend', function(e) {
+                        if (e.target && e.target.id === 'shut-button') {
+                            clearTimeout(holdTimeout);
+                        }
+                    });
                 } else {
                     console.log('No new alert');
                 }

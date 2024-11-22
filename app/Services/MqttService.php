@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-// use PhpMqtt\Client\MqttClient;
-// use App\Models\Event;
-// use App\Models\Control;
-// use App\Models\Alarm;
-// use App\Models\Bay;
-// use Illuminate\Support\Facades\Log;
-// use App\Events\AlarmTriggered;
+use App\Models\Event;
+use App\Models\Control;
+use App\Models\Alarm;
+use App\Models\Bay;
+use Illuminate\Support\Facades\Log;
+use App\Events\AlarmTriggered;
+use PhpMqtt\Client\MqttClient;
 
 class MqttService
 {
@@ -118,8 +118,6 @@ class MqttService
     //     if ($isNewData) {
     //         $control->save();
     //         Log::info('Control updated successfully', ['data' => $control->toArray()]);
-
-    //         $this->playAlarmForEvent($data);
     //     }
     // }
 
@@ -150,6 +148,8 @@ class MqttService
     //                 $alarm->save();
 
     //                 Log::info("Alarm created for event type: {$description}", ['alarm' => $alarm->toArray()]);
+
+    //                 event(new AlarmTriggered($alarm));
     //             } catch (\Exception $e) {
     //                 Log::error("Failed to create alarm for event {$event->id}", [
     //                     'error' => $e->getMessage(),
@@ -158,18 +158,6 @@ class MqttService
     //                 ]);
     //             }
     //         }
-    //     }
-    // }
-
-    // protected function playAlarmForEvent(array $data)
-    // {
-    //     $soundMapping = $this->getAlarmSoundForEvent(array_keys(array_filter($data, fn($value) => $value == 1))[0]);
-    
-    //     if ($soundMapping) {
-    //         Log::info('Playing alarm sound', ['sound' => $soundMapping]);
-    
-    //         // Dispatch event
-    //         event(new AlarmTriggered(['voice' => $soundMapping]));
     //     }
     // }
 

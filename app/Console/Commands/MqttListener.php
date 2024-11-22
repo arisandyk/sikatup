@@ -31,5 +31,6 @@ class MqttListener extends Command
         }
 
         Log::info('MQTT listener stopped.');
+        
     }
 }

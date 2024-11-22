@@ -50,13 +50,24 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::post('/send', function() {
-        $alarm = Alarm::withTrashed()->where('deleted_at', null)->first();
+        $alarm = Alarm::withTrashed()->with('event.bays.trafos', 'locations.gardu_induks.basecamps.apps.unitInduk.direktorat')->where('deleted_at', null)->first();
     
         if ($alarm) {
             event(new AlarmTriggered($alarm));
             return response()->json(['message' => 'Message has been send'], 200);
         } else {
             return response()->json(['error' => 'No active alarm found'], 404);
+        }
+    });
+
+    Route::delete('/alarm/{id}', function($id) {
+        try {
+            $alarm = Alarm::findOrFail($id);
+            $alarm->delete();
+
+            return response()->json(['message' => 'Message has been send'], 200);
+        } catch(Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     });
 });

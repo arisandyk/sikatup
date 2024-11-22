@@ -12,9 +12,9 @@ class Alarm extends Model
 
     protected $table = 'alarms';
 
-    protected $fillable = ['date_log', 'location_id', 'event_id', 'event_type', 'voice'];
+    protected $guarded = ['id'];
 
-    protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
+    // protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
     protected $dates = ['date_log'];
 
@@ -36,6 +36,11 @@ class Alarm extends Model
     public function controls()
     {
         return $this->belongsTo(Control::class, 'control_id');
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
     }
 
     public function getEventType()
