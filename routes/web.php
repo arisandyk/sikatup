@@ -62,7 +62,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::delete('/alarm/{id}', function($id) {
         try {
-            $alarm = Alarm::findOrFail($id);
+            $alarm = Alarm::find($id);
             $alarm->delete();
 
             return response()->json(['message' => 'Message has been send'], 200);

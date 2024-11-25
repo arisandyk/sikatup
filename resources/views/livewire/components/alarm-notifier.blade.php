@@ -37,14 +37,14 @@
                     </div>
 
                     <div class="w-full">
-                        <button id="shut-button" class="w-full bg-[#101040] rounded-lg text-white py-[12px] px-[25px] text-[16px] relative bottom-0 mb-2 over:bg-violet-600 active:bg-black focus:outline-none focus:ring focus:ring-gray-300 transition-all">Shut Alarm</button>
+                        <button id="shut-button" class="w-full bg-[#101040] rounded-lg text-white py-[12px] px-[25px] text-[16px] relative bottom-0 mb-2 over:bg-violet-600 active:bg-black focus:outline-none focus:ring focus:ring-gray-300 transition-all active:scale-105">Shut Alarm</button>
                         <span>Click and hold button for 3 seconds</span>
                     </div>
                 </div>
 
                 <!-- Location Information -->
                 <div
-                    class="rounded-xl p-4 pt-8 text-base leading-7 shadow bg-white">
+                    class="rounded-xl p-4 pt-8 text-base leading-7 drop-shadow-xl bg-white">
                     <div class="overflow-x-auto">
                         <h3 class="text-xl font-semibold mb-4">Location Detail</h3>
                         <table class="min-w-full bg-white border border-gray-200 rounded-lg">
