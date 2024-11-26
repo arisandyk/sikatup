@@ -90,8 +90,8 @@
                             <div class="alert-content">
                                 <p>{{ $alarm->event_type }}</p>
                                 <small>
-                                    {{ $alarm->events->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                                    {{ $alarm->events->bays->name ?? 'Unknown Bay' }}
+                                    {{ $alarm->controls->bays->gardu_induks->name ?? 'Unknown Induk' }} •
+                                    {{ $alarm->controls->bays->name ?? 'Unknown Bay' }}
                                 </small>
                             </div>
                             <span class="alert-time">{{ $alarm->date_log }}</span>
@@ -107,7 +107,7 @@
             <tr class="title-row">
                 <th colspan="16" id="title">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <h3>
                                 Trans JBT
                                 @foreach ($breadcrumb as $key => $item)
@@ -132,7 +132,7 @@
                             </h3>
 
                         </div>
-                        <div class="col-md-5 text-right flex-end">
+                        <div class="col-md-6 text-right flex-end">
                             <div class="filter-pill">
                                 <button class="pill-button">Unit Induk:</button>
                                 <select class="pill-dropdown" wire:model="selectedUnitInduk" wire:change='$refresh'>

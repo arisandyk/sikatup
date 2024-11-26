@@ -1,103 +1,87 @@
-<div class="dashboard-container">
+<div class="mt-36 p-4 lg:ml-[280px]">
     @if (session()->has('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
     @endif
-    <div class="row">
-        <!-- Left Column (md-9) -->
-        <div class="col-12">
-            
-                <div class="dashboard-cards">
-                    <div class="dashboard-card">
-                        <div class="card-info">
-                            <h3>Users</h3>
-                            <h2>{{ $totalUsers }} <span class="percentage">({{ $totalUsersPercentage }})</span></h2>
-                            <p>Total Users</p>
-                        </div>
-                        <div class="card-icon">
-                            <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-users">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
-                                </svg></i>
-                        </div>
-                    </div>
-                    <div class="dashboard-card">
-                        <div class="card-info">
-                            <h3>Devices</h3>
-                            <h2>{{ $devices }} <span class="percentage">({{ $devicesPercentage }})</span></h2>
-                            <p>Total Devices</p>
-                        </div>
-                        <div class="card-icon">
-                            <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-devices">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" />
-                                    <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" />
-                                    <path d="M16 9h2" />
-                                </svg></i>
-                        </div>
-                    </div>
-                    <div class="dashboard-card">
-                        <div class="card-info">
-                            <h3>Locations</h3>
-                            <h2>{{ $locations }} <span class="percentage">({{ $locationsPercentage }})</span></h2>
-                            <p>Total Places</p>
-                        </div>
-                        <div class="card-icon">
-                            <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                    <path
-                                        d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                                </svg></i>
-                        </div>
-                    </div>
-                    <div class="dashboard-card">
-                        <div class="card-info">
-                            <h3>Alarm Log</h3>
-                            <h2>{{ $alarms }} <span class="percentage">({{ $alarmsPercentage }})</span></h2>
-                            <p>A day ago</p>
-                        </div>
-                        <div class="card-icon">
-                            <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-urgent">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M8 16v-4a4 4 0 0 1 8 0v4" />
-                                    <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
-                                    <path
-                                        d="M6 16m0 1a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1z" />
-                                </svg></i>
-                        </div>
-                    </div>
-                </div>
-        
-            <div class="diagram">
-                <img src="{{ asset('images/schematic.png') }}" alt="Schematic Diagram">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+            class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
+            <div class="flex flex-col items-start gap-3">
+                <h3 class="text-lg m-0 text-[#7A7A7A]">Users</h3>
+                <h2 class="text-2xl m-0 text-secondary">{{ $totalUsers }} <span
+                        class="text-green-500 text-sm ml-1">({{ $totalUsersPercentage }})</span></h2>
+                <p class="text-sm m-0 text-[#7A7A7A]">Total Users</p>
             </div>
-            <div class="map">
-                <h2>Location</h2>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509375!2d144.95373631531744!3d-37.81627997975183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5773c1c3b00b0f!2sDocklands%2C%20VIC%203008%2C%20Australia!5e0!3m2!1sen!2sus!4v1633016171237!5m2!1sen!2sus"
-                    allowfullscreen></iframe>
+            <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#e9e3ff]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-7 stroke-secondary">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                </svg>
             </div>
         </div>
+        <div
+            class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
+            <div class="flex flex-col items-start gap-3">
+                <h3 class="text-lg m-0 text-[#7A7A7A]">Devices</h3>
+                <h2 class="text-2xl m-0 text-secondary">{{ $devices }} <span
+                        class="percentage">({{ $devicesPercentage }})</span></h2>
+                <p class="text-sm m-0 text-[#7A7A7A]">Total Devices</p>
+            </div>
+            <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#ffdede]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-7 stroke-secondary">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10.5 19.5h3m-6.75 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-15a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 4.5v15a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+            </div>
+        </div>
+        <div
+            class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
+            <div class="flex flex-col items-start gap-3">
+                <h3 class="text-lg m-0 text-[#7A7A7A]">Locations</h3>
+                <h2 class="text-2xl m-0 text-secondary">{{ $locations }} <span
+                        class="percentage">({{ $locationsPercentage }})</span></h2>
+                <p class="text-sm m-0 text-[#7A7A7A]">Total Places</p>
+            </div>
+            <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#cef5de]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 stroke-secondary">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                  </svg>
+                  
+            </div>
+        </div>
+        <div
+            class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
+            <div class="flex flex-col items-start gap-3">
+                <h3 class="text-lg m-0 text-[#7A7A7A]">Alarm Log</h3>
+                <h2 class="text-2xl m-0 text-secondary">{{ $alarms }} <span
+                        class="percentage">({{ $alarmsPercentage }})</span></h2>
+                <p class="text-sm m-0 text-[#7A7A7A]">A day ago</p>
+            </div>
+            <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#ffefcc]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 stroke-secondary">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
+                  </svg>
+                  
+            </div>
+        </div>
+    </div>
 
-        {{-- <!-- Right Column (md-3) -->
+    <div class="my-5">
+        <img src="{{ asset('images/schematic.png') }}" alt="Schematic Diagram" class="w-full h-auto rounded-lg">
+    </div>
+    <div class="text-left space-y-2">
+        <h2 class="text-lg font-medium text-secondary">Location</h2>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509375!2d144.95373631531744!3d-37.81627997975183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5773c1c3b00b0f!2sDocklands%2C%20VIC%203008%2C%20Australia!5e0!3m2!1sen!2sus!4v1633016171237!5m2!1sen!2sus"
+            allowfullscreen
+            class="w-full h-[400px] rounded-lg border shadow-lg"
+        ></iframe>
+    </div>
+    {{-- <!-- Right Column (md-3) -->
         <div class="col-md-3">
             <div class="user-alerts">
                 @if (Auth::user()->role == 'admin')
@@ -170,5 +154,5 @@
                 </div>
             </div>
         </div> --}}
-    </div>
+</div>
 </div>

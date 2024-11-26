@@ -23,6 +23,8 @@
     @elseif(Route::is('users'))
         <script src="{{ asset('assets/js/users.js') }}"></script>
     @elseif(Route::is('devices'))
+        {{-- @livewireScripts
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script> --}}
         <script src="{{ asset('assets/js/devices.js') }}"></script>
     @elseif(Route::is('alarm'))
         <script src="{{ asset('assets/js/alarm.js') }}"></script>

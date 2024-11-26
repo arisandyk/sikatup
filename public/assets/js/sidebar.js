@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const toggleBtn = document.querySelector('.toggle-btn');
-    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.querySelector('body #btn-toggle');
+    
+    const sidebar = document.querySelector('#sidebar');
     const logoutLink = document.getElementById('logoutLink');
     const logoutModal = document.getElementById('logoutModal');
     const cancelLogoutButton = document.getElementById('cancelLogout');
@@ -8,8 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalContent = document.querySelector('.modal-content');
 
     // Sidebar toggle functionality
-    toggleBtn.addEventListener('click', function () {
-        sidebar.classList.toggle('collapsed');
+    toggleBtn.addEventListener('click', function (e) {
+        e.preventDefault()
+        
+        sidebar.classList.toggle('translate-x-full');
     });
 
     // Pastikan modal tersembunyi ketika halaman dimuat

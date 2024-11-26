@@ -8,9 +8,12 @@ use App\Models\Basecamp;
 use App\Models\Bay;
 use App\Models\GarduInduk;
 use App\Models\Location;
+use App\Models\Tegangan;
+use App\Models\Trafo;
 use App\Models\UnitInduk;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,81 +22,324 @@ class Devices extends Component
     use WithPagination;
 
     public $title = 'Devices';
-    public $unitInduks;
+    public $unitInduks = [];
     public $apps = [];
     public $basecamps = [];
-    public $bays = [];
     public $garduInduks = [];
+    public $tegangans = [];
+    public $trafos = [];
+    public $bays = [];
+
+    // State for selections and current view
     public $selectedUnitInduk = null;
     public $selectedApp = null;
     public $selectedBasecamp = null;
     public $selectedGarduInduk = null;
+
     public $breadcrumb = [];
-    public $currentView = 'apps'; // Default value, adjust as necessary
+    public $currentView = 'apps'; // Default view
+    public $newBayName = '';
+    public $newBayStatus = '';
+    public $newBayTanggalOperasi = '';
+    public $newBayTeganganId = null;
+    public $newBayTrafoId = null;
+    public $newBayNomorSeries = '';
+    public $newBayKeterangan = '';
+
+    public $isAddModalOpen = false;
+    public $isEditModalOpen = false;
+    public $isDeleteModalOpen = false;
+    public $bayIdBeingEdited = null;
+    public $bayIdBeingDeleted = null;
 
 
+    protected $rules = [
+        'newBayName' => 'required|string|max:255',
+        'selectedGarduInduk' => 'required|exists:gardu_induks,id',
+        'newBayStatus' => 'required|string|max:50',
+        'newBayTanggalOperasi' => 'required|date',
+        'newBayTeganganId' => 'required|exists:tegangans,id',
+        'newBayTrafoId' => 'nullable|exists:trafos,id',
+        'newBayNomorSeries' => 'nullable|string|max:255',
+        'newBayKeterangan' => 'nullable|string|max:500',
+    ];
+
+    /**
+     * Lifecycle hook: Mount
+     */
     public function mount(): void
-{
-    $this->unitInduks = UnitInduk::with('apps.basecamps.gardu_induks.bays')->get();
-    $this->apps = App::with('basecamps.gardu_induks.bays')->get();
-    $this->basecamps = Basecamp::with('gardu_induks.bays')->get();
-    $this->garduInduks = GarduInduk::with('bays')->get();
-    $this->bays = Bay::with('gardu_induks.basecamps.apps.unitInduk')->get();
-}
+    {
+        $this->loadInitialData();
+    }
 
+    /**
+     * Load initial data
+     */
+    private function loadInitialData()
+    {
+        $this->unitInduks = UnitInduk::with('apps.basecamps.gardu_induks.bays')->get();
+        $this->apps = App::with('basecamps.gardu_induks.bays')->get();
+        $this->basecamps = Basecamp::with('gardu_induks.bays')->get();
+        $this->garduInduks = GarduInduk::with('bays')->get();
+        $this->bays = Bay::with('gardu_induks.basecamps.apps.unitInduk')->get();
+        $this->unitInduks = UnitInduk::all();
+        $this->tegangans = Tegangan::all();
+        $this->trafos = Trafo::all();
+    }
 
+    /**
+     * Render the component
+     */
     public function render()
     {
-        // Fetch the required data from your models
-        $totalUsers = User::count();
-        $devices = Bay::count();
-        $locations = Location::count();
-        $alarms = Alarm::count();
+        // Fetch statistical data
+        $stats = $this->getStatistics();
 
-        // Example previous day data, you should replace this with real historical data
-        $yesterday = Carbon::yesterday();
-        $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
-        $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
-        $previousLocations = Location::whereDate('created_at', $yesterday)->count();
-        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
 
-        // Calculate the percentages based on real current and previous values
-        $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);
-        $devicesPercentage = $this->calculatePercentageChange($devices, $previousDevices);
-        $locationsPercentage = $this->calculatePercentageChange($locations, $previousLocations);
-        $alarmsPercentage = $this->calculatePercentageChange($alarms, $previousAlarms);
+        // Fetch recent alarms
+        $recentAlarms = Alarm::latest()->take(2)->get();
 
-        // Fetch the 4 most recent alarms
-        $recentAlarms = Alarm::orderBy('created_at', 'desc')
-            ->take(2)
-            ->get();
         return view('livewire.menu.devices', [
-            'totalUsers' => $totalUsers,
-            'totalUsersPercentage' => $totalUsersPercentage,
-            'devices' => $devices,
-            'devicesPercentage' => $devicesPercentage,
-            'locations' => $locations,
-            'locationsPercentage' => $locationsPercentage,
-            'alarms' => $alarms,
-            'alarmsPercentage' => $alarmsPercentage,
+            'stats' => $stats,
+            'recentAlarms' => $recentAlarms,
             'unitInduks' => $this->unitInduks,
-            'selectedUnitInduk' => $this->selectedUnitInduk,
-            'apps' => $this->apps,
             'breadcrumb' => $this->breadcrumb,
             'currentView' => $this->currentView,
             'selectedApp' => $this->selectedApp,
             'selectedBasecamp' => $this->selectedBasecamp,
             'selectedGarduInduk' => $this->selectedGarduInduk,
-            'recentAlarms' => $recentAlarms,
-        ])->layout('components.layouts.app', array('title' => $this->title));
+            'totalUsers' => $stats['totalUsers'], // Total users
+            'totalUsersPercentage' => $stats['percentages']['users'], // Percentage change for users
+            'devices' => $stats['devices'], // Total devices
+            'devicesPercentage' => $stats['percentages']['devices'],
+            'locations' => $stats['locations'],
+            'locationsPercentage' => $stats['percentages']['locations'],
+            'alarms' => $stats['alarms'],
+            'alarmsPercentage' => $stats['percentages']['alarms'],
+
+        ])->layout('components.layouts.app', ['title' => $this->title]);
     }
 
+    /**
+     * Get statistics for devices, locations, and alarms
+     */
+    private function getStatistics()
+    {
+        $today = Carbon::now();
+        $yesterday = Carbon::yesterday();
+
+        $stats = [
+            'totalUsers' => User::count(),
+            'devices' => Bay::count(),
+            'locations' => Location::count(),
+            'alarms' => Alarm::count(),
+            'percentages' => [
+                'users' => $this->calculatePercentageChange(
+                    User::count(),
+                    User::whereDate('created_at', $yesterday)->count()
+                ),
+                'devices' => $this->calculatePercentageChange(
+                    Bay::count(),
+                    Bay::whereDate('created_at', $yesterday)->count()
+                ),
+                'locations' => $this->calculatePercentageChange(
+                    Location::count(),
+                    Location::whereDate('created_at', $yesterday)->count()
+                ),
+                'alarms' => $this->calculatePercentageChange(
+                    Alarm::count(),
+                    Alarm::whereDate('created_at', $yesterday)->count()
+                ),
+            ],
+        ];
+
+        return $stats;
+    }
+
+    /**
+     * Calculate percentage change
+     */
     private function calculatePercentageChange($current, $previous)
     {
         if ($previous == 0) {
             return $current > 0 ? '+100%' : '0%';
         }
+
         $change = (($current - $previous) / $previous) * 100;
         return number_format($change, 2) . '%';
+    }
+
+
+    /**
+     * Import from Excel (stub)
+     */
+    public function importFromExcel()
+    {
+        session()->flash('message', 'Import functionality is not implemented yet!');
+    }
+
+    public function showAddModal()
+    {
+        $this->isAddModalOpen = true;
+    }
+
+    public function hideAddModal()
+    {
+        $this->isAddModalOpen = false;
+        $this->resetForm();
+    }
+
+    public function updatedSelectedUnitInduk()
+    {
+        $this->reset(['selectedApp', 'selectedBasecamp', 'selectedGarduInduk', 'apps', 'basecamps', 'garduInduks']);
+        if ($this->selectedUnitInduk) {
+            $this->apps = App::where('unit_id', $this->selectedUnitInduk)->get();
+        }
+    }
+
+    public function updatedSelectedApp()
+    {
+        $this->reset(['selectedBasecamp', 'selectedGarduInduk', 'basecamps', 'garduInduks']);
+        if ($this->selectedApp) {
+            $this->basecamps = Basecamp::where('app_id', $this->selectedApp)->get();
+        }
+    }
+
+    public function updatedSelectedBasecamp()
+    {
+        $this->reset(['selectedGarduInduk', 'garduInduks']);
+        if ($this->selectedBasecamp) {
+            $this->garduInduks = GarduInduk::where('basecamp_id', $this->selectedBasecamp)->get();
+        }
+    }
+
+    public function addNewItem()
+    {
+        $this->validate();
+
+        Bay::create([
+            'gi_id' => $this->selectedGarduInduk,
+            'name' => $this->newBayName,
+            'status' => $this->newBayStatus,
+            'tanggal_operasi' => $this->newBayTanggalOperasi,
+            'tegangan_id' => $this->newBayTeganganId,
+            'trafo_id' => $this->newBayTrafoId,
+            'nomor_series' => $this->newBayNomorSeries,
+            'keterangan' => $this->newBayKeterangan,
+            'created_by' => Auth::user()->name,
+        ]);
+
+        $this->hideAddModal();
+        session()->flash('message', 'New Bay added successfully!');
+    }
+
+    private function resetForm()
+    {
+        $this->reset([
+            'newBayName',
+            'newBayStatus',
+            'newBayTanggalOperasi',
+            'newBayTeganganId',
+            'newBayTrafoId',
+            'newBayNomorSeries',
+            'newBayKeterangan',
+            'selectedUnitInduk',
+            'selectedApp',
+            'selectedBasecamp',
+            'selectedGarduInduk',
+            'apps',
+            'basecamps',
+            'garduInduks',
+            'bayIdBeingEdited',
+        ]);
+    }
+
+    public function showEditModal($bayId)
+    {
+        $this->bayIdBeingEdited = $bayId;
+        $this->loadBayData();
+        $this->isEditModalOpen = true;
+    }
+
+    private function loadBayData()
+    {
+        $bay = Bay::find($this->bayIdBeingEdited);
+
+        if ($bay) {
+            $this->selectedUnitInduk = $bay->gardu_induks->basecamps->apps->unitInduk->id ?? null;
+            $this->updatedSelectedUnitInduk();
+
+            $this->selectedApp = $bay->gardu_induks->basecamps->apps->id ?? null;
+            $this->updatedSelectedApp();
+
+            $this->selectedBasecamp = $bay->gardu_induks->basecamps->id ?? null;
+            $this->updatedSelectedBasecamp();
+
+            $this->selectedGarduInduk = $bay->gardu_induks->id ?? null;
+
+            $this->newBayName = $bay->name;
+            $this->newBayStatus = $bay->status;
+            $this->newBayTanggalOperasi = $bay->tanggal_operasi;
+            $this->newBayTeganganId = $bay->tegangan_id;
+            $this->newBayTrafoId = $bay->trafo_id;
+            $this->newBayNomorSeries = $bay->nomor_series;
+            $this->newBayKeterangan = $bay->keterangan;
+        }
+    }
+
+    public function hideEditModal()
+    {
+        $this->isEditModalOpen = false;
+        $this->resetForm();
+    }
+
+    public function updateItem()
+    {
+        $this->validate();
+
+        $bay = Bay::find($this->bayIdBeingEdited);
+
+        if ($bay) {
+            $bay->update([
+                'gi_id' => $this->selectedGarduInduk,
+                'name' => $this->newBayName,
+                'status' => $this->newBayStatus,
+                'tanggal_operasi' => $this->newBayTanggalOperasi,
+                'tegangan_id' => $this->newBayTeganganId,
+                'trafo_id' => $this->newBayTrafoId,
+                'nomor_series' => $this->newBayNomorSeries,
+                'keterangan' => $this->newBayKeterangan,
+                'updated_by' => Auth::user()->name,
+            ]);
+
+            $this->hideEditModal();
+            session()->flash('message', 'Bay updated successfully!');
+        }
+        return redirect()->to('/devices');
+    }
+
+    public function confirmDelete($bayId)
+    {
+        $this->bayIdBeingDeleted = $bayId;
+        $this->isDeleteModalOpen = true;
+    }
+
+    public function hideDeleteModal()
+    {
+        $this->isDeleteModalOpen = false;
+        $this->bayIdBeingDeleted = null;
+    }
+
+    public function deleteItem()
+    {
+        $bay = Bay::find($this->bayIdBeingDeleted);
+
+        if ($bay) {
+            $bay->delete();
+            session()->flash('message', 'Bay deleted successfully!');
+        }
+
+        $this->hideDeleteModal();
+        return redirect()->to('/devices');
     }
 }

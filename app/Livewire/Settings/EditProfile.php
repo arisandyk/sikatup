@@ -7,11 +7,14 @@ use App\Models\App;
 use App\Models\Basecamp;
 use App\Models\GarduInduk;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class EditProfile extends Component
 {
+    use WithFileUploads;
     public $title = 'Edit Profile';
     public $name, $nip, $email, $mobileNumber, $unitInduk, $app, $basecamp, $garduInduk;
     public $unitIndukName, $appName, $basecampName, $garduIndukName;
@@ -23,6 +26,8 @@ class EditProfile extends Component
     public $editApp = false;
     public $editBasecamp = false;
     public $editGarduInduk = false;
+    public $profilePicture;
+
 
     public function mount()
     {
@@ -31,23 +36,23 @@ class EditProfile extends Component
         $this->nip = $user->nip;
         $this->email = $user->email;
         $this->mobileNumber = $user->mobile_number;
-    
+
         // Split the current workplace into respective fields
         $currentWorkplace = explode(', ', $user->current_workplace);
         $this->unitInduk = $currentWorkplace[0] ?? null;
         $this->app = $currentWorkplace[1] ?? null;
         $this->basecamp = $currentWorkplace[2] ?? null;
         $this->garduInduk = $currentWorkplace[3] ?? null;
-    
+
         // Load related names for display
         $this->unitIndukName = $this->unitInduk ?? '';
         $this->appName = $this->app ?? '';
         $this->basecampName = $this->basecamp ?? '';
         $this->garduIndukName = $this->garduInduk ?? '';
-    
+
         $this->loadDependentData();
     }
-    
+
     public function loadDependentData()
     {
         if ($this->unitInduk) {
@@ -88,41 +93,6 @@ class EditProfile extends Component
         $this->garduInduk = null;
     }
 
-    public function saveProfile()
-    {
-        // Validate the input
-        $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'nip' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::id())],
-            'mobileNumber' => ['required', 'string', 'max:15'],
-            'unitInduk' => ['required'],
-            'app' => ['nullable'],
-            'basecamp' => ['nullable'],
-            'garduInduk' => ['nullable'],
-        ]);
-
-        // Retrieve user
-        $user = Auth::user();
-
-        // Find names for the dependent fields
-        $unitIndukName = UnitInduk::find($this->unitInduk)->name ?? '';
-        $appName = App::find($this->app)->name ?? '';
-        $basecampName = Basecamp::find($this->basecamp)->name ?? '';
-        $garduIndukName = GarduInduk::find($this->garduInduk)->name ?? '';
-
-        // Update the user's profile
-        $user->update([
-            'name' => $this->name,
-            'nip' => $this->nip,
-            'email' => $this->email,
-            'mobile_number' => $this->mobileNumber,
-            'current_workplace' => implode(', ', array_filter([$unitIndukName, $appName, $basecampName, $garduIndukName])),
-        ]);
-
-        // Provide feedback
-        session()->flash('message', 'Profile updated successfully.');
-    }
 
     public function deleteAccount()
     {
@@ -146,5 +116,79 @@ class EditProfile extends Component
         return view('livewire.settings.edit-profile', [
             'unitInduks' => UnitInduk::all(),
         ])->layout('components.layouts.app', ['title' => $this->title]);
+    }
+
+    public function saveProfile()
+    {
+        $this->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'nip' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::id())],
+            'mobileNumber' => ['required', 'string', 'max:15'],
+            'profilePicture' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:800'], // Validasi gambar
+            'unitInduk' => ['nullable', 'exists:unit_induks,id'],
+            'app' => ['nullable', 'exists:apps,id'],
+            'basecamp' => ['nullable', 'exists:basecamps,id'],
+            'garduInduk' => ['nullable', 'exists:gardu_induks,id'],
+        ]);
+
+        $user = Auth::user();
+
+        // Tangani upload avatar jika ada
+        if ($this->profilePicture) {
+            $user->image = $this->handleAvatarUpload($this->profilePicture, $user);
+        }
+
+        // Susun current_workplace
+        $unitIndukName = UnitInduk::find($this->unitInduk)->name ?? null;
+        $appName = App::find($this->app)->name ?? null;
+        $basecampName = Basecamp::find($this->basecamp)->name ?? null;
+        $garduIndukName = GarduInduk::find($this->garduInduk)->name ?? null;
+
+        $currentWorkplace = implode(', ', array_filter([
+            $unitIndukName,
+            $appName,
+            $basecampName,
+            $garduIndukName,
+        ]));
+
+        // Update profil pengguna
+        $user->update([
+            'name' => $this->name,
+            'nip' => $this->nip,
+            'email' => $this->email,
+            'mobile_number' => $this->mobileNumber,
+            'image' => $user->image,
+            'current_workplace' => $currentWorkplace, // Simpan current_workplace
+        ]);
+
+        session()->flash('message', 'Profile updated successfully.');
+        return redirect()->route('profile');
+    }
+
+
+    private function handleAvatarUpload($file, $user)
+    {
+        $avatarPath = 'assets/img/avatars/';
+        $defaultAvatar = $avatarPath . 'user.png'; // Gambar default
+
+        // Pastikan direktori avatar ada
+        if (!File::exists(public_path($avatarPath))) {
+            File::makeDirectory(public_path($avatarPath), 0755, true);
+        }
+
+        // Hapus avatar lama jika bukan avatar default
+        if ($user->image && $user->image !== $defaultAvatar && File::exists(public_path($user->image))) {
+            File::delete(public_path($user->image));
+        }
+
+        // Generate nama unik untuk avatar baru
+        $fileName = 'avatar_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+        // Simpan file langsung ke folder tujuan
+        $file->storeAs($avatarPath, $fileName, 'public');
+
+        // Return path baru untuk disimpan di database
+        return $avatarPath . $fileName;
     }
 }

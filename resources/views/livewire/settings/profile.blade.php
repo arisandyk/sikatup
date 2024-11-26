@@ -4,7 +4,7 @@
             <div class="profile-background"></div>
             <div class="profile-content">
                 <div class="profile-info">
-                    <img src="{{ asset('images/user.png') }}" alt="User Image" class="profile-img">
+                    <img src="{{ 'storage/'. Auth::user()->image }}" alt="User Image" class="profile-img">
                     <div class="profile-details">
                         <h1>{{ Auth::user()->name }}</h1>
                         <p>
@@ -82,10 +82,6 @@
                         <a class="nav-link @if ($activeTab === 'profile') active @endif"
                             wire:click="$set('activeTab', 'profile')">Profile</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link @if ($activeTab === 'user-request') active @endif"
-                            wire:click="$set('activeTab', 'user-request')">Request</a>
-                    </li> --}}
                 </ul>
             </div>
         </div>

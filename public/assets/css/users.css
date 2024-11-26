@@ -1,6 +1,6 @@
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #FCFBE8;
+    font-family: "Poppins", sans-serif;
+    background-color: #fcfbe8;
     margin: 0;
 }
 
@@ -10,7 +10,7 @@ body {
     margin-top: 70px;
     margin-left: 280px;
     padding: 20px;
-    background-color: #FCFBE8;
+    background-color: #fcfbe8;
 }
 
 .users-cards {
@@ -21,7 +21,7 @@ body {
 }
 
 .users-card {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
@@ -71,13 +71,13 @@ body {
 .users-card .card-info h3 {
     font-size: 16px;
     margin: 0;
-    color: #7A7A7A;
+    color: #7a7a7a;
 }
 
 .users-card .card-info p {
     font-size: 14px;
     margin: 0;
-    color: #7A7A7A;
+    color: #7a7a7a;
 }
 
 .users-card .card-info h2 {
@@ -121,7 +121,7 @@ body {
 .custom-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 20px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
@@ -133,7 +133,7 @@ body {
     font-size: 18px;
     padding: 20px;
     text-align: center;
-    background-color: #FFFDC3;
+    background-color: #fffdc3;
 }
 
 /* Style for the data rows */
@@ -142,12 +142,12 @@ body {
     font-size: 14px;
     color: #101041;
     text-align: center;
-    border: 1px solid #E0E0E0;
-    background-color: #FFFFFF;
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
 }
 
 .first-section {
-    background-color: #FFFDC3;
+    background-color: #fffdc3;
 }
 
 .print-alarm-button {
@@ -157,7 +157,7 @@ body {
     font-size: 14px;
     cursor: pointer;
     border: none;
-    color: #FFFFFF;
+    color: #ffffff;
     margin-bottom: 15px;
 }
 
@@ -204,7 +204,7 @@ body {
 
 .export-button {
     background-color: #101041;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 12px 25px;
     border: none;
     border-radius: 8px;
@@ -224,7 +224,7 @@ body {
     position: absolute;
     top: 310px;
     right: 20px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     z-index: 1;
@@ -295,7 +295,7 @@ body {
 .pagination-container li span {
     display: inline-block;
     padding: 8px 12px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     color: #101041;
     border-radius: 4px;
     text-decoration: none;
@@ -304,18 +304,18 @@ body {
 
 .pagination-container li.active span {
     background-color: #101041;
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .pagination-container li a:hover {
-    background-color: #FFFDC3;
+    background-color: #fffdc3;
 }
 
 .total-records {
     margin-top: 10px;
     text-align: right;
     font-size: 14px;
-    color: #7A7A7A;
+    color: #7a7a7a;
 }
 
 .user-name {
@@ -469,7 +469,7 @@ body {
 }
 
 .export {
-    background-color: #FFC107;
+    background-color: #ffc107;
     color: #ffffff;
     border: none;
     padding: 0;
@@ -535,7 +535,7 @@ body {
     margin-top: 10px;
     text-align: right;
     font-size: 14px;
-    color: #7A7A7A;
+    color: #7a7a7a;
 }
 
 /* Responsive adjustments */
@@ -554,4 +554,48 @@ body {
         flex-wrap: wrap;
         justify-content: center;
     }
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete {
+    background-color: #ff4f4f;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #e54343;
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-delete:active {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.icon-delete svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: #ffffff;
+    transition: stroke 0.3s ease;
+}
+
+.btn-delete:hover .icon-delete svg {
+    stroke: #ffe4e4;
 }

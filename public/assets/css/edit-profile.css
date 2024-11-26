@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -5,70 +6,85 @@ body {
     color: #333;
 }
 
+/* Container Styling */
 .profile-edit-container {
-    max-width: 80%;
+    max-width: 100%;
     margin-left: 280px;
     padding: 20px;
-    margin-top: 10px;
+    margin-top: 3.5%;
 }
 
+/* Card Styling */
 .card {
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
 .card-header {
-    background-color: #f7f7f7;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    border-radius: 10px 10px 0 0;
+}
+
+.card-header h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #101041;
+    margin: 0;
 }
 
 .card-body {
     padding: 20px;
 }
 
+/* Form Styling */
 .form-group {
     margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
     color: #333;
 }
 
 .form-control {
     width: 100%;
-    padding: 12px;
-    border-radius: 5px;
+    padding: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 14px;
+    transition: border-color 0.2s ease-in-out;
 }
 
+.form-control:focus {
+    border-color: #101041;
+    outline: none;
+}
+
+/* Button Styling */
 .btn {
     padding: 12px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-}
-
-.btn-lg {
-    padding: 14px 24px;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .btn-primary {
     background-color: #ffff9f;
     color: #101041;
     border: none;
-    width: 49%;
+    width: 48%;
+    text-align: center;
+    font-weight: normal;
 }
 
 .btn-primary:hover {
-    background-color: #dbd401bd; /* Slightly darker on hover */
+    background-color: #dbd401bd;
     color: #101041;
 }
 
@@ -76,18 +92,13 @@ body {
     background-color: #ff4f4f;
     color: white;
     border: none;
-    width: 49%;
-    margin-left: 1.5%;
+    width: 48%;
+    text-align: center;
+    font-weight: normal;
 }
 
 .btn-secondary:hover {
-    background-color: #e54343; /* Slightly darker on hover */
-    color: #fff;
-}
-
-.btn-outline-primary {
-    border-color: #101041;
-    color: #101041;
+    background-color: #e54343;
 }
 
 .btn-danger {
@@ -97,62 +108,134 @@ body {
 }
 
 .btn-danger:hover {
-    background-color: #e54343; /* Slightly darker on hover */
-    color: white;
+    background-color: #e54343;
 }
 
+.upload {
+    margin: 10px auto;
+    display: inline-block;
+    background-color: #101041; /* Warna sama seperti tombol Account */
+    color: #fff;
+    text-align: center;
+    padding: 8px 15px; /* Padding untuk ukuran tombol */
+    border-radius: 5px; /* Konsistensi dengan tombol lain */
+    font-size: 14px; /* Ukuran font yang sesuai */
+    font-weight: normal; /* Pastikan tidak bold */
+    border: none;
+    width: 110%; /* Lebar tombol menyesuaikan teks */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out; /* Efek hover */
+    white-space: nowrap; /* Paksa teks tetap dalam satu baris */
+}
+
+.upload:hover {
+    background-color: #1a1a6e; /* Warna hover lebih gelap */
+    color: #fff; /* Kontras teks tetap */
+}
+
+
+
+/* Profile Image Styling */
 .profile-image-container {
     width: 100px;
     height: 100px;
     position: relative;
-    margin-top: 100px;
-    margin-left: 130px;
+    margin: 40% auto;
 }
 
 .profile-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .upload-input {
     display: none;
 }
 
-.upload {
-    width: 200px;
-    margin-top: -80px;
-    background-color: #101041;
-    color: #fff;
-}
-
-.upload:hover {
-    background-color: #ffff9f;
-    color: #101041;
-}
+/* Tabs Styling */
 .nav-tabs {
     margin-bottom: 20px;
-    border: none;
-    margin-top: 40px;
+    border-bottom: 2px solid #f0f0f0;
 }
 
 .nav-tabs .nav-item {
     margin-right: 10px;
-    border: none;
 }
 
 .nav-tabs .nav-link {
-    padding: 10px 20px;
+    padding: 8px 15px;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #f9f9f9;
     color: #101041;
-    border: 0px solid transparent;
+    border: 1px solid transparent;
+    font-weight: normal;
 }
 
 .nav-tabs .nav-link.active {
     background-color: #101041;
     color: #fff;
     border-color: #ddd #ddd #fff;
+}
+
+/* Delete Account Section */
+.text-danger {
+    color: #ff4f4f !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Button Container */
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+button[type="submit"],
+button[type="button"] {
+    display: inline-block;
+    width: calc(50% - 5px);
+    padding: 15px;
+    margin: 0;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    font-weight: normal; /* Remove bold */
+}
+
+button[type="submit"] {
+    background-color: #ffff9f;
+    color: #101041;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #dbd401bd;
+}
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+    .profile-edit-container {
+        max-width: 100%;
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+
+    .profile-image-container {
+        margin: 20px auto;
+    }
 }

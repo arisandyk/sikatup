@@ -143,7 +143,7 @@
                         <td><input type="checkbox" class="user-checkbox"></td>
                         <td>
                             <div class="user-name">
-                                <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="user-avatar">
+                                <img src="{{ 'storage/'.$user->image }}" alt="{{ $user->name }}" class="user-avatar">
                                 <span>{{ $user->name }}</span>
                             </div>
                         </td>
@@ -156,14 +156,12 @@
                             </span>
                         </td>
                         <td>
-                            <div class="row action">
-                                <button wire:click="triggerDeleteModal({{ $user->id }})"
-                                    class="btn btn-danger delete">
-                                    <i>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                            <div class="action-buttons">
+                                <!-- Tombol Delete -->
+                                <button wire:click="triggerDeleteModal({{ $user->id }})" class="btn-delete">
+                                    <i class="icon-delete">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M4 7l16 0" />
                                             <path d="M10 11l0 6" />
@@ -174,6 +172,7 @@
                                     </i>
                                 </button>
                             </div>
+                            
                         </td>
                     </tr>
                 @endforeach

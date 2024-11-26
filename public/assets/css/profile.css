@@ -1,31 +1,33 @@
+/* General Body Styling */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     background-color: #FCFBE8;
+    color: #101041;
 }
 
+/* Main Container */
 .container {
-    margin-top: 50px;
+    margin-top: 3.5%;
     padding: 20px;
-    max-width: 85.4%;
-    margin-left: 280px;
-    margin-right: auto;
+    width: 100%;
+    margin-left: 14.6%;
+
 }
 
+/* Profile Header */
 .profile-header {
-    position: relative;
-    margin-bottom: 30px;
-    margin-top: 20px ;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    margin-bottom: 30px;
+    width: 106.5%;
 }
 
 .profile-background {
-    height: 200px;
-    background: linear-gradient(135deg, #F7E43E 0%,  #FFFDC3 100%);
-    border-radius: 10px 10px 0 0;
+    height: 150px;
+    background: linear-gradient(135deg, #F7E43E 0%, #FFFDC3 100%);
 }
 
 .profile-content {
@@ -34,197 +36,193 @@ body {
     align-items: center;
     padding: 20px;
     position: relative;
-    
+    margin-top: -50px;
 }
 
 .profile-info {
-    margin-top: 0px;
     display: flex;
     align-items: center;
+    height: 110px;
 }
 
 .profile-img {
-    width: 100px;
-    height: 100px;
-    border: 5px solid #fff;
+    width: 140px;
+    height: 140px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 4px solid white;
     margin-right: 20px;
-    background: #fff;
-    margin-top: -90px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    margin-top: -20px;
 }
 
 .profile-details h1 {
-    margin: 0;
-    font-size: 24px;
+    font-size: 20px;
     color: #101041;
+    font-weight: bold;
+    margin-top: 40px;
 }
 
 .profile-details p {
-    margin: 5px 0 0;
-    color: #777;
     font-size: 14px;
+    color: #555;
+    margin: 8px 0 0;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.profile-details p span {
-    margin: 0 5px;
+.profile-details span i {
+    margin-right: 5px;
+    color: #101041;
+    vertical-align: middle;
 }
 
+.profile-details span {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Edit Button */
 .btn-connect {
     background-color: #101041;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    transition: all 0.3s ease;
+    margin-top: 40px;
 }
 
-.nav {
-    margin-top: -10px;
-    border: 0px;
+.btn-connect:hover {
+    background-color: #08082c;
 }
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: none;
+    margin-top: -10px;
+}
+
 .nav-tabs .nav-item {
     margin-right: 10px;
 }
 
 .nav-tabs .nav-link {
-    color: #101041;
+    font-size: 14px;
     font-weight: bold;
-    cursor: pointer;
-    :hover {
-        border : 0px;
-    }
+    color: #101041;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 
 .nav-tabs .nav-link.active {
-    color: white;
     background-color: #101041;
-    border-radius: 5px;
+    color: white;
 }
 
+/* Card Styling */
 .card {
-    margin-bottom: 20px;
+    background-color: white;
     border-radius: 10px;
-    border: none;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 106.5%;
 }
 
 .card-body {
     padding: 20px;
 }
 
-h4 {
-    margin-bottom: 20px;
+.card-header {
+    background-color: white;
+    border-bottom: none;
+    font-size: 18px;
+    color: #101041;
+    padding-bottom: 10px;
 }
 
+/* Tab Content */
 .tab-content {
     margin-top: 20px;
 }
 
-.list ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.list ul li {
-    margin-bottom: 10px;
-}
-
-.list ul li i {
-    margin-right: 10px;
-    color: #101041; /* Atur warna ikon sesuai kebutuhan */
-}
-
-.timeline {
-    position: relative;
-    margin: 20px 0;
-    padding: 0;
-    list-style: none;
-}
-
+/* Timeline */
 .timeline ul {
-    padding-left: 0;
     list-style-type: none;
+    padding: 0;
 }
 
 .timeline ul li {
-    margin-bottom: 20px;
     position: relative;
+    margin-bottom: 20px;
     padding-left: 30px;
 }
 
 .timeline ul li::before {
-    content: "";
+    content: '';
     position: absolute;
-    left: 10px;
+    left: 0;
     top: 0;
     width: 10px;
     height: 10px;
+    background-color: #101041;
     border-radius: 50%;
-    z-index: 1;
 }
 
 .timeline ul li::after {
-    content: "";
+    content: '';
     position: absolute;
-    left: 14px;
+    left: 4px;
     top: 10px;
-    bottom: -10px;
+    bottom: 0;
     width: 2px;
-    background-color: #0001;
-    z-index: 0;
+    background-color: #ddd;
 }
 
 .timeline-content {
-    padding: 10px 20px;
-    background-color: #fff;
-    border: 0px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    position: relative;
-    z-index: 1;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-content strong {
-    font-size: 16px;
+    font-size: 14px;
     color: #101041;
 }
 
 .timeline-content p {
-    margin: 5px 0 0;
-    color: #777;
-    font-size: 14px;
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
 }
 
 .timeline-content .timeline-date {
-    position: absolute;
-    right: 20px;
-    top: 10px;
     font-size: 12px;
-    color: #6c757d; /* Abu-abu */
+    color: #aaa;
+    text-align: right;
 }
 
-/* Warna lingkaran berdasarkan tipe aktivitas */
-.timeline-item.design::before {
-    background-color: #3498db; /* Blue for design */
+/* List Styling */
+.list ul {
+    list-style: none;
+    padding: 0;
 }
 
-.timeline-item.development::before {
-    background-color: #e67e22; /* Orange for development */
+.list ul li {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
 }
 
-.timeline-item.conference::before {
-    background-color: #9b59b6; /* Purple for conference */
-}
-
-.timeline-item.promotion::before {
-    background-color: #2ecc71; /* Green for promotion */
-}
-
-.timeline-item.join::before {
-    background-color: #e74c3c; /* Red for joining */
-}
-
-.about {
-    height: 409px;
+.list ul li i {
+    color: #101041;
+    margin-right: 8px;
 }

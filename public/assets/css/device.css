@@ -378,3 +378,110 @@ body {
     font-size: 14px;
     transition: background-color 0.3s ease;
 }
+
+.offcanvas {
+    top: 4rem; /* Sesuaikan dengan tinggi header (16px padding atas + 48px height header = 4rem) */
+    position: fixed;
+    right: 0;
+    width: 33.3333%; /* Width set to 1/3 */
+    height: calc(100% - 4rem); /* Kurangi tinggi header */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transform: translateX(100%); /* Default state, offcanvas tersembunyi */
+    transition: transform 0.3s ease-in-out;
+}
+
+.offcanvas.translate-x-0 {
+    transform: translateX(0); /* Offcanvas terlihat */
+}
+
+.offcanvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.offcanvas-body {
+    padding: 1rem;
+}
+
+/* Overlay (background hitam transparan) */
+.fixed.inset-0.bg-black.bg-opacity-25 {
+    backdrop-filter: blur(2px); /* Opsional, untuk efek blur */
+}
+
+/* Offcanvas */
+.fixed.top-0.right-0.h-full.bg-white {
+    width: 33.3333%; /* Width 1/3 layar */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* State ketika offcanvas terbuka */
+.translate-x-0 {
+    transform: translateX(0);
+}
+
+/* State ketika offcanvas tertutup */
+.translate-x-full {
+    transform: translateX(100%);
+}
+
+/* Overlay visibility states */
+.opacity-100 {
+    opacity: 1;
+    visibility: visible;
+}
+
+.opacity-0 {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Jarak antar tombol */
+}
+
+.btn-action {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+
+.btn-action:active {
+    transform: scale(0.95);
+}
+
+.icon-edit svg {
+    stroke: #007bff; /* Warna untuk tombol edit */
+    transition: stroke 0.3s ease;
+}
+
+.icon-edit svg:hover {
+    stroke: #0056b3; /* Warna saat hover */
+}
+
+.icon-delete svg {
+    stroke: #ff4f4f; /* Warna untuk tombol delete */
+    transition: stroke 0.3s ease;
+}
+
+.icon-delete svg:hover {
+    stroke: #d32f2f; /* Warna saat hover */
+}
