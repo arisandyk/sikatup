@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleBtn.addEventListener('click', function (e) {
         e.preventDefault()
         
-        sidebar.classList.toggle('translate-x-full');
+        sidebar.classList.toggle('translate-x-full')
     });
 
     // Pastikan modal tersembunyi ketika halaman dimuat

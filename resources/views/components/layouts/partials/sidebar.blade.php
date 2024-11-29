@@ -11,7 +11,7 @@
     </div>
     <ul class="list-none p-0 m-0">
         <h4 class="text-lg">Menu</h4>
-        <li class="my-5 flex items-center border-b pb-4">
+        <li class="my-5 flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -27,7 +27,7 @@
             </a>
         </li>
         @if (Auth::user()->role == 'admin')
-            <li class="my-5 flex items-center border-b pb-4">
+            <li class="my-5 flex items-center border-b lg:border-none pb-4">
                 <a href="{{ route('users') }}" class="{{ request()->routeIs('users') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                     <i class="flex mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -43,7 +43,7 @@
                     <span>Users</span>
                 </a>
             </li>
-            <li class="my-5 flex items-center border-b pb-4">
+            <li class="my-5 flex items-center border-b lg:border-none pb-4">
                 <a href="{{ route('devices') }}" class="{{ request()->routeIs('devices') ? 'text-yellow-300' : 'text-white'}} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                     <i class="flex mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -61,7 +61,7 @@
                 </a>
             </li>
         @endif
-        <li class="my-5 flex items-center border-b pb-4">
+        <li class="my-5 flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('control') }}" class="{{ request()->routeIs('control') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -76,7 +76,7 @@
                 <span>Control</span>
             </a>
         </li>
-        <li class="my-5 flex items-center border-b pb-4">
+        <li class="my-5 flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('location') }}" class="{{ request()->routeIs('location') ? 'text-yellow-300' : 'no-underline flex items-center text-base rounded-lg hover:text-yellow-500' }}">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -90,7 +90,7 @@
                 <span>Location</span>
             </a>
         </li>
-        <li class="my-5 flex items-center border-b pb-4">
+        <li class="my-5 flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('alarm') }}" class="{{ request()->routeIs('alarm') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -106,7 +106,7 @@
             </a>
         </li>
         <h4 class="text-lg">Settings</h4>
-        <li class="my-5 flex items-center border-b pb-4">
+        <li class="my-5 flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -120,7 +120,7 @@
                 <span>Profile</span>
             </a>
         </li>
-        <li class="my-5 flex items-center border-b pb-4">
+        <li class="my-5 flex items-center border-b lg:border-none pb-4">
             <a href="#" id="logoutLink" class="no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

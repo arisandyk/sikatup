@@ -68,11 +68,7 @@ console.log(Livewire); // Harus terdefinisi
 
 function toggleExportDropdown() {
     var dropdown = document.getElementById("exportDropdown");
-    if (dropdown.style.display === "none") {
-        dropdown.style.display = "block";
-    } else {
-        dropdown.style.display = "none";
-    }
+    dropdown.classList.toggle('hidden')
 }
 
 // Close the dropdown if the user clicks outside of it

@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.td-class {
+    @apply p-3 text-sm text-secondary border bg-white
+}
+
+.tr-class {
+    @apply flex flex-col mb-4 sm:table-row
+}
+
+.pagination-container {
+    @apply mt-5 flex justify-center
+}
+
+.pagination-container nav {
+    @apply inline-block
+}
+
+.pagination-container ul {
+    @apply flex list-none p-0 m-0
+}
+
+.pagination-container li {
+    @apply my-0 mx-1
+}
+
+.pagination-container li a,
+.pagination-container li span {
+    @apply inline-block py-2 px-3 bg-white text-secondary rounded no-underline transition ease-out
+}
+
+.pagination-container li.active span {
+    @apply bg-secondary text-white
+}
+
+.pagination-container li a:hover {
+    @apply bg-primary
+}

@@ -1,10 +1,10 @@
-<div class="mt-36 p-4 lg:ml-[280px]">
+<div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
     @if (session()->has('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
     @endif
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div
             class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
             <div class="flex flex-col items-start gap-3">
@@ -26,7 +26,7 @@
             <div class="flex flex-col items-start gap-3">
                 <h3 class="text-lg m-0 text-[#7A7A7A]">Devices</h3>
                 <h2 class="text-2xl m-0 text-secondary">{{ $devices }} <span
-                        class="percentage">({{ $devicesPercentage }})</span></h2>
+                        class="text-green-500 text-sm ml-1">({{ $devicesPercentage }})</span></h2>
                 <p class="text-sm m-0 text-[#7A7A7A]">Total Devices</p>
             </div>
             <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#ffdede]">
@@ -42,7 +42,7 @@
             <div class="flex flex-col items-start gap-3">
                 <h3 class="text-lg m-0 text-[#7A7A7A]">Locations</h3>
                 <h2 class="text-2xl m-0 text-secondary">{{ $locations }} <span
-                        class="percentage">({{ $locationsPercentage }})</span></h2>
+                        class="text-green-500 text-sm ml-1">({{ $locationsPercentage }})</span></h2>
                 <p class="text-sm m-0 text-[#7A7A7A]">Total Places</p>
             </div>
             <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#cef5de]">
@@ -58,7 +58,7 @@
             <div class="flex flex-col items-start gap-3">
                 <h3 class="text-lg m-0 text-[#7A7A7A]">Alarm Log</h3>
                 <h2 class="text-2xl m-0 text-secondary">{{ $alarms }} <span
-                        class="percentage">({{ $alarmsPercentage }})</span></h2>
+                        class="text-green-500 text-sm ml-1">({{ $alarmsPercentage }})</span></h2>
                 <p class="text-sm m-0 text-[#7A7A7A]">A day ago</p>
             </div>
             <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 bg-[#ffefcc]">
