@@ -95,13 +95,8 @@ class Devices extends Component
         // Fetch statistical data
         $stats = $this->getStatistics();
 
-
-        // Fetch recent alarms
-        $recentAlarms = Alarm::latest()->take(2)->get();
-
         return view('livewire.menu.devices', [
             'stats' => $stats,
-            'recentAlarms' => $recentAlarms,
             'unitInduks' => $this->unitInduks,
             'breadcrumb' => $this->breadcrumb,
             'currentView' => $this->currentView,

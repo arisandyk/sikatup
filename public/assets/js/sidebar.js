@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleBtn.addEventListener('click', function (e) {
         e.preventDefault()
         
-        sidebar.classList.toggle('translate-x-full')
+        sidebar.classList.toggle('hidden')
     });
 
     // Pastikan modal tersembunyi ketika halaman dimuat
@@ -21,12 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Logout link click handler
     logoutLink.addEventListener('click', function (e) {
         e.preventDefault();
-        logoutModal.classList.remove('hidden'); // Tampilkan modal
+        logoutModal.classList.toggle('hidden'); // Tampilkan modal
+        logoutModal.classList.toggle('flex'); // Tampilkan modal
     });
 
     // Cancel logout button handler
     cancelLogoutButton.addEventListener('click', function () {
-        logoutModal.classList.add('hidden'); // Sembunyikan modal
+        logoutModal.classList.toggle('hidden'); // Sembunyikan modal
+        logoutModal.classList.toggle('flex'); // Tampilkan modal
     });
 
     // Confirm logout button handler
@@ -36,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     logoutModal.addEventListener('click', function (e) {
         if (!modalContent.contains(e.target)) {
-            logoutModal.classList.add('hidden'); // Sembunyikan modal jika klik di luar modal
+            logoutModal.classList.toggle('hidden'); // Sembunyikan modal jika klik di luar modal
+            logoutModal.classList.toggle('flex'); // Tampilkan modal
         }
     });
 });

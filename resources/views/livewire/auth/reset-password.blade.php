@@ -1,6 +1,6 @@
-<div class="container-fluid">
-    <div class="row min-vh-100">
-        <div class="col-md-14 d-flex align-items-center justify-content-center flex-column p-4">
+<div class="p-0 overflow-hidden bg-white m-0">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <div class="text-center flex items-center justify-center flex-col p-4">
             <div class="circular-card"></div>
             <h2 class="text-center mb-4">Reset Password</h2>
             <div class="text-center mb-4">

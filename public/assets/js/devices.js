@@ -1,5 +1,5 @@
-
 function toggleAddDropdown() {
     const dropdown = document.getElementById("addDropdown");
-    dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+    dropdown.classList.toggle('hidden')
+    document.body.classList.toggle('overflow-hidden')
 }

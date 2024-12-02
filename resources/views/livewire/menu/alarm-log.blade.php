@@ -1,175 +1,137 @@
-<div class="dashboard-container">
-    <div class="row">
-        <!-- Left Column (md-9) -->
-        <div class="col-md-9">
-            <div class="dashboard-cards">
-                <div class="dashboard-card">
-                    <div class="card-info">
-                        <h3>Users</h3>
-                        <h2>{{ $totalUsers }} <span class="percentage">({{ $totalUsersPercentage }})</span></h2>
-                        <p>Total Users</p>
-                    </div>
-                    <div class="card-icon">
-                        <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
-                            </svg></i>
-                    </div>
+<div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        @php
+            $labels = [
+                [
+                    'h3' => 'Users',
+                    'h2' => $totalUsers,
+                    'p' => 'Total Users',
+                    'span' => $totalUsersPercentage,
+                    'bg' => 'bg-[#e9e3ff]',
+                ],
+                [
+                    'h3' => 'Devices',
+                    'h2' => $devices,
+                    'p' => 'Total Devices',
+                    'span' => $devicesPercentage,
+                    'bg' => 'bg-[#ffdede]',
+                ],
+                [
+                    'h3' => 'Locations',
+                    'h2' => $locations,
+                    'p' => 'Total Places',
+                    'span' => $locationsPercentage,
+                    'bg' => 'bg-[#cef5de]',
+                ],
+                [
+                    'h3' => 'Alarm Log',
+                    'h2' => $alarmsCount,
+                    'p' => 'A day ago',
+                    'span' => $alarmsPercentage,
+                    'bg' => 'bg-[#ffefcc]',
+                ],
+            ];
+        @endphp
+        @foreach ($labels as $item)
+            <div
+                class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
+                <div class="flex flex-col items-start gap-3">
+                    <h3 class="text-lg m-0 text-[#7A7A7A]">{{ $item['h3'] }}</h3>
+                    <h2 class="text-2xl m-0 text-secondary">{{ $item['h2'] }} <span
+                            class="text-green-500 text-sm ml-1">({{ $item['span'] }})</span></h2>
+                    <p class="text-sm m-0 text-[#7A7A7A]">{{ $item['p'] }}</p>
                 </div>
-                <div class="dashboard-card">
-                    <div class="card-info">
-                        <h3>Devices</h3>
-                        <h2>{{ $devices }} <span class="percentage">({{ $devicesPercentage }})</span></h2>
-                        <p>Total Devices</p>
-                    </div>
-                    <div class="card-icon">
-                        <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-devices">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" />
-                                <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" />
-                                <path d="M16 9h2" />
-                            </svg></i>
-                    </div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="card-info">
-                        <h3>Locations</h3>
-                        <h2>{{ $locations }} <span class="percentage">({{ $locationsPercentage }})</span></h2>
-                        <p>Total Places</p>
-                    </div>
-                    <div class="card-icon">
-                        <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                <path
-                                    d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                            </svg></i>
-                    </div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="card-info">
-                        <h3>Alarm Log</h3>
-                        <h2>{{ $alarmsCount }} <span class="percentage">({{ $alarmsPercentage }})</span></h2>
-                        <p>A day ago</p>
-                    </div>
-                    <div class="card-icon">
-                        <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-urgent">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M8 16v-4a4 4 0 0 1 8 0v4" />
-                                <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
-                                <path
-                                    d="M6 16m0 1a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1z" />
-                            </svg></i>
-                    </div>
+                <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 {{ $item['bg'] }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-7 stroke-secondary">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                    </svg>
                 </div>
             </div>
-            <!-- Export Button Section -->
-            <div class="top-bar">
-                <!-- Filter Dropdowns -->
-                <div class="filter-container">
-                    <select class="filter-select" wire:model="selectedLocation" wire:change="loadAlarms">
-                        <option value="">Filter by Location</option>
-                        @foreach ($locationsList as $location)
-                            <option value="{{ $location->id }}">{{ $location->address }}</option>
-                        @endforeach
-                    </select>
-                    <select class="filter-select" wire:model="selectedDevice" wire:change="loadAlarms">
-                        <option value="">Filter by Bay</option>
-                        @foreach ($devicesList as $device)
-                            <option value="{{ $device->id }}">{{ $device->name }}</option>
-                        @endforeach
-                    </select>
-                    <select class="filter-select" wire:model="selectedEvent" wire:change="loadAlarms">
-                        <option value="">Filter by Event</option>
-                        <option value="Opened By Device">Opened By Device</option>
-                        <option value="Opened By Protection">Opened By Protection</option>
-                        <option value="Opened By Remote">Opened By Remote</option>
-                        <option value="Opened By Local">Opened By Local</option>
-                        <option value="Opened By Teleporter">Opened By Teleporter</option>
-                        <option value="Close By Device">Close By Device</option>
-                        <option value="Close By Protection">Close By Protection</option>
-                        <option value="Close By Remote">Close By Remote</option>
-                        <option value="Close By Local">Close By Local</option>
-                        <option value="Undefined">Undefined</option>
-                    </select>
-                </div>
+        @endforeach
+    </div>
 
-                <!-- Export Button -->
-                <div class="export-button-container">
-                    <button class="export-button" onclick="toggleExportDropdown()">Export</button>
-                    <div id="exportDropdown" class="dropdown-content" style="display: none;">
-                        <button wire:click="exportToExcel" class="export-option">Export to Excel</button>
-                        <button wire:click="exportToPDF" class="export-option">Export to PDF</button>
-                    </div>
-                </div>
-            </div>
+    <div class="grid grid-rows-2 gap-3 my-5 md:grid-rows-1 md:grid-cols-3 lg:grid-cols-4 items-center">
+        <!-- Filter Dropdowns -->
+        <div class="flex flex-col md:flex-row gap-3 justify-between w-full md:col-span-2 lg:col-span-3">
+            <select wire:model="selectedLocation" wire:change="loadAlarms" class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
+                <option value="">Filter by Location</option>
+                @foreach ($locationsList as $location)
+                    <option value="{{ $location->id }}">{{ $location->address }}</option>
+                @endforeach
+            </select>
+            <select wire:model="selectedDevice" wire:change="loadAlarms" class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
+                <option value="">Filter by Bay</option>
+                @foreach ($devicesList as $device)
+                    <option value="{{ $device->id }}">{{ $device->name }}</option>
+                @endforeach
+            </select>
+            <select wire:model="selectedEvent" wire:change="loadAlarms" class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
+                <option value="">Filter by Event</option>
+                <option value="Opened By Device">Opened By Device</option>
+                <option value="Opened By Protection">Opened By Protection</option>
+                <option value="Opened By Remote">Opened By Remote</option>
+                <option value="Opened By Local">Opened By Local</option>
+                <option value="Opened By Teleporter">Opened By Teleporter</option>
+                <option value="Close By Device">Close By Device</option>
+                <option value="Close By Protection">Close By Protection</option>
+                <option value="Close By Remote">Close By Remote</option>
+                <option value="Close By Local">Close By Local</option>
+                <option value="Undefined">Undefined</option>
+            </select>
+        </div>
 
-            <div class="table-container">
-                <!-- Search and Per Page Selection -->
-                <div class="table-controls">
-                    <input type="text" wire:model.debounce.300ms="search" placeholder="Search..."
-                        class="search-input">
-                    <select wire:model="perPage" class="per-page-select">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </div>
-
-                <!-- Table -->
-                <table class="custom-table">
-                    <thead>
-                        <tr class="title-row">
-                            <th>Date Log</th>
-                            <th>Location</th>
-                            <th>Gardu Induk</th>
-                            <th>Bay</th>
-                            <th>Event</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($alarms as $alarm)
-                            <tr>
-                                <td class="first-section">
-                                    {{ \Carbon\Carbon::parse($alarm->date_log)->format('d-m-Y H:i') }}
-                                </td>
-                                <td class="first-section">{{ $alarm->locations->address ?? 'Unknown Location' }}</td>
-                                <td class="first-section">
-                                    {{ $alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk' }}</td>
-                                <td class="first-section">{{ $alarm->controls->bays->name ?? 'Unknown Device' }}</td>
-                                <td class="first-section">{{ $alarm->event_type ?? 'Unknown Event' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <!-- Pagination -->
-                <div class="pagination-container">
-                    {{ $alarms->links() }}
-                </div>
-
-                <!-- Total Records -->
-                <div class="total-records">
-                    Showing {{ $alarms->firstItem() }} to {{ $alarms->lastItem() }} of {{ $alarms->total() }} records
-                </div>
+        <!-- Export Button -->
+        <div class="w-full">
+            <button class="w-full bg-secondary text-white py-3 px-6 outline-none rounded-lg cursor-pointer text-base transition ease-in-out whitespace-nowrap" onclick="toggleExportDropdown()">Export</button>
+            <div id="exportDropdown" class="hidden absolute bg-white shadow-lg rounded-lg z-[1] min-w-44 py-1 px-0 mt-4 mr-4">
+                <button wire:click="exportToExcel" class="py-3 px-20 text-secondary bg-transparent outline-none text-left w-full text-sm transition ease-out">Export to Excel</button>
+                <button wire:click="exportToPDF" class="py-3 px-20 text-secondary bg-transparent outline-none text-left w-full text-sm transition ease-out">Export to PDF</button>
             </div>
         </div>
+    </div>
+
+    <div class="w-full relative my-5 overflow-x-scroll lg:overflow-auto">
+        <!-- Search and Per Page Selection -->
+        <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
+            <input type="text" wire:model.debounce.300ms="search" placeholder="Search..." class="flex-grow p-3 rounded-lg border text-sm min-w-52">
+            <select wire:model="perPage" class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+
+        <!-- Table -->
+        <table class="w-full border-collapse bg-white rounded-3xl shadow-lg mb-5">
+            <thead>
+                <tr class="title-row">
+                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Date Log</th>
+                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Location</th>
+                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Gardu Induk</th>
+                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Bay</th>
+                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Event</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($alarms as $alarm)
+                    <tr>
+                        <td class="td-class text-center">
+                            {{ \Carbon\Carbon::parse($alarm->date_log)->format('d-m-Y H:i') }}
+                        </td>
+                        <td class="td-class text-center">{{ $alarm->locations->address ?? 'Unknown Location' }}</td>
+                        <td class="td-class text-center">
+                            {{ $alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk' }}</td>
+                        <td class="td-class text-center">{{ $alarm->controls->bays->name ?? 'Unknown Device' }}</td>
+                        <td class="td-class text-center">{{ $alarm->event_type ?? 'Unknown Event' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{ $alarms->links() }}
     </div>
 
     <!-- Right Column (md-3) -->
@@ -244,37 +206,5 @@
                 </div>
             </div>
         </div> --}}
-        
-        <!-- Alerts Section -->
-        <div class="section-header">
-            <h3>Alert</h3>
-            <a href="#" class="view-all">View all</a>
-        </div>
-
-        @if ($recentAlarms->isEmpty())
-            <div class="alert-item">
-                <div class="alert-content">
-                    <p>No alarms found.</p>
-                </div>
-            </div>
-        @else
-            <div class="alert-list">
-                @foreach ($recentAlarms as $alarm)
-                    <div class="alert-item">
-                        <span
-                            class="alert-icon {{ $alarm->getEventType() === 'open' ? 'green-dot' : ($alarm->getEventType() === 'close' ? 'red-dot' : 'undefined-dot') }}"></span>
-                        <div class="alert-content">
-                            <p>{{ $alarm->event_type }}</p>
-                            <small>
-                                {{ $alarm->controls->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                                {{ $alarm->controls->bays->name ?? 'Unknown Bay' }}
-                            </small>
-                        </div>
-                        <span class="alert-time">{{ $alarm->date_log }}</span>
-                    </div>
-                @endforeach
-            </div>
-        @endif
-
     </div>
 </div>

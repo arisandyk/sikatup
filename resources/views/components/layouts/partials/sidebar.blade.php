@@ -1,4 +1,4 @@
-<div id="sidebar" class="w-full bg-secondary text-white absolute lg:w-auto lg:m-5 lg:top-0 top-36 md:top-20 z-40 p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150">
+<div id="sidebar" class="w-full bg-secondary text-white absolute lg:w-auto lg:m-5 lg:top-0 top-36 md:top-20 z-40 p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 lg:block">
     <div class="text-left flex">
         <div class="flex items-end gap-3 text-wrap text-2xl font-bold">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10">

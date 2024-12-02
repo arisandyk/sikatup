@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FCFBE8;
+    margin: 0;
+}
+
 .td-class {
     @apply p-3 text-sm text-secondary border bg-white
 }
@@ -10,31 +16,22 @@
     @apply flex flex-col mb-4 sm:table-row
 }
 
-.pagination-container {
-    @apply mt-5 flex justify-center
+.add-button {
+    @apply bg-secondary text-white py-3 px-6 border-0 rounded-lg cursor-pointer text-base transition ease-out whitespace-nowrap
 }
 
-.pagination-container nav {
-    @apply inline-block
+.btn-action {
+    @apply bg-transparent border-0 rounded-full w-9 h-9 flex justify-center items-center cursor-pointer transition ease-out
 }
 
-.pagination-container ul {
-    @apply flex list-none p-0 m-0
+.filter-pill {
+    @apply inline-flex items-center bg-[#FFFDC3] rounded-[25px] py-1 px-3 mr-0
 }
 
-.pagination-container li {
-    @apply my-0 mx-1
+.pill-button {
+    @apply bg-transparent border-0 text-base text-secondary mr-3
 }
 
-.pagination-container li a,
-.pagination-container li span {
-    @apply inline-block py-2 px-3 bg-white text-secondary rounded no-underline transition ease-out
-}
-
-.pagination-container li.active span {
-    @apply bg-secondary text-white
-}
-
-.pagination-container li a:hover {
-    @apply bg-primary
+.pill-dropdown {
+    @apply bg-white border-0 text-base p-1 rounded-[25px] shadow-lg text-secondary
 }

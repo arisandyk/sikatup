@@ -25,8 +25,6 @@ class Users extends Component
     public $editingUser;
     public $name, $email, $role, $account_status, $unit_name, $app_name;
 
-    protected $paginationTheme = 'bootstrap';
-
     public $availableRoles = [];
     public $availableUnits = [];
     public $availableStatuses = ['active', 'inactive', 'pending'];

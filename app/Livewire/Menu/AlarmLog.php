@@ -25,7 +25,7 @@ class AlarmLog extends Component
     public $selectedEvent = '';
     public $perPage = 10;
     public $search = '';
-    protected $paginationTheme = 'bootstrap';
+    
     // List for dropdowns
     public $locationsList = [];
     public $devicesList = [];
@@ -143,7 +143,6 @@ class AlarmLog extends Component
         // Get recent pending users and alarms
         $pendingUsers = User::where('account_status', 'pending')->get();
         $recentPendingUsers = User::where('account_status', 'pending')->orderBy('created_at', 'asc')->take(3)->get();
-        $recentAlarms = Alarm::with(['locations', 'controls.bays'])->orderBy('created_at', 'desc')->take(4)->get();
 
         return view('livewire.menu.alarm-log', [
             'alarms' => $this->alarms,
@@ -157,7 +156,6 @@ class AlarmLog extends Component
             'alarmsPercentage' => $alarmsPercentage,
             'pendingUsers' => $pendingUsers,
             'recentPendingUsers' => $recentPendingUsers,
-            'recentAlarms' => $recentAlarms,
         ])->layout('components.layouts.app', ['title' => $this->title]);
     }
 

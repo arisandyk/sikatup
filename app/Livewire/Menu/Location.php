@@ -20,7 +20,6 @@ class Location extends Component
     public $search = '';
 
     protected $queryString = ['search', 'perPage'];
-    protected $paginationTheme = 'bootstrap'; // Add pagination theme if you're using Bootstrap
 
     public function mount()
     {
@@ -67,7 +66,6 @@ class Location extends Component
             ->orderBy('created_at', 'asc')
             ->take(3)
             ->get();
-        $recentAlarms = Alarm::orderBy('created_at', 'desc')->take(4)->get();
 
         return view('livewire.menu.location', [
             'totalUsers' => $totalUsers,
@@ -80,7 +78,6 @@ class Location extends Component
             'alarmsPercentage' => $alarmsPercentage,
             'pendingUsers' => $pendingUsers,
             'recentPendingUsers' => $recentPendingUsers,
-            'recentAlarms' => $recentAlarms,
             'locations' => $locations, // Pass paginated locations to the view
             'location' => $locations
         ])->layout('components.layouts.app', ['title' => $this->title]);
