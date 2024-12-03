@@ -59,7 +59,7 @@
                     alertElement.classList.add('hidden');
                     alertElement.classList.remove('flex');
                 }
-            };
+            };            
 
             async function checkAlert() {
                 try {
@@ -70,6 +70,10 @@
                         }
                     });
                     if (!response.ok) throw new Error('Failed to fetch alert');
+                    
+                    const data = await response.json();
+                    alertData = data.alarm
+                    handleAlert()
                 } catch (error) {
                     console.error('Error:', error);
                     clearInterval(interval);
@@ -94,14 +98,6 @@
                 }
             }
 
-            window.onload = () => {
-                const channel = Echo.channel('channel-reverb');
-                channel.listen("AlarmTriggered", (data) => {
-                    alertData = data.alarm
-                    handleAlert()
-                });
-            };
-
             function notify(message, targetURL) {
                 if (!Notification) {
                     alert('Browser kamu belum mendukung web notifikasi.');
@@ -125,7 +121,7 @@
             }
 
             function handleAlert() {
-                if (alertData.id !== previousAlert.id || alertData.deleted_at == null && previousAlert.deleted_at == null) {
+                if (alertData.id !== previousAlert?.id || alertData.deleted_at == null && previousAlert?.deleted_at == null) {
                     previousAlert = alertData;
                     localStorage.setItem('alert', JSON.stringify({
                         alarm: alertData
@@ -160,6 +156,6 @@
             interval = setInterval(checkAlert, 5000);
         }
 
-        // monitorAlert();
+        monitorAlert();
     </script>
 @endpush

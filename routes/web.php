@@ -53,8 +53,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         $alarm = Alarm::withTrashed()->with('event.bays.trafos', 'locations.gardu_induks.basecamps.apps.unitInduk.direktorat')->where('deleted_at', null)->first();
     
         if ($alarm) {
-            event(new AlarmTriggered($alarm));
-            return response()->json(['message' => 'Message has been send'], 200);
+            return response()->json([
+                'success' => true,
+                'alarm' => $alarm
+            ], 200);
         } else {
             return response()->json(['error' => 'No active alarm found'], 404);
         }
