@@ -32,21 +32,25 @@ class PollMqttData extends Command
      */
     public function handle()
     {
-        Log::info('Command Executed');
+        Log::info('Executed');
         // Retrieve the last checked time from cache (or set a default value)
         $lastCheckedTime = Cache::get('last_checked_time', now()->subMinutes(5));
+
+        Log::info($lastCheckedTime);
 
         // Query for records updated after the last checked time
         $updatedRecord = Event::where('updated_at', '>', $lastCheckedTime)
             ->orderBy('updated_at', 'asc')
             ->first();
 
+        Log::info(json_encode($updatedRecord));
+        Log::info(isset($updatedRecord) ? "true" : "false");
+
         if (isset($updatedRecord)) {
-            Log::info('MQTT Data Updated', $updatedRecord->toArray());
             $this->processAndHandleMessage($updatedRecord);
 
-                // Process the updated record here
-                // Example: Notify the user, trigger a business logic, etc.
+            // Process the updated record here
+            // Example: Notify the user, trigger a business logic, etc.
 
             // Update the last checked time to the most recent `updated_at` value
             $lastCheckedTime = $updatedRecord->updated_at;
@@ -54,38 +58,34 @@ class PollMqttData extends Command
         }
     }
 
-    protected function processAndHandleMessage(string $message)
+    protected function processAndHandleMessage(Event $message)
     {
-        Log::info('Received message from MQTT', ['message' => $message]);
         try {
-            $data = json_decode($message, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON data received');
-            }
-
-            if (!isset($data['bay_id']) || !is_int($data['bay_id'])) {
+            if (!isset($message->bay_id) || !is_int($message->bay_id)) {
                 throw new \Exception('Missing or invalid required field: bay_id');
             }
 
-            $bay = Bay::find($data['bay_id']);
+            $bay = Bay::find($message->bay_id);
             if (!$bay) {
-                throw new \Exception("Bay with id {$data['bay_id']} not found");
+                throw new \Exception("Bay with id {$message->bay_id} not found");
             }
 
-            $event = Event::where('bay_id', $data['bay_id'])->first();
+            Log::info(json_encode($bay));
 
-            Log::error("Is new event", ['is it' => $this->isNewEvent($event, $data)]);
+            $event = Event::where('bay_id', $message->bay_id)->first();
+
+            Log::info(json_encode($event));
+
             if ($event) {
-                $this->updateControl($data);
+                $this->updateControl($message);
                 // if ($this->isNewEvent($event, $data)) {
                 //     $this->updateEvent($event, $data);
                 // }
             }
 
-            $this->createAlarms($event, $data);
+            $this->createAlarms($event);
         } catch (\Exception $e) {
-            Log::error('Failed to process message', ['error' => $e->getMessage(), 'data' => $message]);
+            $this->error("Failed to process message : {$e->getMessage()} and {$message}");
         }
     }
 
@@ -110,13 +110,12 @@ class PollMqttData extends Command
         }
 
         $event->save();
-        Log::info('Event updated successfully', ['data' => $event->toArray()]);
     }
 
-    protected function updateControl(array $data)
+    protected function updateControl(Event $data)
     {
         $fields = ['obd', 'cbd', 'obp', 'cbp', 'obr', 'cbr', 'obl', 'cbl', 'obt', 'und'];
-        $control = Control::firstOrNew(['bay_id' => $data['bay_id']]);
+        $control = Control::firstOrNew(['bay_id' => $data->bay_id]);
 
         $isNewData = false;
 
@@ -129,11 +128,10 @@ class PollMqttData extends Command
 
         if ($isNewData) {
             $control->save();
-            Log::info('Control updated successfully', ['data' => $control->toArray()]);
         }
     }
 
-    protected function createAlarms(Event $event, array $data)
+    protected function createAlarms(Event $event)
     {
         $eventTypeMappings = [
             'obd' => 'Opened by Device',
@@ -148,9 +146,9 @@ class PollMqttData extends Command
             'und' => 'Undefined',
         ];
 
-        foreach ($eventTypeMappings as $field => $description) {
-            if (isset($data[$field]) && $data[$field] > 0) {
-                try {
+        try {
+            foreach ($eventTypeMappings as $field => $description) {
+                if (isset($event[$field]) && $event[$field] === 0) {
                     $alarm = new Alarm();
                     $alarm->date_log = now();
                     $alarm->location_id = $event->bays->gardu_induks->locations()->first()->id ?? null;
@@ -158,18 +156,15 @@ class PollMqttData extends Command
                     $alarm->event_type = $description;
                     $alarm->voice = $this->getAlarmSoundForEvent($description);
                     $alarm->save();
-
-                    Log::info("Alarm created for event type: {$description}", ['alarm' => $alarm->toArray()]);
-
-                    // event(new AlarmTriggered($alarm));
-                } catch (\Exception $e) {
-                    Log::error("Failed to create alarm for event {$event->id}", [
-                        'error' => $e->getMessage(),
-                        'field' => $field,
-                        'description' => $description
-                    ]);
                 }
             }
+            // event(new AlarmTriggered($alarm));
+        } catch (\Exception $e) {
+            Log::error("Failed to create alarm for event {$event->id}", [
+                'error' => $e->getMessage(),
+                'field' => $field,
+                'description' => $description
+            ]);
         }
     }
 

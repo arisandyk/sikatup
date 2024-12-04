@@ -17,10 +17,11 @@ use App\Livewire\Menu\Location;
 use App\Livewire\Settings\EditProfile;
 use App\Livewire\Settings\Profile;
 use App\Models\Alarm;
+use Illuminate\Support\Facades\Artisan;
 
-Route::get('/', SignIn::class)->name('sign-in');
+Route::get('/', SignIn::class)->name('sign-in')->name('login');
 
-Route::get('/sign-up', SignUp::class)->name('sign-up');
+Route::get('/sign-up', SignUp::class)->name('sign-up')->name('register');
 // Tambahkan rute untuk menangani verifikasi email secara manual
 Route::get('/email/verify/{id}/{hash}', \App\Livewire\Auth\VerifyEmail::class)->name('verification.verify')->middleware(['signed']);
 Route::get('/reset-password', ResetPassword::class)->name('reset-password');
@@ -50,6 +51,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::post('/send', function() {
+        Artisan::call('app:poll-mqtt-data');
+
         $alarm = Alarm::withTrashed()->with('event.bays.trafos', 'locations.gardu_induks.basecamps.apps.unitInduk.direktorat')->where('deleted_at', null)->first();
     
         if ($alarm) {
@@ -58,7 +61,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                 'alarm' => $alarm
             ], 200);
         } else {
-            return response()->json(['error' => 'No active alarm found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'No active alarm found'
+            ]);
         }
     });
 

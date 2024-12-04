@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const toggleBtn = document.querySelector('body #btn-toggle');
-    
+    const toggleBtn1 = document.querySelector('body #btn-toggle-1');
+    const toggleBtn2 = document.querySelector('body #btn-toggle-2');
+
     const sidebar = document.querySelector('#sidebar');
     const logoutLink = document.getElementById('logoutLink');
     const logoutModal = document.getElementById('logoutModal');
@@ -9,9 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalContent = document.querySelector('.modal-content');
 
     // Sidebar toggle functionality
-    toggleBtn.addEventListener('click', function (e) {
+    toggleBtn1.addEventListener('click', function (e) {
         e.preventDefault()
-        
+
+        sidebar.classList.toggle('hidden')
+    });
+
+    toggleBtn2.addEventListener('click', function (e) {
+        e.preventDefault()
+
         sidebar.classList.toggle('hidden')
     });
 

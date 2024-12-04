@@ -1,17 +1,23 @@
-<div id="sidebar" class="w-full bg-secondary text-white absolute lg:w-auto lg:m-5 lg:top-0 top-36 md:top-20 z-40 p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 lg:block">
-    <div class="text-left flex">
+<div id="sidebar" class="w-full bg-secondary text-white absolute lg:fixed lg:w-auto lg:m-5 top-0 z-[60] p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 hidden lg:block space-y-5">
+    <div class="text-left flex justify-between items-end">
         <div class="flex items-end gap-3 text-wrap text-2xl font-bold">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10">
             <span>MONITORING</span>
         </div>
+        <button class="p-1 bg-primary rounded-lg block lg:hidden" id="btn-toggle-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-8 stroke-secondary">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
     </div>
-    <div class="mt-10 text-left flex items-end gap-3 mb-5 text-white">
+    <div class="text-left flex items-end gap-3 text-white">
         <img src="{{ 'storage/'. Auth::user()->image }}" alt="User Image" class="w-10 h-10 rounded-xl">
         <span class="text-lg m-0 ml-3">Hello 👋 {{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
     </div>
-    <ul class="list-none p-0 m-0">
+    <ul class="list-none p-0 m-0 space-y-3">
         <h4 class="text-lg">Menu</h4>
-        <li class="my-5 flex items-center border-b lg:border-none pb-4">
+        <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -27,7 +33,7 @@
             </a>
         </li>
         @if (Auth::user()->role == 'admin')
-            <li class="my-5 flex items-center border-b lg:border-none pb-4">
+            <li class="flex items-center border-b lg:border-none pb-4">
                 <a href="{{ route('users') }}" class="{{ request()->routeIs('users') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                     <i class="flex mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -43,7 +49,7 @@
                     <span>Users</span>
                 </a>
             </li>
-            <li class="my-5 flex items-center border-b lg:border-none pb-4">
+            <li class="flex items-center border-b lg:border-none pb-4">
                 <a href="{{ route('devices') }}" class="{{ request()->routeIs('devices') ? 'text-yellow-300' : 'text-white'}} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                     <i class="flex mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -61,7 +67,7 @@
                 </a>
             </li>
         @endif
-        <li class="my-5 flex items-center border-b lg:border-none pb-4">
+        <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('control') }}" class="{{ request()->routeIs('control') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -76,7 +82,7 @@
                 <span>Control</span>
             </a>
         </li>
-        <li class="my-5 flex items-center border-b lg:border-none pb-4">
+        <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('location') }}" class="{{ request()->routeIs('location') ? 'text-yellow-300' : 'no-underline flex items-center text-base rounded-lg hover:text-yellow-500' }}">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -90,7 +96,7 @@
                 <span>Location</span>
             </a>
         </li>
-        <li class="my-5 flex items-center border-b lg:border-none pb-4">
+        <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('alarm') }}" class="{{ request()->routeIs('alarm') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -106,7 +112,7 @@
             </a>
         </li>
         <h4 class="text-lg">Settings</h4>
-        <li class="my-5 flex items-center border-b lg:border-none pb-4">
+        <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -120,7 +126,7 @@
                 <span>Profile</span>
             </a>
         </li>
-        <li class="my-5 flex items-center border-b lg:border-none pb-4">
+        <li class="flex items-center border-b lg:border-none pb-4">
             <a href="#" id="logoutLink" class="no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
