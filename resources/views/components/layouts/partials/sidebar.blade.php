@@ -83,7 +83,7 @@
             </a>
         </li>
         <li class="flex items-center border-b lg:border-none pb-4">
-            <a href="{{ route('location') }}" class="{{ request()->routeIs('location') ? 'text-yellow-300' : 'no-underline flex items-center text-base rounded-lg hover:text-yellow-500' }}">
+            <a href="{{ route('location') }}" class="{{ request()->routeIs('location') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

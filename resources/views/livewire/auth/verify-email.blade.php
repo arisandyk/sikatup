@@ -23,7 +23,7 @@
                 <div class="icon">&#10005;</div> <!-- Cross Icon -->
                 <div class="title">Email Verification Failed</div>
                 <div class="message">We're sorry, something has gone wrong. Please try again.</div>
-                <a href="{{ route('sign-up') }}" class="button">Done</a>
+                <a href="{{ route('register') }}" class="button">Done</a>
                 @endif
             </div>
         </div>

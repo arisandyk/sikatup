@@ -62,7 +62,7 @@
             <div class="text-center px-4">
                 <h2 class="mt-5 text-secondary text-4xl font-bold mb-4">Hello, Friends!</h2>
                 <p class="text-secondary text-2xl mb-8">Register with your personal details to use all this PLN-PMT Trans JBT features</p>
-                <a href="{{ route('sign-up') }}" class="p-4 bg-secondary rounded-lg text-white">Sign Up</a>
+                <a href="{{ route('register') }}" class="p-4 bg-secondary rounded-lg text-white">Sign Up</a>
             </div>
         </div>
     </div>

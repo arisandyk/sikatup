@@ -19,9 +19,9 @@ use App\Livewire\Settings\Profile;
 use App\Models\Alarm;
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('/', SignIn::class)->name('sign-in')->name('login');
+Route::get('/', SignIn::class)->name('login');
 
-Route::get('/sign-up', SignUp::class)->name('sign-up')->name('register');
+Route::get('/sign-up', SignUp::class)->name('register');
 // Tambahkan rute untuk menangani verifikasi email secara manual
 Route::get('/email/verify/{id}/{hash}', \App\Livewire\Auth\VerifyEmail::class)->name('verification.verify')->middleware(['signed']);
 Route::get('/reset-password', ResetPassword::class)->name('reset-password');

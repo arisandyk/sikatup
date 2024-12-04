@@ -47,7 +47,7 @@
     @endif
 
     <div id="alert"
-        class="w-full h-screen bg-black/50 overflow-hidden fixed top-0 z-50 hidden justify-center items-center p-4">
+        class="w-full h-screen bg-black/50 overflow-hidden fixed top-0 z-[100] hidden justify-center items-center p-4">
         <div class="max-w-screen-xl w-full">
             <livewire:components.alarm-notifier />
         </div>

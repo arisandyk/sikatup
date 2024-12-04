@@ -7,6 +7,7 @@ use App\Models\Alarm;
 use App\Models\Bay;
 use App\Models\Control;
 use App\Models\Event;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -53,39 +54,35 @@ class PollMqttData extends Command
             // Example: Notify the user, trigger a business logic, etc.
 
             // Update the last checked time to the most recent `updated_at` value
-            $lastCheckedTime = $updatedRecord->updated_at;
-            Cache::put('last_checked_time', $lastCheckedTime);
+            Log::info("Test");
         }
     }
 
     protected function processAndHandleMessage(Event $message)
     {
         try {
-            if (!isset($message->bay_id) || !is_int($message->bay_id)) {
-                throw new \Exception('Missing or invalid required field: bay_id');
+            if (!isset($message['bay_id'])) {
+                throw new Exception('Missing or invalid required field: bay_id');
             }
 
-            $bay = Bay::find($message->bay_id);
+            $bay = Bay::find($message['bay_id']);
             if (!$bay) {
-                throw new \Exception("Bay with id {$message->bay_id} not found");
+                throw new Exception("Bay with id {$message['bay_id']} not found");
             }
 
             Log::info(json_encode($bay));
 
-            $event = Event::where('bay_id', $message->bay_id)->first();
+            $event = Event::where('bay_id', $message['bay_id'])->first();
 
             Log::info(json_encode($event));
 
             if ($event) {
                 $this->updateControl($message);
-                // if ($this->isNewEvent($event, $data)) {
-                //     $this->updateEvent($event, $data);
-                // }
+                $this->createAlarms($event);
             }
 
-            $this->createAlarms($event);
         } catch (\Exception $e) {
-            $this->error("Failed to process message : {$e->getMessage()} and {$message}");
+            Log::error("Failed to process message : {$e->getMessage()} and ".json_encode($message['bay_id']));
         }
     }
 
@@ -119,16 +116,22 @@ class PollMqttData extends Command
 
         $isNewData = false;
 
-        foreach ($fields as $field) {
-            if (isset($data[$field]) && $data[$field] == 1) {
-                $control->$field++;
-                $isNewData = true;
+        try {
+            foreach ($fields as $field) {
+                if (isset($data[$field]) && $data[$field] == 1) {
+                    $control->$field++;
+                    $isNewData = true;
+                }
             }
+    
+            if ($isNewData) {
+                $control->save();
+                Log::info(json_encode($control));
+            }
+        } catch (Exception $e) {
+            Log::error("Failed to process message : {$e->getMessage()} and");
         }
 
-        if ($isNewData) {
-            $control->save();
-        }
     }
 
     protected function createAlarms(Event $event)
@@ -148,7 +151,7 @@ class PollMqttData extends Command
 
         try {
             foreach ($eventTypeMappings as $field => $description) {
-                if (isset($event[$field]) && $event[$field] === 0) {
+                if (isset($event[$field]) && $event[$field] == 0) {
                     $alarm = new Alarm();
                     $alarm->date_log = now();
                     $alarm->location_id = $event->bays->gardu_induks->locations()->first()->id ?? null;
@@ -156,10 +159,18 @@ class PollMqttData extends Command
                     $alarm->event_type = $description;
                     $alarm->voice = $this->getAlarmSoundForEvent($description);
                     $alarm->save();
+                    
+                    Log::info("Created");
+                    Log::info(json_encode($alarm));
                 }
+                Log::info($event[$field]);
+                Log::info((isset($event[$field]) && $event[$field]) == 0 ? "true" : "false");
             }
+            
+            $lastCheckedTime = $event->updated_at;
+            Cache::put('last_checked_time', $lastCheckedTime);
             // event(new AlarmTriggered($alarm));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to create alarm for event {$event->id}", [
                 'error' => $e->getMessage(),
                 'field' => $field,
