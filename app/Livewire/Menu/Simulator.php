@@ -23,17 +23,7 @@ class Simulator extends Component
     public $availableBasecamps = [];
     public $availableGarduInduks = [];
 
-    public $isActive = [
-        false,
-        false,
-        false
-    ];
-    public $imageType = [
-        'Penghantar',
-        'Trafo',
-        'Couple'
-    ];
-    public $imageCondition = [];
+    public $isActive = [];
 
     public $buttons = [];
 
@@ -47,9 +37,11 @@ class Simulator extends Component
         $this->availableUnitInduks = UnitInduk::distinct()
             ->pluck('name', 'id');
 
-        foreach ($this->imageType as $key => $value) {
-            array_push($this->imageCondition, "assets/img/sld/{$value} Off.png");
-        }
+        $this->isActive = [
+            false,
+            false,
+            false
+        ];
     }
 
     public function loadApp()
@@ -88,7 +80,7 @@ class Simulator extends Component
             $this->buttons = Bay::where('gi_id', $this->filterGarduInduk)->witH('event')->get();
         }
 
-        $this->loadImage();
+        $this->changeState();
     }
 
     public function showDialog($bay_id, $eventType)
@@ -116,7 +108,7 @@ class Simulator extends Component
             ]);
         }
 
-        $this->loadImage();
+        $this->changeState();
         $this->hideDialog();
     }
 
@@ -125,7 +117,7 @@ class Simulator extends Component
         return $data == 1 ? 0 : 1;
     }
 
-    public function loadImage()
+    public function changeState()
     {
         foreach ($this->buttons as $key => $item) {
             $event = Event::where('bay_id', $item->id)->first();
@@ -142,18 +134,15 @@ class Simulator extends Component
                 'obt',
                 'und'
             ];
-        
-            $images = "assets/img/sld/{$this->imageType[$key]} Off.png"; // Default image
+
+            $this->isActive[$key] = false;
         
             foreach ($eventTypes as $type) {
                 if (isset($event[$type]) && $event[$type] == 0) {
-                    // $images = "assets/img/sld/{$this->imageType[$key]} On.png";
                     $this->isActive[$key] = true;
-                    break; // Stop checking further as we found an 'On' condition
+                    break;
                 }
             }
-        
-            $this->imageCondition[$key] = $images;
         }
     }
 

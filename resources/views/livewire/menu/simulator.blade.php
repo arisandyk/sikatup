@@ -96,9 +96,6 @@
                     </g>
                 </g>
             </svg>
-            {{-- @foreach ($buttons as $key => $item)
-                <img src="{{ asset($imageCondition[$key]) }}" alt="Single Line Diagram Penghantar" class="w-[30%] bg-cover">
-            @endforeach --}}
         </div>
 
         @php
@@ -155,7 +152,7 @@
                         <button class="flex items-center gap-x-3 md:bg-white md:p-2 md:rounded-full md:drop-shadow-lg"
                             wire:click="showDialog({{ $item->id }}, '{{ $eventType['acronym'] }}')">
                             <span
-                                class="text-sm text-white {{ $item->event[strtolower($eventType['acronym'])] == 1 ? 'bg-red-500' : 'bg-green-500' }} py-1 px-3 rounded-2xl flex items-center justify-center">
+                                class="text-sm text-white {{ $item->event[strtolower($eventType['acronym'])] == 1 ? 'bg-green-500' : 'bg-red-500' }} py-1 px-3 rounded-2xl flex items-center justify-center">
                                 {{ $eventType['acronym'] }}
                             </span>
                             <span class="text-sm text-secondary">{{ $eventType['name'] }}</span>
