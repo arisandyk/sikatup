@@ -51,9 +51,9 @@ class Bay extends Model
         return $this->belongsTo(Trafo::class, 'trafo_id', 'id');
     }
 
-    public function events()
+    public function event()
     {
-        return $this->hasMany(Event::class, 'bay_id', 'id');
+        return $this->hasOne(Event::class, 'bay_id', 'id');
     }
 
     public function controls()
