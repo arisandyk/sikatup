@@ -7,6 +7,7 @@ use App\Models\Bay;
 use App\Models\Location as LocationModel; // Adjust to your Location model
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -41,13 +42,13 @@ class Location extends Component
         $totalUsers = User::count();
         $devices = Bay::count();
         $locationCount = LocationModel::count(); // Fixed variable name
-        $alarms = Alarm::count();
+        $alarms = Alarm::withTrashed()->count();
 
         $yesterday = Carbon::yesterday();
         $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
         $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
         $previousLocations = LocationModel::whereDate('created_at', $yesterday)->count();
-        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
+        $previousAlarms = Alarm::withTrashed()->whereDate('created_at', $yesterday)->count();
 
         // Calculate the percentages
         $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);

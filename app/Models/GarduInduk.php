@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GarduInduk extends Model
@@ -31,7 +32,7 @@ class GarduInduk extends Model
         return $this->belongsTo(Basecamp::class, 'basecamp_id', 'id');
     }
 
-    public function locations()
+    public function locations() : HasMany
     {
         return $this->hasMany(Location::class, 'gi_id', 'id');
     }

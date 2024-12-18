@@ -12,6 +12,7 @@ use App\Models\Event;
 use App\Models\GarduInduk;
 use App\Models\UnitInduk;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -182,25 +183,20 @@ class Control extends Component
         $totalUsers = User::count();
         $devices = Bay::count();
         $locations = Location::count();
-        $alarms = Alarm::count();
+        $alarms = Alarm::withTrashed()->count();
 
         // Example previous day data, you should replace this with real historical data
         $yesterday = Carbon::yesterday();
         $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
         $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
         $previousLocations = Location::whereDate('created_at', $yesterday)->count();
-        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
+        $previousAlarms = Alarm::withTrashed()->whereDate('created_at', $yesterday)->count();
 
         // Calculate the percentages based on real current and previous values
         $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);
         $devicesPercentage = $this->calculatePercentageChange($devices, $previousDevices);
         $locationsPercentage = $this->calculatePercentageChange($locations, $previousLocations);
         $alarmsPercentage = $this->calculatePercentageChange($alarms, $previousAlarms);
-
-        // Fetch the 4 most recent alarms
-        $recentAlarms = Alarm::orderBy('created_at', 'desc')
-            ->take(2)
-            ->get();
 
         return view('livewire.menu.control', [
             'totalUsers' => $totalUsers,
@@ -219,7 +215,6 @@ class Control extends Component
             'selectedApp' => $this->selectedApp,
             'selectedBasecamp' => $this->selectedBasecamp,
             'selectedGarduInduk' => $this->selectedGarduInduk,
-            'recentAlarms' => $recentAlarms,
         ])->layout('components.layouts.app', array('title' => $this->title));
     }
 

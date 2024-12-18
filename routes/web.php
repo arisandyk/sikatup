@@ -14,6 +14,7 @@ use App\Livewire\Menu\Users;
 use App\Livewire\Menu\Control;
 use App\Livewire\Menu\Devices;
 use App\Livewire\Menu\Location;
+use App\Livewire\Menu\Simulator;
 use App\Livewire\Settings\EditProfile;
 use App\Livewire\Settings\Profile;
 use App\Models\Alarm;
@@ -33,6 +34,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/control', Control::class)->name('control');
     Route::get('/location', Location::class)->name('location');
+    Route::get('/simulator', Simulator::class)->name('simulator');
     Route::get('/alarm', AlarmLog::class)->name('alarm');
     Route::get('/profile', Profile::class)->name('profile');
     Route::get('/edit-profile', EditProfile::class)->name('edit-profile');

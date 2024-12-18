@@ -14,6 +14,7 @@ use App\Models\UnitInduk;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -127,7 +128,7 @@ class Devices extends Component
             'totalUsers' => User::count(),
             'devices' => Bay::count(),
             'locations' => Location::count(),
-            'alarms' => Alarm::count(),
+            'alarms' => Alarm::withTrashed()->count(),
             'percentages' => [
                 'users' => $this->calculatePercentageChange(
                     User::count(),
@@ -142,8 +143,8 @@ class Devices extends Component
                     Location::whereDate('created_at', $yesterday)->count()
                 ),
                 'alarms' => $this->calculatePercentageChange(
-                    Alarm::count(),
-                    Alarm::whereDate('created_at', $yesterday)->count()
+                    Alarm::withTrashed()->count(),
+                    Alarm::withTrashed()->whereDate('created_at', $yesterday)->count()
                 ),
             ],
         ];

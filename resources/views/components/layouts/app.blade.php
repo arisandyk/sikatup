@@ -37,6 +37,7 @@
             'alarm',
             'location',
             'profile',
+            'simulator',
             'edit-profile',
         ];
     @endphp

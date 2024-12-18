@@ -80,9 +80,8 @@ class PollMqttData extends Command
                 $this->updateControl($message);
                 $this->createAlarms($event);
             }
-
         } catch (\Exception $e) {
-            Log::error("Failed to process message : {$e->getMessage()} and ".json_encode($message['bay_id']));
+            Log::error("Failed to process message : {$e->getMessage()} and " . json_encode($message['bay_id']));
         }
     }
 
@@ -118,12 +117,12 @@ class PollMqttData extends Command
 
         try {
             foreach ($fields as $field) {
-                if (isset($data[$field]) && $data[$field] == 1) {
+                if (isset($data[$field]) && $data[$field] == 0) {
                     $control->$field++;
                     $isNewData = true;
                 }
             }
-    
+
             if ($isNewData) {
                 $control->save();
                 Log::info(json_encode($control));
@@ -131,7 +130,6 @@ class PollMqttData extends Command
         } catch (Exception $e) {
             Log::error("Failed to process message : {$e->getMessage()} and");
         }
-
     }
 
     protected function createAlarms(Event $event)
@@ -150,6 +148,21 @@ class PollMqttData extends Command
         ];
 
         try {
+            $bay = $event->bays;
+            if (!$bay) {
+                Log::warning("Bay not found for event {$event->id}");
+            }
+
+            $garduInduk = $bay->gardu_induks;
+            if (!$garduInduk) {
+                Log::warning("GarduInduk not found for bay {$bay->id}");
+            }
+
+            $location = $garduInduk->locations()->first();
+            if (!$location) {
+                Log::warning("Location not found for GarduInduk {$garduInduk->id}");
+            }
+
             foreach ($eventTypeMappings as $field => $description) {
                 if (isset($event[$field]) && $event[$field] == 0) {
                     $alarm = new Alarm();
@@ -159,14 +172,14 @@ class PollMqttData extends Command
                     $alarm->event_type = $description;
                     $alarm->voice = $this->getAlarmSoundForEvent($description);
                     $alarm->save();
-                    
+
                     Log::info("Created");
                     Log::info(json_encode($alarm));
                 }
                 Log::info($event[$field]);
                 Log::info((isset($event[$field]) && $event[$field]) == 0 ? "true" : "false");
             }
-            
+
             $lastCheckedTime = $event->updated_at;
             Cache::put('last_checked_time', $lastCheckedTime);
             // event(new AlarmTriggered($alarm));
@@ -174,7 +187,7 @@ class PollMqttData extends Command
             Log::error("Failed to create alarm for event {$event->id}", [
                 'error' => $e->getMessage(),
                 'field' => $field,
-                'description' => $description
+                'description' => $description,
             ]);
         }
     }

@@ -47,7 +47,7 @@ class AlarmLog extends Component
         // Load all locations, devices, and event types at the start
         $this->locationsList = Location::all();
         $this->devicesList = Bay::all();
-        $this->eventTypes = Alarm::select('event_type')->distinct()->get();
+        $this->eventTypes = Alarm::withTrashed()->select('event_type')->distinct()->get();
 
         // Initialize filter values
         $this->selectedLocation = request()->input('location') ?? '';
@@ -89,7 +89,7 @@ class AlarmLog extends Component
     // Load alarms based on filters
     public function loadAlarms()
     {
-        $query = Alarm::query()
+        $query = Alarm::withTrashed()
             ->when($this->selectedLocation, function ($q) {
                 $q->whereHas('locations', function ($subq) {
                     $subq->where('id', $this->selectedLocation);
@@ -126,13 +126,13 @@ class AlarmLog extends Component
         $totalUsers = User::count();
         $devices = Bay::count();
         $locations = Location::count();
-        $alarmsCount = Alarm::count();
+        $alarmsCount = Alarm::withTrashed()->count();
 
         $yesterday = Carbon::yesterday();
         $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
         $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
         $previousLocations = Location::whereDate('created_at', $yesterday)->count();
-        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
+        $previousAlarms = Alarm::withTrashed()->whereDate('created_at', $yesterday)->count();
 
         // Calculating percentage changes
         $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);

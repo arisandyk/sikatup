@@ -7,6 +7,7 @@ use App\Models\Bay;
 use App\Models\Location;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -25,14 +26,14 @@ class Dashboard extends Component
         $totalUsers = User::count();
         $devices = Bay::count();
         $locations = Location::count();
-        $alarms = Alarm::count();
+        $alarms = Alarm::withTrashed()->count();
 
         // Fetch previous day data
         $yesterday = Carbon::yesterday();
         $previousTotalUsers = User::whereDate('created_at', $yesterday)->count();
         $previousDevices = Bay::whereDate('created_at', $yesterday)->count();
         $previousLocations = Location::whereDate('created_at', $yesterday)->count();
-        $previousAlarms = Alarm::whereDate('created_at', $yesterday)->count();
+        $previousAlarms = Alarm::withTrashed()->whereDate('created_at', $yesterday)->count();
 
         // Calculate percentage changes
         $totalUsersPercentage = $this->calculatePercentageChange($totalUsers, $previousTotalUsers);
@@ -49,13 +50,6 @@ class Dashboard extends Component
             ->take(3)
             ->get();
 
-        $recentAlarms = Alarm::with(['locations', 'controls.bays'])
-            ->orderBy('created_at', 'desc')
-            ->take(4)
-            ->get();
-
-
-
         return view('livewire.menu.dashboard', [
             'totalUsers' => $totalUsers,
             'totalUsersPercentage' => $totalUsersPercentage,
@@ -67,7 +61,6 @@ class Dashboard extends Component
             'alarmsPercentage' => $alarmsPercentage,
             'pendingUsers' => $pendingUsers, // Pass all pending users to the view for modal
             'recentPendingUsers' => $recentPendingUsers, // Pass recent pending users to the view for request list
-            'recentAlarms' => $recentAlarms,
         ])->layout('components.layouts.app', ['title' => $this->title]);
     }
 

@@ -75,6 +75,6 @@ class Alarm extends Model
     public function getDateLogAttribute($value)
     {
         // Jika date_log ada, format; jika tidak, kembalikan 'Unknown Time'
-        return $value ? \Carbon\Carbon::parse($value)->format('H:i') : 'Unknown Time';
+        return $value ? \Carbon\Carbon::parse($value)->format('H:i') : 'Unknown Time';
     }
 }
