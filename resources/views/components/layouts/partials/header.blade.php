@@ -82,6 +82,27 @@
                 }
             }
 
+            async function hitApiNodeRed() {
+                try {
+                    const response = await fetch("https://demo_sikatup.rajakon.co.id/api/sikatup/update", {
+                        method: 'OPTIONS',
+                        headers: {
+                            "Access-Control-Request-Method": "GET",
+                            "Access-Control-Request-Headers": "Content-Type",
+                        }
+                    });
+                    if (!response.ok) throw new Error('Failed to fetch alert');
+                    
+                    const data = await response.json();
+                    if(data.success) {
+                        console.log(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    clearInterval(interval);
+                }
+            }
+
             async function shutAlert() {
                 try {
                     const response = await fetch(`{{ url('/alarm/${alertData.id}') }}`, {
@@ -128,6 +149,8 @@
                     localStorage.setItem('alert', JSON.stringify({
                         alarm: alertData
                     }));
+
+                    // hitApiNodeRed()
 
                     alertSound = sound(alertData.voice);
                     alertUI.show();

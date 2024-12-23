@@ -1,18 +1,18 @@
 <div id="alert-component">
     @if ($alarm)
         <div
-            class="relative bg-[#FCFBE8] px-6 pb-8 pt-10 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:px-10">
+            class="relative h-fit md:h-[600px] lg:h-fit overflow-y-scroll bg-[#FCFBE8] px-6 pb-8 pt-10 shadow-xl ring-1 ring-gray-900/5 mx-auto rounded-lg">
             <!-- Logo or Title -->
             <img src="{{ asset('images/logo.png') }}" alt="Logo" />
 
             <!-- Divider between sections -->
-            <div class="mt-4 grid space-x-4 divide-x divide-gray-300/50 lg:grid-cols-2 sm:grid-cols-1">
+            <div class="mt-4 flex flex-col gap-y-4 divide-y md:space-x-4 md:grid md:grid-cols-2 space-x-0 divide-x divide-gray-300/50">
                 <!-- Event Information -->
-                <div class="rounded-xl p-4 flex flex-col justify-between items-start h-full">
+                <div class="rounded-xl flex flex-col justify-between items-start">
                     <div class="space-y-6 text-base leading-7 text-gray-600">
-                        <h2 class="text-xl font-semibold">Event Detail</h2>
-                        <p><strong>Event ID:</strong> {{ $alarm['event_id'] }}</p>
-                        <p><strong>Event Type:</strong> {{ $alarm['event_type'] }}</p>
+                        <h2 class="text-xl font-semibold truncate">Event Detail</h2>
+                        <p class="truncate"><strong>Event ID:</strong> {{ $alarm['event_id'] }}</p>
+                        <p class="truncate"><strong>Event Type:</strong> {{ $alarm['event_type'] }}</p>
     
                         <h3 class="mt-4 text-lg font-medium">Bays Detail</h3>
                         <ul class="space-y-4">
@@ -36,7 +36,7 @@
                         </ul>
                     </div>
 
-                    <div class="w-full">
+                    <div class="w-full mt-4">
                         <button id="shut-button" class="w-full bg-[#101040] rounded-lg text-white py-[12px] px-[25px] text-[16px] relative bottom-0 mb-2 over:bg-violet-600 active:bg-black focus:outline-none focus:ring focus:ring-gray-300 transition-all">Shut Alarm</button>
                         {{-- <span>Click and hold button for 3 seconds</span> --}}
                     </div>
@@ -44,7 +44,7 @@
 
                 <!-- Location Information -->
                 <div
-                    class="rounded-xl p-4 pt-8 text-base leading-7 shadow bg-white">
+                    class="rounded-xl hidden md:block p-4 pt-8 text-base leading-7 shadow bg-white">
                     <div class="overflow-x-auto">
                         <h3 class="text-xl font-semibold mb-4">Location Detail</h3>
                         <table class="min-w-full bg-white border border-gray-200 rounded-lg">

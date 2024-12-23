@@ -1,5 +1,5 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
-    <div class="grid grid-rows-2 gap-3 my-5 md:grid-rows-1 md:grid-cols-3 lg:grid-cols-4 items-center">
+    <div class="grid grid-rows-1 gap-3 my-5 md:grid-cols-3 lg:grid-cols-4 items-center">
         <div class="flex flex-col md:flex-row gap-3 justify-between w-full md:col-span-2 lg:col-span-3">
             <select wire:model.live="filterUnitInduk" wire:click="loadApp"
                 class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
@@ -166,7 +166,7 @@
     <div
         class="w-full h-screen bg-black/50 overflow-hidden fixed top-0 left-0 z-[100] {{ $display }} justify-center items-center p-4">
         <div
-            class="w-1/3 relative bg-[#FCFBE8] px-6 pb-8 pt-10 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:px-10 rounded-lg md:p-4 space-y-4">
+            class="w-full md:w-1/3 relative bg-[#FCFBE8] px-6 pb-8 pt-10 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:px-10 rounded-lg md:p-4 space-y-4">
             <div class="flex items-center flex-col gap-y-4">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-28 h-28 stroke-[#b1b0a2]">

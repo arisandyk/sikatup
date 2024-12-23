@@ -84,7 +84,7 @@ class Control extends Component
     {
         $this->selectedApp = $appId;
         $this->reset(['selectedBasecamp', 'selectedGarduInduk', 'basecamps', 'garduInduks', 'bays']);
-        $this->basecamps = Basecamp::where('app_id', $appId)->with('gardu_induks.bays.events')->get();
+        $this->basecamps = Basecamp::where('app_id', $appId)->with('gardu_induks.bays.event')->get();
         $this->currentView = 'basecamps';
         $this->updateBreadcrumb();
     }
@@ -95,7 +95,7 @@ class Control extends Component
         $this->reset(['selectedGarduInduk', 'garduInduks', 'bays']);
 
         if (auth()->user()->role === 'admin') {
-            $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)->with('bays.events')->get();
+            $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)->with('bays.event')->get();
         } else {
             $this->garduInduks = GarduInduk::where('basecamp_id', $basecampId)
                 ->where('name', $this->getGarduIndukFromWorkplace())

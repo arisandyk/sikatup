@@ -82,16 +82,19 @@
                 <span>Control</span>
             </a>
         </li>
-        <li class="flex items-center border-b lg:border-none pb-4">
-            <a href="{{ route('simulator') }}" class="{{ request()->routeIs('simulator') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
-                <i class="flex mr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
-                    </svg>                   
-                </i>
-                <span>Simulator</span>
-            </a>
-        </li>
+        @if (Auth::check() && Auth::user()->role == "admin")
+            <li class="flex items-center border-b lg:border-none pb-4">
+                <a href="{{ route('simulator') }}" class="{{ request()->routeIs('simulator') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
+                    <i class="flex mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
+                        </svg>                   
+                    </i>
+                    <span>Simulator</span>
+                </a>
+            </li>
+        @endif
+
         <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('location') }}" class="{{ request()->routeIs('location') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
