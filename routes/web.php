@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/edit-profile', EditProfile::class)->name('edit-profile');
     Route::get('/logout', function () {
         Auth::guard('web')->logout(); // Log out from the session
-        return redirect()->route('sign-in');
+        return redirect()->route('login');
     })->name('logout');
 
 
