@@ -1,4 +1,4 @@
-<div id="sidebar" class="w-full bg-secondary text-white absolute lg:fixed lg:max-w-[256px] lg:m-5 top-0 z-[60] p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 hidden lg:block space-y-5">
+<div id="sidebar" class="w-full bg-secondary text-white absolute lg:fixed lg:max-w-[256px] lg:m-5 top-0 z-[60] p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 hidden lg:flex lg:flex-col lg:justify-between h-auto lg:items-start lg:py-10 lg:min-h-[calc(100vh-2.5rem)] min-h-[auto] max-h-[80vh] overflow-y-auto">
     <div class="text-left flex justify-between items-end w-fit">
         <div class="flex items-end gap-3 text-wrap text-2xl font-bold w-fit">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10">
@@ -124,13 +124,16 @@
                 <span>Alert</span>
             </a>
         </li>
-        <h4 class="text-lg">Settings</h4>
+    </ul>
+    <!-- Footer Section -->
+    <div>
+        <h4 class="text-lg mb-5">Settings</h4>
         <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
                         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -139,8 +142,8 @@
                 <span>Profile</span>
             </a>
         </li>
-        <li class="flex items-center border-b lg:border-none pb-4">
-            <a href="#" id="logoutLink" class="no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
+        <li class="flex items-center pb-4">
+            <a href="#" class="no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -153,7 +156,7 @@
                 <span>Logout</span>
             </a>
         </li>
-    </ul>
+    </div>
 </div>
 
 @livewire('settings.logout')

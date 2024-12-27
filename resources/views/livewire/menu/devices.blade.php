@@ -91,158 +91,159 @@
 
                                         <!-- Offcanvas Modal -->
                                         <div
-                                            class="fixed top-0 right-0 w-1/4 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out overflow-y-scroll overflow-x-hidden {{ $isAddModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
-                                            <div class="p-4 text-sm">
+                                            class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isAddModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
+                                            <div class="p-6 text-sm h-full overflow-y-auto">
                                                 <!-- Header -->
-                                                <div class="flex justify-between items-center mb-4">
-                                                    <h3 class="text-base font-semibold">Add New Bay</h3>
+                                                <div class="flex justify-between items-center mb-6">
+                                                    <h3 class="text-xl font-semibold">Add New Bay</h3>
                                                     <button wire:click="hideAddModal"
-                                                        class="text-gray-600 hover:text-gray-800 text-lg">✕</button>
+                                                        class="text-gray-600 hover:text-gray-800 text-2xl">✕</button>
                                                 </div>
 
                                                 <!-- Form -->
                                                 <form wire:submit.prevent="addNewItem">
+                                                    <div class="grid grid-cols-1 gap-4">
 
-                                                    <!-- Unit Induk -->
-                                                    <div class="mb-3">
-                                                        <label for="unitInduk" class="block text-sm font-medium">Unit
-                                                            Induk</label>
-                                                        <select id="unitInduk" wire:model="selectedUnitInduk"
-                                                            wire:change="$refresh" class="form-control text-sm">
-                                                            <option value="">Select Unit Induk</option>
-                                                            @foreach ($unitInduks as $unitInduk)
-                                                                <option value="{{ $unitInduk->id }}">
-                                                                    {{ $unitInduk->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                        <!-- Unit Induk -->
+                                                        <div>
+                                                            <label for="unitInduk"
+                                                                class="block text-sm font-medium mb-1">Unit
+                                                                Induk</label>
+                                                            <select id="unitInduk" wire:model="selectedUnitInduk"
+                                                                class="form-control w-full p-2 border rounded-md">
+                                                                <option value="">Select Unit Induk</option>
+                                                                @foreach ($unitInduks as $unitInduk)
+                                                                    <option value="{{ $unitInduk->id }}">
+                                                                        {{ $unitInduk->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
-                                                    <!-- APP -->
-                                                    <div class="mb-3">
-                                                        <label for="app"
-                                                            class="block text-sm font-medium">APP</label>
-                                                        <select id="app" wire:model="selectedApp"
-                                                            wire:change="$refresh" class="form-control text-sm"
-                                                            {{ !$selectedUnitInduk ? 'disabled' : '' }}>
-                                                            <option value="">Select APP</option>
-                                                            @foreach ($apps as $app)
-                                                                <option value="{{ $app->id }}">
-                                                                    {{ $app->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                        <!-- APP -->
+                                                        <div>
+                                                            <label for="app"
+                                                                class="block text-sm font-medium mb-1">APP</label>
+                                                            <select id="app" wire:model="selectedApp"
+                                                                class="form-control w-full p-2 border rounded-md">
+                                                                <option value="">Select APP</option>
+                                                                @foreach ($apps as $app)
+                                                                    <option value="{{ $app->id }}">
+                                                                        {{ $app->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
-                                                    <!-- Basecamp -->
-                                                    <div class="mb-3">
-                                                        <label for="basecamp"
-                                                            class="block text-sm font-medium">Basecamp</label>
-                                                        <select id="basecamp" wire:model="selectedBasecamp"
-                                                            wire:change="$refresh" class="form-control text-sm"
-                                                            {{ !$selectedApp ? 'disabled' : '' }}>
-                                                            <option value="">Select Basecamp</option>
-                                                            @foreach ($basecamps as $basecamp)
-                                                                <option value="{{ $basecamp->id }}">
-                                                                    {{ $basecamp->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                        <!-- Basecamp -->
+                                                        <div>
+                                                            <label for="basecamp"
+                                                                class="block text-sm font-medium mb-1">Basecamp</label>
+                                                            <select id="basecamp" wire:model="selectedBasecamp"
+                                                                class="form-control w-full p-2 border rounded-md">
+                                                                <option value="">Select Basecamp</option>
+                                                                @foreach ($basecamps as $basecamp)
+                                                                    <option value="{{ $basecamp->id }}">
+                                                                        {{ $basecamp->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
-                                                    <!-- Gardu Induk -->
-                                                    <div class="mb-3">
-                                                        <label for="garduInduk" class="block text-sm font-medium">Gardu
-                                                            Induk</label>
-                                                        <select id="garduInduk" wire:model="selectedGarduInduk"
-                                                            wire:change="$refresh" class="form-control text-sm"
-                                                            {{ !$selectedBasecamp ? 'disabled' : '' }}>
-                                                            <option value="">Select Gardu Induk</option>
-                                                            @foreach ($garduInduks as $garduInduk)
-                                                                <option value="{{ $garduInduk->id }}">
-                                                                    {{ $garduInduk->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                        <!-- Gardu Induk -->
+                                                        <div>
+                                                            <label for="garduInduk"
+                                                                class="block text-sm font-medium mb-1">Gardu
+                                                                Induk</label>
+                                                            <select id="garduInduk" wire:model="selectedGarduInduk"
+                                                                class="form-control w-full p-2 border rounded-md">
+                                                                <option value="">Select Gardu Induk</option>
+                                                                @foreach ($garduInduks as $garduInduk)
+                                                                    <option value="{{ $garduInduk->id }}">
+                                                                        {{ $garduInduk->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
-                                                    <!-- Bay Name -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-medium">Bay Name</label>
-                                                        <input type="text" wire:model="newBayName"
-                                                            class="w-full p-1 border rounded-md text-sm">
-                                                    </div>
+                                                        <!-- Bay Name -->
+                                                        <div>
+                                                            <label class="block text-sm font-medium mb-1">Bay
+                                                                Name</label>
+                                                            <input type="text" wire:model="newBayName"
+                                                                class="w-full p-2 border rounded-md">
+                                                        </div>
 
-                                                    <!-- Status -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-medium">Status</label>
-                                                        <input type="text" wire:model="newBayStatus"
-                                                            class="w-full p-1 border rounded-md text-sm">
-                                                    </div>
+                                                        <!-- Status -->
+                                                        <div>
+                                                            <label class="block text-sm font-medium mb-1">Status</label>
+                                                            <input type="text" wire:model="newBayStatus"
+                                                                class="w-full p-2 border rounded-md">
+                                                        </div>
 
-                                                    <!-- Tanggal Operasi -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-normal">Tanggal Operasi</label>
-                                                        <input type="date" wire:model="newBayTanggalOperasi"
-                                                            class="w-full p-1 border rounded-md text-sm">
-                                                    </div>
+                                                        <!-- Tanggal Operasi -->
+                                                        <div>
+                                                            <label class="block text-sm font-medium mb-1">Tanggal
+                                                                Operasi</label>
+                                                            <input type="date" wire:model="newBayTanggalOperasi"
+                                                                class="w-full p-2 border rounded-md">
+                                                        </div>
 
-                                                    <!-- Tegangan -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-normal">Tegangan</label>
-                                                        <select wire:model="newBayTeganganId"
-                                                            class="w-full p-1 border rounded-md text-sm">
-                                                            <option value="">Select Tegangan</option>
-                                                            @foreach ($tegangans as $tegangan)
-                                                                <option value="{{ $tegangan->id }}">
-                                                                    {{ $tegangan->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                        <!-- Tegangan -->
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium mb-1">Tegangan</label>
+                                                            <select wire:model="newBayTeganganId"
+                                                                class="w-full p-2 border rounded-md">
+                                                                <option value="">Select Tegangan</option>
+                                                                @foreach ($tegangans as $tegangan)
+                                                                    <option value="{{ $tegangan->id }}">
+                                                                        {{ $tegangan->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
-                                                    <!-- Trafo -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-normal">Trafo</label>
-                                                        <select wire:model="newBayTrafoId"
-                                                            class="w-full p-1 border rounded-md text-sm">
-                                                            <option value="">Select Trafo</option>
-                                                            @foreach ($trafos as $trafo)
-                                                                <option value="{{ $trafo->id }}">
-                                                                    {{ $trafo->name_plate }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                        <!-- Trafo -->
+                                                        <div>
+                                                            <label class="block text-sm font-medium mb-1">Trafo</label>
+                                                            <select wire:model="newBayTrafoId"
+                                                                class="w-full p-2 border rounded-md">
+                                                                <option value="">Select Trafo</option>
+                                                                @foreach ($trafos as $trafo)
+                                                                    <option value="{{ $trafo->id }}">
+                                                                        {{ $trafo->name_plate }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 
-                                                    <!-- Nomor Series -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-medium">Nomor Series</label>
-                                                        <input type="text" wire:model="newBayNomorSeries"
-                                                            class="w-full p-1 border rounded-md text-sm">
-                                                    </div>
+                                                        <!-- Nomor Series -->
+                                                        <div>
+                                                            <label class="block text-sm font-medium mb-1">Nomor
+                                                                Series</label>
+                                                            <input type="text" wire:model="newBayNomorSeries"
+                                                                class="w-full p-2 border rounded-md">
+                                                        </div>
 
-                                                    <!-- Keterangan -->
-                                                    <div class="mb-3">
-                                                        <label class="block text-sm font-medium">Keterangan</label>
-                                                        <textarea wire:model="newBayKeterangan" class="w-full p-1 border rounded-md text-sm"></textarea>
+                                                        <!-- Keterangan -->
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium mb-1">Keterangan</label>
+                                                            <textarea wire:model="newBayKeterangan" class="w-full p-2 border rounded-md"></textarea>
+                                                        </div>
                                                     </div>
 
                                                     <!-- Submit and Cancel -->
-                                                    <div class="flex justify-end mt-3">
+                                                    <div class="flex justify-end mt-6">
                                                         <button type="submit"
-                                                            class="px-2 py-1 bg-[#101041] text-white text-sm rounded-md hover:bg-opacity-90 transition">
+                                                            class="px-4 py-2 bg-[#101041] text-white text-sm rounded-md hover:bg-opacity-90 transition">
                                                             Submit
                                                         </button>
                                                         <button type="button" wire:click="hideAddModal"
-                                                            class="ml-2 px-2 py-1 bg-gray-300 text-gray-700 text-sm rounded-md hover:bg-gray-400 transition">
+                                                            class="ml-3 px-4 py-2 bg-gray-300 text-gray-700 text-sm rounded-md hover:bg-gray-400 transition">
                                                             Cancel
                                                         </button>
                                                     </div>
-
                                                 </form>
                                             </div>
                                         </div>
+
+
                                     </div>
 
                                 </div>
@@ -279,7 +280,8 @@
                                     <button wire:click="showEditModal({{ $bay->id }})" class="btn-action">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-[#007bff] transition ease-out hover:stroke-[#0056b3]">
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="stroke-[#007bff] transition ease-out hover:stroke-[#0056b3]">
                                             <path d="M16 3.13a4 4 0 0 1 5 5L6.37 22.5a4 4 0 0 1-5-5z"></path>
                                             <line x1="16" y1="3" x2="22" y2="9">
                                             </line>
@@ -290,7 +292,8 @@
                                     <button wire:click="confirmDelete({{ $bay->id }})" class="btn-action">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-[#ff4f4f] transition ease-out hover:stroke-[#d32f2f]">
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="stroke-[#ff4f4f] transition ease-out hover:stroke-[#d32f2f]">
                                             <path d="M3 6h18"></path>
                                             <path d="M6 6v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"></path>
                                             <path d="M9 10v6"></path>
@@ -316,141 +319,140 @@
 
         <!-- Offcanvas Modal -->
         <div
-            class="fixed top-0 right-0 w-1/4 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isEditModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
-            <div class="p-4 text-sm">
+            class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isEditModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
+            <div class="p-6 text-sm h-full overflow-y-auto">
                 <!-- Header -->
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-base font-semibold">Edit Bay</h3>
-                    <button wire:click="hideEditModal" class="text-gray-600 hover:text-gray-800 text-lg">✕</button>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold">Edit Bay</h3>
+                    <button wire:click="hideEditModal" class="text-gray-600 hover:text-gray-800 text-2xl">✕</button>
                 </div>
 
                 <!-- Form -->
                 <form wire:submit.prevent="updateItem">
+                    <div class="grid grid-cols-1 gap-4">
 
-                    <!-- Unit Induk -->
-                    <div class="mb-3">
-                        <label for="unitIndukEdit" class="block text-sm font-medium">Unit Induk</label>
-                        <select id="unitIndukEdit" wire:model="selectedUnitInduk" wire:change="$refresh"
-                            class="form-control text-sm">
-                            <option value="">Select Unit Induk</option>
-                            @foreach ($unitInduks as $unitInduk)
-                                <option value="{{ $unitInduk->id }}">{{ $unitInduk->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- Unit Induk -->
+                        <div>
+                            <label for="unitIndukEdit" class="block text-sm font-medium mb-1">Unit Induk</label>
+                            <select id="unitIndukEdit" wire:model="selectedUnitInduk" wire:change="$refresh"
+                                class="form-control w-full p-2 border rounded-md">
+                                <option value="">Select Unit Induk</option>
+                                @foreach ($unitInduks as $unitInduk)
+                                    <option value="{{ $unitInduk->id }}">{{ $unitInduk->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- APP -->
-                    <div class="mb-3">
-                        <label for="appEdit" class="block text-sm font-medium">APP</label>
-                        <select id="appEdit" wire:model="selectedApp" wire:change="$refresh"
-                            class="form-control text-sm" {{ !$selectedUnitInduk ? 'disabled' : '' }}>
-                            <option value="">Select APP</option>
-                            @foreach ($apps as $app)
-                                <option value="{{ $app->id }}">{{ $app->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- APP -->
+                        <div>
+                            <label for="appEdit" class="block text-sm font-medium mb-1">APP</label>
+                            <select id="appEdit" wire:model="selectedApp" wire:change="$refresh"
+                                class="form-control w-full p-2 border rounded-md"
+                                {{ !$selectedUnitInduk ? 'disabled' : '' }}>
+                                <option value="">Select APP</option>
+                                @foreach ($apps as $app)
+                                    <option value="{{ $app->id }}">{{ $app->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- Basecamp -->
-                    <div class="mb-3">
-                        <label for="basecampEdit" class="block text-sm font-medium">Basecamp</label>
-                        <select id="basecampEdit" wire:model="selectedBasecamp" wire:change="$refresh"
-                            class="form-control text-sm" {{ !$selectedApp ? 'disabled' : '' }}>
-                            <option value="">Select Basecamp</option>
-                            @foreach ($basecamps as $basecamp)
-                                <option value="{{ $basecamp->id }}">{{ $basecamp->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- Basecamp -->
+                        <div>
+                            <label for="basecampEdit" class="block text-sm font-medium mb-1">Basecamp</label>
+                            <select id="basecampEdit" wire:model="selectedBasecamp" wire:change="$refresh"
+                                class="form-control w-full p-2 border rounded-md"
+                                {{ !$selectedApp ? 'disabled' : '' }}>
+                                <option value="">Select Basecamp</option>
+                                @foreach ($basecamps as $basecamp)
+                                    <option value="{{ $basecamp->id }}">{{ $basecamp->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- Gardu Induk -->
-                    <div class="mb-3">
-                        <label for="garduIndukEdit" class="block text-sm font-medium">Gardu Induk</label>
-                        <select id="garduIndukEdit" wire:model="selectedGarduInduk" wire:change="$refresh"
-                            class="form-control text-sm" {{ !$selectedBasecamp ? 'disabled' : '' }}>
-                            <option value="">Select Gardu Induk</option>
-                            @foreach ($garduInduks as $garduInduk)
-                                <option value="{{ $garduInduk->id }}">{{ $garduInduk->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- Gardu Induk -->
+                        <div>
+                            <label for="garduIndukEdit" class="block text-sm font-medium mb-1">Gardu Induk</label>
+                            <select id="garduIndukEdit" wire:model="selectedGarduInduk" wire:change="$refresh"
+                                class="form-control w-full p-2 border rounded-md"
+                                {{ !$selectedBasecamp ? 'disabled' : '' }}>
+                                <option value="">Select Gardu Induk</option>
+                                @foreach ($garduInduks as $garduInduk)
+                                    <option value="{{ $garduInduk->id }}">{{ $garduInduk->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- Bay Name -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-medium">Bay Name</label>
-                        <input type="text" wire:model="newBayName" class="w-full p-1 border rounded-md text-sm">
-                    </div>
+                        <!-- Bay Name -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Bay Name</label>
+                            <input type="text" wire:model="newBayName" class="w-full p-2 border rounded-md">
+                        </div>
 
-                    <!-- Status -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-medium">Status</label>
-                        <input type="text" wire:model="newBayStatus" class="w-full p-1 border rounded-md text-sm">
-                    </div>
+                        <!-- Status -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Status</label>
+                            <input type="text" wire:model="newBayStatus" class="w-full p-2 border rounded-md">
+                        </div>
 
-                    <!-- Tanggal Operasi -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-normal">Tanggal Operasi</label>
-                        <input type="date" wire:model="newBayTanggalOperasi"
-                            class="w-full p-1 border rounded-md text-sm">
-                    </div>
+                        <!-- Tanggal Operasi -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Tanggal Operasi</label>
+                            <input type="date" wire:model="newBayTanggalOperasi"
+                                class="w-full p-2 border rounded-md">
+                        </div>
 
-                    <!-- Tegangan -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-normal">Tegangan</label>
-                        <select wire:model="newBayTeganganId" class="w-full p-1 border rounded-md text-sm">
-                            <option value="">Select Tegangan</option>
-                            @foreach ($tegangans as $tegangan)
-                                <option value="{{ $tegangan->id }}">{{ $tegangan->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- Tegangan -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Tegangan</label>
+                            <select wire:model="newBayTeganganId" class="w-full p-2 border rounded-md">
+                                <option value="">Select Tegangan</option>
+                                @foreach ($tegangans as $tegangan)
+                                    <option value="{{ $tegangan->id }}">{{ $tegangan->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- Trafo -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-normal">Trafo</label>
-                        <select wire:model="newBayTrafoId" class="w-full p-1 border rounded-md text-sm">
-                            <option value="">Select Trafo</option>
-                            @foreach ($trafos as $trafo)
-                                <option value="{{ $trafo->id }}">{{ $trafo->name_plate }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- Trafo -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Trafo</label>
+                            <select wire:model="newBayTrafoId" class="w-full p-2 border rounded-md">
+                                <option value="">Select Trafo</option>
+                                @foreach ($trafos as $trafo)
+                                    <option value="{{ $trafo->id }}">{{ $trafo->name_plate }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <!-- Nomor Series -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-medium">Nomor Series</label>
-                        <input type="text" wire:model="newBayNomorSeries"
-                            class="w-full p-1 border rounded-md text-sm">
-                    </div>
+                        <!-- Nomor Series -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Nomor Series</label>
+                            <input type="text" wire:model="newBayNomorSeries"
+                                class="w-full p-2 border rounded-md">
+                        </div>
 
-                    <!-- Keterangan -->
-                    <div class="mb-3">
-                        <label class="block text-sm font-medium">Keterangan</label>
-                        <textarea wire:model="newBayKeterangan" class="w-full p-1 border rounded-md text-sm"></textarea>
+                        <!-- Keterangan -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Keterangan</label>
+                            <textarea wire:model="newBayKeterangan" class="w-full p-2 border rounded-md"></textarea>
+                        </div>
                     </div>
 
                     <!-- Submit and Cancel -->
-                    <div class="flex justify-end mt-3">
+                    <div class="flex justify-end mt-6">
                         <button type="submit"
-                            class="px-2 py-1 bg-[#101041] text-white text-sm rounded-md hover:bg-opacity-90 transition">
+                            class="px-4 py-2 bg-[#101041] text-white text-sm rounded-md hover:bg-opacity-90 transition">
                             Update
                         </button>
                         <button type="button" wire:click="hideEditModal"
-                            class="ml-2 px-2 py-1 bg-gray-300 text-gray-700 text-sm rounded-md hover:bg-gray-400 transition">
+                            class="ml-3 px-4 py-2 bg-gray-300 text-gray-700 text-sm rounded-md hover:bg-gray-400 transition">
                             Cancel
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
+
     <!-- Delete Confirmation Modal -->
     <div class="fixed inset-0 flex items-center justify-center z-50 {{ $isDeleteModalOpen ? '' : 'hidden' }}">
         <div class="absolute inset-0 bg-black opacity-50"></div>

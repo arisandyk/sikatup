@@ -52,8 +52,8 @@
         @endforeach
     </div>
 
-    <div class="w-full relative my-5 overflow-x-scroll lg:overflow-auto">
-        <table class="border-collapse bg-white rounded-3xl shadow-lg mb-5">
+    <div class="w-full relative my-5 overflow-x-auto lg:overflow-hidden">
+        <table class="w-full table-auto border-collapse bg-white rounded-3xl shadow-lg mb-5 min-w-[1000px]">
             <thead>
                 <tr class="title-row">
                     <th colspan="16" id="title" class="text-lg p-[15px] text-center bg-[#fffdc3] rounded-t-3xl">

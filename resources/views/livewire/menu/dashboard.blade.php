@@ -4,9 +4,13 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="grid grid-cols-1 gap-4 @if (Auth::user()->role != 'admin') md:grid-cols-1 @else md:grid-cols-3 @endif">
-        <div class="space-y-5 col-span-2">
-            <div class="grid grid-cols-1 @if (Auth::user()->role != 'admin') md:grid-cols-4 @else md:grid-cols-2 @endif gap-4">
+
+    <!-- Grid Layout - 3:1 untuk card dan request -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Section untuk card (3/4 dari grid) -->
+        <div class="col-span-3 space-y-5">
+            <!-- Grid Card 4 Kolom dalam 1 Baris -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 @php
                     $labels = [
                         [
@@ -39,13 +43,15 @@
                         ],
                     ];
                 @endphp
+
                 @foreach ($labels as $item)
                     <div
                         class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
                         <div class="flex flex-col items-start gap-3">
                             <h3 class="text-lg m-0 text-[#7A7A7A]">{{ $item['h3'] }}</h3>
-                            <h2 class="text-2xl m-0 text-secondary">{{ $item['h2'] }} <span
-                                    class="text-green-500 text-sm ml-1">({{ $item['span'] }})</span></h2>
+                            <h2 class="text-2xl m-0 text-secondary">{{ $item['h2'] }} 
+                                <span class="text-green-500 text-sm ml-1">({{ $item['span'] }})</span>
+                            </h2>
                             <p class="text-sm m-0 text-[#7A7A7A]">{{ $item['p'] }}</p>
                         </div>
                         <div class="w-14 h-14 rounded-lg flex justify-center items-center shrink-0 {{ $item['bg'] }}">
@@ -59,6 +65,7 @@
                 @endforeach
             </div>
 
+            <!-- Schematic Diagram -->
             <img src="{{ asset('images/schematic.png') }}" alt="Schematic Diagram" class="w-full h-auto rounded-lg">
             <div class="text-left space-y-2">
                 <h2 class="text-lg font-medium text-secondary">Location</h2>
@@ -68,77 +75,38 @@
             </div>
         </div>
 
-        <!-- Right Column (md-3) -->
-        <div>
+        <!-- Request Section (1/4 dari grid) -->
+        <div class="col-span-1">
             <div class="flex flex-col gap-4">
                 @if (Auth::user()->role == 'admin')
-                    <!-- Requests Section -->
                     <div class="flex justify-between items-center">
                         <h3 class="text-[18px] text-secondary m-0">Request</h3>
-                        <!-- Updated <a> tag with wire:click to show the modal -->
                         <a href="#" class="text-[14px] text-red-500 no-underline" wire:click="triggerModal">View all</a>
                     </div>
-                    <div class="p-4 rounded-lg bg-white space-y-5 text-pretty">
+
+                    <div class="p-4 rounded-lg bg-white space-y-5">
                         @if ($recentPendingUsers->isEmpty())
                             <p class="text-center">No pending requests.</p>
                         @else
                             @foreach ($recentPendingUsers as $user)
                                 <div class="flex items-center">
                                     <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
-                                        class="w-14 h-14 rounded-full object-cover mr-4">
+                                        class="w-12 h-12 rounded-full object-cover mr-3">
                                     <div class="overflow-hidden">
                                         <h4 class="text-[16px] m-0 text-secondary truncate">{{ $user->name }}</h4>
                                         <p class="text-[14px] mt-1 text-[#7A7A7A] truncate">{{ $user->email }}</p>
-                                        <!-- Buttons to accept or reject user -->
-                                        <div class="mt-2 space-x-2 md:space-x-0 md:space-y-2">
-                                            <button class="p-2 bg-green-500 text-white rounded-lg w-fit md:w-full"
+                                        <div class="mt-2 space-x-2">
+                                            <button class="p-2 bg-green-500 text-white rounded-lg"
                                                 wire:click="acceptUser({{ $user->id }})">Accept</button>
-                                            <button class="p-2 bg-red-500 text-white rounded-lg w-fit md:w-full"
+                                            <button class="p-2 bg-red-500 text-white rounded-lg"
                                                 wire:click="rejectUser({{ $user->id }})">Reject</button>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
                         @endif
-                @endif
-            </div>
-
-            <!-- Modal -->
-            <div class="fixed z-[1050] left-0 top-0 w-full h-full overflow-hidden outline-0 bg-black/30 @if ($showModal) flex justify-center items-center @else hidden @endif" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="m-auto max-w-[500px]" role="document">
-                    <div class="bg-white rounded-lg p-5">
-                        <div class="border-b border-[#e5e5e5] flex justify-between items-center">
-                            <h5 class="m-auto text-[18px] font-bold">Pending User Requests</h5>
-                            <button type="button" class="bg-none border-none text-[24px] leading-3 text-black" wire:click="closeModal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="py-5 space-y-4">
-                            @foreach ($recentPendingUsers as $user)
-                                <div class="flex items-center">
-                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
-                                        class="w-14 h-14 rounded-full object-cover mr-4">
-                                    <div class="overflow-hidden">
-                                        <h4 class="text-[16px] m-0 text-secondary truncate">{{ $user->name }}</h4>
-                                        <p class="text-[14px] mt-1 text-[#7A7A7A] truncate">{{ $user->email }}</p>
-                                        <!-- Buttons to accept or reject user -->
-                                        <div class="mt-2 space-x-2 md:space-x-0 md:space-y-2">
-                                            <button class="p-2 bg-green-500 text-white rounded-lg w-fit md:w-full"
-                                                wire:click="acceptUser({{ $user->id }})">Accept</button>
-                                            <button class="p-2 bg-red-500 text-white rounded-lg w-fit md:w-full"
-                                                wire:click="rejectUser({{ $user->id }})">Reject</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            @if ($pendingUsers->isEmpty())
-                                <p class="text-center">No pending requests.</p>
-                            @endif
-                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>

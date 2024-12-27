@@ -18,7 +18,7 @@
                 ],
                 [
                     'h3' => 'Locations',
-                    'h2' => $locations,
+                    'h2' => $locationCount,
                     'p' => 'Total Places',
                     'span' => $locationsPercentage,
                     'bg' => 'bg-[#cef5de]',
@@ -51,7 +51,7 @@
             </div>
         @endforeach
     </div>
-    <div class="w-full relative my-5 overflow-x-scroll lg:overflow-auto">
+    <div class="w-full relative my-5 overflow-x-auto lg:overflow-hidden">
         <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
             <input type="text" wire:model.debounce.300ms="search" placeholder="Search..."
                 class="flex-grow p-3 rounded-lg border text-sm min-w-52">
@@ -62,137 +62,30 @@
                 <option value="100">100</option>
             </select>
         </div>
-        <table class="border-collapse bg-white rounded-3xl shadow-lg mb-5">
-            <thead>
-                <tr class="title-row">
-                    <th class="text-lg p-5 text-center bg-[#fffdc3] rounded-tl-2xl">GI/GITET</th>
-                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Address</th>
-                    <th class="text-lg p-5 text-center bg-[#fffdc3]">Latitude</th>
-                    <th class="text-lg p-5 text-center bg-[#fffdc3] roundeed-tr-2xl">Longitude</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($locations as $location)
-                    <tr>
-                        <td class="td-class">{{ $location->gardu_induks->name }}</td>
-                        <td class="td-class">{{ $location->address }}</td>
-                        <td class="td-class">{{ $location->latitude }}</td>
-                        <td class="td-class">{{ $location->longitude }}</td>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse bg-white rounded-3xl shadow-lg mb-5 min-w-[800px]">
+                <thead>
+                    <tr class="title-row">
+                        <th class="text-lg p-5 text-center bg-[#fffdc3] rounded-tl-2xl">GI/GITET</th>
+                        <th class="text-lg p-5 text-center bg-[#fffdc3]">Address</th>
+                        <th class="text-lg p-5 text-center bg-[#fffdc3]">Latitude</th>
+                        <th class="text-lg p-5 text-center bg-[#fffdc3] rounded-tr-2xl">Longitude</th>
                     </tr>
-                @endforeach
-
-            </tbody>
-        </table>
-        
-        {{ $locations->links() }}
-    </div>
-
-    <!-- Right Column (md-3) -->
-    {{-- <div class="col-md-3">
-            <div class="user-alerts">
-                @if (Auth::user()->role == 'admin')
-                    <!-- Requests Section -->
-                    <div class="section-header">
-                        <h3>Request</h3>
-                        <!-- Updated <a> tag with wire:click to show the modal -->
-                        <a href="#" class="view-all" wire:click.prevent="showModal">View all</a>
-                    </div>
-                    <div class="request-list card">
-                        @if ($recentPendingUsers->isEmpty())
-                            <p class="text-center">No pending requests.</p>
-                        @else
-                            @foreach ($recentPendingUsers as $user)
-                                <div class="request-item d-flex align-items-center">
-                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
-                                        class="avatar-img">
-                                    <div class="request-info">
-                                        <h4>{{ $user->name }}</h4>
-                                        <p>{{ $user->email }}</p>
-                                        <!-- Buttons to accept or reject user -->
-                                        <div class="action-buttons mt-2">
-                                            <button class="btn btn-success btn-sm"
-                                                wire:click="acceptUser({{ $user->id }})">Accept</button>
-                                            <button class="btn btn-danger btn-sm"
-                                                wire:click="rejectUser({{ $user->id }})">Reject</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                @endif
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade @if ($showModal) show @endif" tabindex="-1" role="dialog"
-                style="display: @if ($showModal) block @else none @endif;"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Pending User Requests</h5>
-                            <button type="button" class="close" wire:click="closeModal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            @foreach ($pendingUsers as $user)
-                                <div class="request-item d-flex align-items-center mb-2">
-                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
-                                        class="avatar-img">
-                                    <div class="request-info">
-                                        <h4>{{ $user->name }}</h4>
-                                        <p>{{ $user->email }}</p>
-                                        <div class="action-buttons mt-2">
-                                            <button class="btn btn-success btn-sm"
-                                                wire:click="acceptUser({{ $user->id }})">Accept</button>
-                                            <button class="btn btn-danger btn-sm"
-                                                wire:click="rejectUser({{ $user->id }})">Reject</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            @if ($pendingUsers->isEmpty())
-                                <p class="text-center">No pending requests.</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Alerts Section -->
-            <div class="section-header">
-                <h3>Alert</h3>
-                <a href="#" class="view-all">View all</a>
-            </div>
-
-            @if ($recentAlarms->isEmpty())
-                <div class="alert-item">
-                    <div class="alert-content">
-                        <p>No alarms found.</p>
-                    </div>
-                </div>
-            @else
-                <div class="alert-list">
-                    @foreach ($recentAlarms as $alarm)
-                        <div class="alert-item">
-                            <span
-                                class="alert-icon {{ $alarm->getEventType() === 'open' ? 'green-dot' : ($alarm->getEventType() === 'close' ? 'red-dot' : 'undefined-dot') }}"></span>
-                            <div class="alert-content">
-                                <p>{{ $alarm->event_type }}</p>
-                                <small>
-                                    {{ $alarm->controls->bays->gardu_induks->name ?? 'Unknown Induk' }} •
-                                    {{ $alarm->controls->bays->name ?? 'Unknown Bay' }}
-                                </small>
-                            </div>
-                            <span class="alert-time">{{ $alarm->date_log }}</span>
-                        </div>
+                </thead>
+                <tbody>
+                    @foreach ($locations as $location)
+                        <tr>
+                            <td class="td-class text-center">{{ $location->gardu_induks->name }}</td>
+                            <td class="td-class">{{ $location->address }}</td>
+                            <td class="td-class text-center">{{ $location->latitude }}</td>
+                            <td class="td-class text-center">{{ $location->longitude }}</td>
+                        </tr>
                     @endforeach
-                </div>
-            @endif
-
-        </div> --}}
+                </tbody>
+            </table>
+        </div>
+        {{ $locations->links() }}
+    </div>    
 
 </div>
 </div>
