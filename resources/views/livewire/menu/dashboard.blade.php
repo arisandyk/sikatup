@@ -4,9 +4,9 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 gap-4 @if (Auth::user()->role != 'admin') md:grid-cols-1 @else md:grid-cols-3 @endif">
         <div class="space-y-5 col-span-2">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 @if (Auth::user()->role != 'admin') md:grid-cols-4 @else md:grid-cols-2 @endif gap-4">
                 @php
                     $labels = [
                         [
@@ -69,7 +69,7 @@
         </div>
 
         <!-- Right Column (md-3) -->
-        <div class="">
+        <div>
             <div class="flex flex-col gap-4">
                 @if (Auth::user()->role == 'admin')
                     <!-- Requests Section -->

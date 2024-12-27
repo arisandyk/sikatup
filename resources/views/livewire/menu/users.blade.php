@@ -135,7 +135,7 @@
                             <td class="td-class">
                                 <div class="flex items-center text-secondary mt-3">
                                     <img src="{{ 'storage/' . $user->image }}" alt="{{ $user->name }}"
-                                        class="rounded-full w-1/5 mr-3">
+                                        class="rounded-full w-12 mr-3">
                                     <span>{{ $user->name }}</span>
                                 </div>
                             </td>

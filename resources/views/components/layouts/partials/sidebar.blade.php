@@ -1,6 +1,6 @@
-<div id="sidebar" class="w-full bg-secondary text-white absolute lg:fixed lg:w-auto lg:m-5 top-0 z-[60] p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 hidden lg:block space-y-5">
-    <div class="text-left flex justify-between items-end">
-        <div class="flex items-end gap-3 text-wrap text-2xl font-bold">
+<div id="sidebar" class="w-full bg-secondary text-white absolute lg:fixed lg:max-w-[256px] lg:m-5 top-0 z-[60] p-5 shadow-lg border-0 rounded-none lg:rounded-lg ease-out duration-150 hidden lg:block space-y-5">
+    <div class="text-left flex justify-between items-end w-fit">
+        <div class="flex items-end gap-3 text-wrap text-2xl font-bold w-fit">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10">
             <span>MONITORING</span>
         </div>
@@ -11,11 +11,11 @@
             </svg>
         </button>
     </div>
-    <div class="text-left flex items-end gap-3 text-white">
+    <div class="text-left flex items-start gap-3 text-white flex-col max-w-full">
         <img src="{{ 'storage/'. Auth::user()->image }}" alt="User Image" class="w-10 h-10 rounded-xl">
-        <span class="text-lg m-0 ml-3">Hello 👋 {{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
+        <span class="text-lg m-0">Hello 👋 {{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
     </div>
-    <ul class="list-none p-0 m-0 space-y-3">
+    <ul class="list-none p-0 m-0 space-y-3 w-fit">
         <h4 class="text-lg">Menu</h4>
         <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
