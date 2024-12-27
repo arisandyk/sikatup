@@ -42,7 +42,7 @@ class SignUp extends Component
             session()->flash('error', 'Something went wrong during registration.');
         }
 
-        return redirect()->route('sign-in');
+        return redirect()->route('login');
     }
 
     public function mount()

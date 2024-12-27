@@ -18,7 +18,7 @@
                 <div class="icon">&#10003;</div> <!-- Checkmark Icon -->
                 <div class="title">Email Verified</div>
                 <div class="message">Your email address was successfully verified.</div>
-                <a href="{{ route('sign-in') }}" class="button">Back to Sign-In</a>
+                <a href="{{ route('login') }}" class="button">Back to Sign-In</a>
                 @elseif($status === 'error')
                 <div class="icon">&#10005;</div> <!-- Cross Icon -->
                 <div class="title">Email Verification Failed</div>

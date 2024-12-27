@@ -88,7 +88,7 @@ class Dashboard extends Component
         }
     }
 
-    public function showModal()
+    public function triggerModal()
     {
         $this->showModal = true;
     }
