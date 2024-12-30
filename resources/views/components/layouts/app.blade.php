@@ -16,18 +16,6 @@
 </head>
 
 <body>
-    @if (session()->has('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    @if (session()->has('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     @php
         // Define the routes that require the sidebar and header
         $routesWithSidebarAndHeader = [
@@ -40,6 +28,8 @@
             'profile',
             'simulator',
             'edit-profile',
+            'simulator',
+            'log'
         ];
     @endphp
 
@@ -49,7 +39,7 @@
     @endif
 
     <div id="alert"
-        class="w-full h-screen bg-black/50 fixed top-0 z-[100] hidden justify-center items-center p-4">
+        class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
         <div class="max-w-none md:max-w-screen-xl">
             <livewire:components.alarm-notifier />
         </div>

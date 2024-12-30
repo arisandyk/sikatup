@@ -15,7 +15,9 @@
         Route::is('control') ||
         Route::is('location') ||
         Route::is('profile') ||
-        Route::is('edit-profile'))
+        Route::is('edit-profile') ||
+        Route::is('simulator') ||
+        Route::is('log'))
     <script src="{{ asset('assets/js/header.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     @if (Route::is('dashboard'))

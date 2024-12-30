@@ -1,4 +1,4 @@
-<div id="logoutModal" class="w-full h-screen bg-black/50 overflow-hidden fixed top-0 z-50 hidden justify-center items-center p-4">
+<div id="logoutModal" class="modal-content w-full h-screen bg-black/50 overflow-hidden fixed top-0 z-50 hidden justify-center items-center p-4">
     <div class="max-w-md w-full">
         <div class="relative bg-white px-6 pb-8 pt-10 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:px-10 space-y-4">
             <div class="flex gap-4 items-center">

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Livewire\Auth\SignIn;
 use App\Livewire\Auth\SignUp;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Menu\AuditTrail;
 use App\Livewire\Menu\Dashboard;
 use App\Livewire\Menu\Users;
 use App\Livewire\Menu\Control;
@@ -35,6 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/control', Control::class)->name('control');
     Route::get('/location', Location::class)->name('location');
     Route::get('/simulator', Simulator::class)->name('simulator');
+    Route::get('/log', AuditTrail::class)->name('log');
     Route::get('/alarm', AlarmLog::class)->name('alarm');
     Route::get('/profile', Profile::class)->name('profile');
     Route::get('/edit-profile', EditProfile::class)->name('edit-profile');
