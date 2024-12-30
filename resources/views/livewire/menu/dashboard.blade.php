@@ -12,11 +12,11 @@
     @endif
 
     <!-- Grid Layout - 3:1 untuk card dan request -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-y-4 md:gap-x-4">
+    <div class="grid grid-cols-1 gap-4 @if (Auth::user()->role != 'admin') md:grid-cols-1 @else md:grid-cols-3 @endif">
         <!-- Section untuk card (3/4 dari grid) -->
-        <div class="col-span-3 space-y-5">
+        <div class="space-y-5 col-span-2">
             <!-- Grid Card 4 Kolom dalam 1 Baris -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 @if (Auth::user()->role != 'admin') md:grid-cols-4 @else md:grid-cols-2 @endif gap-4">
                 @php
                     $labels = [
                         [
