@@ -82,7 +82,6 @@ class Devices extends Component
         $this->apps = App::with('basecamps.gardu_induks.bays')->get();
         $this->basecamps = Basecamp::with('gardu_induks.bays')->get();
         $this->garduInduks = GarduInduk::with('bays')->get();
-        $this->bays = Bay::with('gardu_induks.basecamps.apps.unitInduk')->paginate(10);
         $this->unitInduks = UnitInduk::all();
         $this->tegangans = Tegangan::all();
         $this->trafos = Trafo::all();
@@ -97,6 +96,7 @@ class Devices extends Component
         $stats = $this->getStatistics();
 
         return view('livewire.menu.devices', [
+            'bays' => Bay::with('gardu_induks.basecamps.apps.unitInduk')->paginate(10),
             'stats' => $stats,
             'unitInduks' => $this->unitInduks,
             'breadcrumb' => $this->breadcrumb,
