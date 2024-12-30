@@ -371,6 +371,8 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{ $bays->links() }}
         </div>
     </div>
 
