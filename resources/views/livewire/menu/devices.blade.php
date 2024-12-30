@@ -371,9 +371,8 @@
                     @endforeach
                 </tbody>
             </table>
-
-            {{ $bays->links() }}
         </div>
+        {{ $bays->links() }}
     </div>
 
     <!-- Edit Offcanvas -->
