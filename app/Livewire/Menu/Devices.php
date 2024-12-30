@@ -29,7 +29,6 @@ class Devices extends Component
     public $garduInduks = [];
     public $tegangans = [];
     public $trafos = [];
-    public $bays = [];
 
     // State for selections and current view
     public $selectedUnitInduk = null;
