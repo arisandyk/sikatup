@@ -1,4 +1,15 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    
+    @if (session()->has('error'))
+        <div class="alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         @php
             $labels = [
@@ -55,19 +66,22 @@
     <div class="grid grid-rows-2 gap-3 my-5 md:grid-rows-1 md:grid-cols-3 lg:grid-cols-4 items-center">
         <!-- Filter Dropdowns -->
         <div class="flex flex-col md:flex-row gap-3 justify-between w-full md:col-span-2 lg:col-span-3">
-            <select wire:model="selectedLocation" wire:change="loadAlarms" class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
+            <select wire:model.live="selectedLocation"
+                class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
                 <option value="">Filter by Location</option>
                 @foreach ($locationsList as $location)
                     <option value="{{ $location->id }}">{{ $location->address }}</option>
                 @endforeach
             </select>
-            <select wire:model="selectedDevice" wire:change="loadAlarms" class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
+            <select wire:model.live="selectedDevice" wire:change="loadAlarms"
+                class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
                 <option value="">Filter by Bay</option>
                 @foreach ($devicesList as $device)
                     <option value="{{ $device->id }}">{{ $device->name }}</option>
                 @endforeach
             </select>
-            <select wire:model="selectedEvent" wire:change="loadAlarms" class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
+            <select wire:model.live="selectedEvent" wire:change="loadAlarms"
+                class="w-full flex p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer ease-out duration-100">
                 <option value="">Filter by Event</option>
                 <option value="Opened By Device">Opened By Device</option>
                 <option value="Opened By Protection">Opened By Protection</option>
@@ -84,10 +98,17 @@
 
         <!-- Export Button -->
         <div class="w-full">
-            <button class="w-full bg-secondary text-white py-3 px-6 outline-none rounded-lg cursor-pointer text-base transition ease-in-out whitespace-nowrap" onclick="toggleExportDropdown()">Export</button>
-            <div id="exportDropdown" class="hidden absolute bg-white shadow-lg rounded-lg z-[1] min-w-44 py-1 px-0 mt-4 mr-4">
-                <button wire:click="exportToExcel" class="py-3 px-20 text-secondary bg-transparent outline-none text-left w-full text-sm transition ease-out">Export to Excel</button>
-                <button wire:click="exportToPDF" class="py-3 px-20 text-secondary bg-transparent outline-none text-left w-full text-sm transition ease-out">Export to PDF</button>
+            <button
+                class="w-full bg-secondary text-white py-3 px-6 outline-none rounded-lg cursor-pointer text-base transition ease-in-out whitespace-nowrap"
+                onclick="toggleExportDropdown()">Export</button>
+            <div id="exportDropdown"
+                class="hidden absolute bg-white shadow-lg rounded-lg z-[1] min-w-44 py-1 px-0 mt-4 mr-4">
+                <button wire:click="exportToExcel"
+                    class="py-3 px-20 text-secondary bg-transparent outline-none text-left w-full text-sm transition ease-out">Export
+                    to Excel</button>
+                <button wire:click="exportToPDF"
+                    class="py-3 px-20 text-secondary bg-transparent outline-none text-left w-full text-sm transition ease-out">Export
+                    to PDF</button>
             </div>
         </div>
     </div>
@@ -95,8 +116,10 @@
     <div class="w-full relative my-5 overflow-x-scroll lg:overflow-auto">
         <!-- Search and Per Page Selection -->
         <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
-            <input type="text" wire:model.debounce.300ms="search" placeholder="Search..." class="flex-grow p-3 rounded-lg border text-sm min-w-52">
-            <select wire:model="perPage" class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
+            <input type="text" wire:model.debounce.300ms="search" wire:change="loadAlarms" placeholder="Search..."
+                class="flex-grow p-3 rounded-lg border text-sm min-w-52">
+            <select wire:model="perPage" wire:change="loadAlarms"
+                class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -124,7 +147,7 @@
                         <td class="td-class text-center">{{ $alarm->locations->address ?? 'Unknown Location' }}</td>
                         <td class="td-class text-center">
                             {{ $alarm->locations->gardu_induks->name ?? 'Unknown Gardu Induk' }}</td>
-                        <td class="td-class text-center">{{ $alarm->controls->bays->name ?? 'Unknown Device' }}</td>
+                        <td class="td-class text-center">{{ $alarm->event->bays->name ?? 'Unknown Device' }}</td>
                         <td class="td-class text-center">{{ $alarm->event_type ?? 'Unknown Event' }}</td>
                     </tr>
                 @endforeach

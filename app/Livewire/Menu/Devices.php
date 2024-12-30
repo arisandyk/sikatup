@@ -60,7 +60,7 @@ class Devices extends Component
         'newBayStatus' => 'required|string|max:50',
         'newBayTanggalOperasi' => 'required|date',
         'newBayTeganganId' => 'required|exists:tegangans,id',
-        'newBayTrafoId' => 'nullable|exists:trafos,id',
+        'newBayTrafoId' => 'required|exists:trafos,id',
         'newBayNomorSeries' => 'nullable|string|max:255',
         'newBayKeterangan' => 'nullable|string|max:500',
     ];
@@ -171,7 +171,7 @@ class Devices extends Component
      */
     public function importFromExcel()
     {
-        session()->flash('message', 'Import functionality is not implemented yet!');
+        session()->flash('success', 'Import functionality is not implemented yet!');
     }
 
     public function showAddModal()
@@ -226,7 +226,9 @@ class Devices extends Component
         ]);
 
         $this->hideAddModal();
-        session()->flash('message', 'New Bay added successfully!');
+        session()->flash('success', 'New Bay added successfully!');
+
+        return redirect()->to('/devices');
     }
 
     private function resetForm()
@@ -309,7 +311,7 @@ class Devices extends Component
             ]);
 
             $this->hideEditModal();
-            session()->flash('message', 'Bay updated successfully!');
+            session()->flash('success', 'Bay updated successfully!');
         }
         return redirect()->to('/devices');
     }
@@ -332,7 +334,7 @@ class Devices extends Component
 
         if ($bay) {
             $bay->delete();
-            session()->flash('message', 'Bay deleted successfully!');
+            session()->flash('success', 'Bay deleted successfully!');
         }
 
         $this->hideDeleteModal();

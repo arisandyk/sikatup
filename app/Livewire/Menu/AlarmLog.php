@@ -96,8 +96,8 @@ class AlarmLog extends Component
                 });
             })
             ->when($this->selectedDevice, function ($q) {
-                $q->whereHas('controls.bays', function ($subq) {
-                    $subq->where('id', $this->selectedDevice);
+                $q->whereHas('event', function ($subq) {
+                    $subq->where('bay_id', $this->selectedDevice);
                 });
             })
             ->when($this->selectedEvent, function ($q) {
@@ -108,9 +108,6 @@ class AlarmLog extends Component
                     $subq->where('event_type', 'like', '%' . $this->search . '%')
                         ->orWhereHas('locations', function ($locationq) {
                             $locationq->where('address', 'like', '%' . $this->search . '%');
-                        })
-                        ->orWhereHas('controls.bays', function ($bayq) {
-                            $bayq->where('name', 'like', '%' . $this->search . '%');
                         });
                 });
             })
@@ -185,7 +182,7 @@ class AlarmLog extends Component
         $user = User::find($userId);
         if ($user) {
             $user->update(['account_status' => 'active', 'work_status' => 'active']);
-            session()->flash('message', 'User accepted successfully.');
+            session()->flash('success', 'User accepted successfully.');
         } else {
             session()->flash('error', 'User not found.');
         }
@@ -196,7 +193,7 @@ class AlarmLog extends Component
         $user = User::find($userId);
         if ($user) {
             $user->delete();
-            session()->flash('message', 'User rejected and deleted successfully.');
+            session()->flash('success', 'User rejected and deleted successfully.');
         } else {
             session()->flash('error', 'User not found.');
         }

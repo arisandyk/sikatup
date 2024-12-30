@@ -1,4 +1,16 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         @php
             $labels = [
@@ -85,7 +97,7 @@
             </table>
         </div>
         {{ $locations->links() }}
-    </div>    
+    </div>
 
 </div>
 </div>

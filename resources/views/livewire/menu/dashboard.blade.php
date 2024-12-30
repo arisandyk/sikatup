@@ -1,4 +1,10 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @if (session()->has('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
@@ -6,11 +12,11 @@
     @endif
 
     <!-- Grid Layout - 3:1 untuk card dan request -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-y-4 md:gap-x-4">
         <!-- Section untuk card (3/4 dari grid) -->
         <div class="col-span-3 space-y-5">
             <!-- Grid Card 4 Kolom dalam 1 Baris -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @php
                     $labels = [
                         [
@@ -49,7 +55,7 @@
                         class="bg-white rounded-lg p-5 shadow-md w-full flex flex-row items-center justify-between gap-4 ease-out duration-100 hover:-translate-y-1 hover:shadow-lg">
                         <div class="flex flex-col items-start gap-3">
                             <h3 class="text-lg m-0 text-[#7A7A7A]">{{ $item['h3'] }}</h3>
-                            <h2 class="text-2xl m-0 text-secondary">{{ $item['h2'] }} 
+                            <h2 class="text-2xl m-0 text-secondary">{{ $item['h2'] }}
                                 <span class="text-green-500 text-sm ml-1">({{ $item['span'] }})</span>
                             </h2>
                             <p class="text-sm m-0 text-[#7A7A7A]">{{ $item['p'] }}</p>
@@ -81,7 +87,8 @@
                 @if (Auth::user()->role == 'admin')
                     <div class="flex justify-between items-center">
                         <h3 class="text-[18px] text-secondary m-0">Request</h3>
-                        <a href="#" class="text-[14px] text-red-500 no-underline" wire:click="triggerModal">View all</a>
+                        <a href="#" class="text-[14px] text-red-500 no-underline" wire:click="triggerModal">View
+                            all</a>
                     </div>
 
                     <div class="p-4 rounded-lg bg-white space-y-5">

@@ -57,7 +57,7 @@ class Users extends Component
         // Soft delete the user
         $user->delete();
 
-        session()->flash('message', 'User marked as inactive and soft deleted successfully.');
+        session()->flash('success', 'User marked as inactive and soft deleted successfully.');
     }
 
     public function getUsersProperty()
@@ -126,7 +126,7 @@ class Users extends Component
         ]);
 
         $this->dispatch('hideEditModal');
-        session()->flash('message', 'User updated successfully.');
+        session()->flash('success', 'User updated successfully.');
     }
 
     public function render()

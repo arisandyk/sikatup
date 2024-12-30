@@ -1,4 +1,9 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         @php
             $labels = [
@@ -97,9 +102,9 @@
     <div class="relative my-5">
         <!-- Search and Per Page Selection -->
         <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
-            <input type="text" wire:model.debounce.300ms="search" placeholder="Search..."
+            <input type="text" wire:model.debounce.300ms="search" wire:change="loadUsers" placeholder="Search..."
                 class="flex-grow p-3 rounded-lg border text-sm min-w-52">
-            <select wire:model="perPage" class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
+            <select wire:model="perPage" wire:change="loadUsers" class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>

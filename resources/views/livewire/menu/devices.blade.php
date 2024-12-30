@@ -1,4 +1,9 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         @php
             $labels = [
@@ -76,10 +81,10 @@
                                             class="add-option block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                             Add New Item
                                         </button>
-                                        <button wire:click="importFromExcel"
+                                        {{-- <button wire:click="importFromExcel"
                                             class="add-option block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                             Import from Excel
-                                        </button>
+                                        </button> --}}
                                     </div>
 
                                     <!-- Offcanvas -->
@@ -110,6 +115,7 @@
                                                                 class="block text-sm font-medium mb-1">Unit
                                                                 Induk</label>
                                                             <select id="unitInduk" wire:model="selectedUnitInduk"
+                                                                wire:change="$refresh"
                                                                 class="form-control w-full p-2 border rounded-md">
                                                                 <option value="">Select Unit Induk</option>
                                                                 @foreach ($unitInduks as $unitInduk)
@@ -117,6 +123,11 @@
                                                                         {{ $unitInduk->name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                            <div class="error">
+                                                                @error('selectedUnitInduk')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- APP -->
@@ -124,6 +135,7 @@
                                                             <label for="app"
                                                                 class="block text-sm font-medium mb-1">APP</label>
                                                             <select id="app" wire:model="selectedApp"
+                                                                wire:change="$refresh"
                                                                 class="form-control w-full p-2 border rounded-md">
                                                                 <option value="">Select APP</option>
                                                                 @foreach ($apps as $app)
@@ -131,6 +143,11 @@
                                                                         {{ $app->name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                            <div class="error">
+                                                                @error('selectedApp')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Basecamp -->
@@ -138,6 +155,7 @@
                                                             <label for="basecamp"
                                                                 class="block text-sm font-medium mb-1">Basecamp</label>
                                                             <select id="basecamp" wire:model="selectedBasecamp"
+                                                                wire:change="$refresh"
                                                                 class="form-control w-full p-2 border rounded-md">
                                                                 <option value="">Select Basecamp</option>
                                                                 @foreach ($basecamps as $basecamp)
@@ -145,6 +163,11 @@
                                                                         {{ $basecamp->name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                            <div class="error">
+                                                                @error('selectedBasecamp')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Gardu Induk -->
@@ -153,6 +176,7 @@
                                                                 class="block text-sm font-medium mb-1">Gardu
                                                                 Induk</label>
                                                             <select id="garduInduk" wire:model="selectedGarduInduk"
+                                                                wire:change="$refresh"
                                                                 class="form-control w-full p-2 border rounded-md">
                                                                 <option value="">Select Gardu Induk</option>
                                                                 @foreach ($garduInduks as $garduInduk)
@@ -160,6 +184,11 @@
                                                                         {{ $garduInduk->name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                            <div class="error">
+                                                                @error('selectedGarduInduk')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Bay Name -->
@@ -168,6 +197,11 @@
                                                                 Name</label>
                                                             <input type="text" wire:model="newBayName"
                                                                 class="w-full p-2 border rounded-md">
+                                                            <div class="error">
+                                                                @error('newBayName')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Status -->
@@ -175,6 +209,11 @@
                                                             <label class="block text-sm font-medium mb-1">Status</label>
                                                             <input type="text" wire:model="newBayStatus"
                                                                 class="w-full p-2 border rounded-md">
+                                                            <div class="error">
+                                                                @error('newBayStatus')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Tanggal Operasi -->
@@ -183,6 +222,11 @@
                                                                 Operasi</label>
                                                             <input type="date" wire:model="newBayTanggalOperasi"
                                                                 class="w-full p-2 border rounded-md">
+                                                            <div class="error">
+                                                                @error('newBayTanggalOperasi')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Tegangan -->
@@ -197,6 +241,11 @@
                                                                         {{ $tegangan->name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                            <div class="error">
+                                                                @error('newBayTeganganId')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Trafo -->
@@ -210,6 +259,11 @@
                                                                         {{ $trafo->name_plate }}</option>
                                                                 @endforeach
                                                             </select>
+                                                            <div class="error">
+                                                                @error('newBayTrafoId')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Nomor Series -->
@@ -218,6 +272,11 @@
                                                                 Series</label>
                                                             <input type="text" wire:model="newBayNomorSeries"
                                                                 class="w-full p-2 border rounded-md">
+                                                            <div class="error">
+                                                                @error('newBayNomorSeries')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
 
                                                         <!-- Keterangan -->
@@ -225,6 +284,11 @@
                                                             <label
                                                                 class="block text-sm font-medium mb-1">Keterangan</label>
                                                             <textarea wire:model="newBayKeterangan" class="w-full p-2 border rounded-md"></textarea>
+                                                            <div class="error">
+                                                                @error('newBayKeterangan')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
                                                         </div>
                                                     </div>
 
