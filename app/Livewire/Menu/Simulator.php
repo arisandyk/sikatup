@@ -77,7 +77,7 @@ class Simulator extends Component
     public function loadButton()
     {
         if ($this->filterGarduInduk) {
-            $this->buttons = Bay::where('gi_id', $this->filterGarduInduk)->witH('event')->get();
+            $this->buttons = Bay::where('gi_id', $this->filterGarduInduk)->with('event')->get();
         }
 
         $this->changeState();
