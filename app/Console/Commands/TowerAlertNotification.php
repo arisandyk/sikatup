@@ -149,33 +149,32 @@ class TowerAlertNotification extends Command
 Anomali terdeteksi pada tower berikut:
 
 Tanggal: %s
+Nama Tower: %s
+No Tower: %s
+Alamat: %s
+Latitude: %s
+Longitude %s
+
+Penghantar: %s
+APP: %s
+Unit Induk: %s
+Direktorat: %s
 
 %s
         ",
             self::MESSAGE_TITLE,
             $formattedDate,
-            // $data->tower->name,
-            // $data->tower->no,
-            // $data->tower->alamat,
-            // $data->tower->latitude,
-            // $data->tower->longitude,
-            // $data->tower->penghantar->name,
-            // $data->tower->penghantar->apps->name,
-            // $data->tower->penghantar->apps->unit_induk->name,
-            // $data->tower->penghantar->apps->unit_induk->direktorat->name,
+            $data->tower->name,
+            $data->tower->no,
+            $data->tower->alamat,
+            $data->tower->latitude,
+            $data->tower->longitude,
+            $data->tower->penghantar->name,
+            $data->tower->penghantar->apps->name,
+            $data->tower->penghantar->apps->unitInduk->name,
+            $data->tower->penghantar->apps->unitInduk->direktorat->name,
             self::MESSAGE_FOOTER
         );
-
-        //         Nama Tower: %s
-        // No Tower: %s
-        // Alamat: %s
-        // Latitude: %s
-        // Longitude %s
-
-        // Penghantar: %s
-        // APP: %s
-        // Unit Induk: %s
-        // Direktorat: %s
 
         return $message;
     }
