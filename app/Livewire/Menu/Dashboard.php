@@ -5,19 +5,21 @@ namespace App\Livewire\Menu;
 use App\Models\Alarm;
 use App\Models\Bay;
 use App\Models\Location;
+use App\Models\Tower;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public $title;
     public $showModal = false;
+    public $towers = [];
 
     public function mount()
     {
         $this->title = 'Dashboard';
+        $this->towers = Tower::latest()->get();
     }
 
     public function render()
@@ -61,6 +63,7 @@ class Dashboard extends Component
             'alarmsPercentage' => $alarmsPercentage,
             'pendingUsers' => $pendingUsers, // Pass all pending users to the view for modal
             'recentPendingUsers' => $recentPendingUsers, // Pass recent pending users to the view for request list
+            'towers' => $this->towers
         ])->layout('components.layouts.app', ['title' => $this->title]);
     }
 

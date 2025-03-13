@@ -17,26 +17,31 @@
         Route::is('profile') ||
         Route::is('edit-profile') ||
         Route::is('simulator') ||
-        Route::is('log'))
+        Route::is('log') ||
+        Route::is('master-penghantar') ||
+        Route::is('tower'))
     <script src="{{ asset('assets/js/header.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
-    @if (Route::is('dashboard'))
-        <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-    @elseif(Route::is('users'))
-        <script src="{{ asset('assets/js/users.js') }}"></script>
-    @elseif(Route::is('devices'))
-        {{-- @livewireScripts
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script> --}}
-        <script src="{{ asset('assets/js/devices.js') }}"></script>
-    @elseif(Route::is('alarm'))
-        <script src="{{ asset('assets/js/alarm.js') }}"></script>
-    @elseif(Route::is('control'))
-        <script src="{{ asset('assets/js/control.js') }}"></script>
-    @elseif(Route::is('location'))
-        <script src="{{ asset('assets/js/location.js') }}"></script>
-    @elseif(Route::is('profile'))
-        <script src="{{ asset('assets/js/profile.js') }}"></script>
-    @elseif(Route::is('edit-profile'))
-        <script src="{{ asset('assets/js/edit-profile.js') }}"></script>
-    @endif
+@endif
+
+@if (Route::is('dashboard'))
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+@elseif(Route::is('users'))
+    <script src="{{ asset('assets/js/users.js') }}"></script>
+@elseif(Route::is('devices'))
+    {{-- @livewireScripts
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script> --}}
+    <script src="{{ asset('assets/js/devices.js') }}"></script>
+@elseif(Route::is('alarm'))
+    <script src="{{ asset('assets/js/alarm.js') }}"></script>
+@elseif(Route::is('control'))
+    <script src="{{ asset('assets/js/control.js') }}"></script>
+@elseif(Route::is('location'))
+    <script src="{{ asset('assets/js/location.js') }}"></script>
+@elseif(Route::is('profile'))
+    <script src="{{ asset('assets/js/profile.js') }}"></script>
+@elseif(Route::is('edit-profile'))
+    <script src="{{ asset('assets/js/edit-profile.js') }}"></script>
+@elseif(Route::is('tower'))
+    <script src="{{ asset('assets/js/tower.js') }}"></script>
 @endif

@@ -204,6 +204,18 @@
                                                             </div>
                                                         </div>
 
+                                                        <!-- Nama Penghantar -->
+                                                         <div>
+                                                            <label class="block text-sm font-medium mb-1">Nama Penghantar</label>
+                                                            <input type="text" wire:model="newNamaPenghantar"
+                                                                class="w-full p-2 border rounded-md">
+                                                            <div class="error">
+                                                                @error('newNamaPenghantar')
+                                                                    {{ $message }}
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+
                                                         <!-- Status -->
                                                         <div>
                                                             <label class="block text-sm font-medium mb-1">Status</label>
@@ -318,6 +330,7 @@
                     <tr>
                         <th class="text-lg p-5 text-center bg-[#fffdc3]">No</th>
                         <th rowspan="1" class="text-lg p-5 text-center bg-[#fffdc3]">Bay</th>
+                        <th rowspan="1" class="text-lg p-5 text-center bg-[#fffdc3]">Nama Penghantar</th>
                         <th rowspan="1" class="text-lg p-5 text-center bg-[#fffdc3]">Gardu Induk</th>
                         <th rowspan="1" class="text-lg p-5 text-center bg-[#fffdc3]">Basecamp</th>
                         <th rowspan="1" class="text-lg p-5 text-center bg-[#fffdc3]">App</th>
@@ -333,6 +346,7 @@
                                 {{ $loop->index + 1 }}
                             </td>
                             <td class="td-class">{{ $bay->name }}</td>
+                            <td class="td-class">{{ $bay->nama_penghantar }}</td>
                             <td class="td-class">{{ $bay->gardu_induks->name ?? '-' }}</td>
                             <td class="td-class">{{ $bay->gardu_induks->basecamps->name ?? '-' }}</td>
                             <td class="td-class">{{ $bay->gardu_induks->basecamps->apps->name ?? '-' }}</td>
@@ -451,6 +465,12 @@
                         <div>
                             <label class="block text-sm font-medium mb-1">Bay Name</label>
                             <input type="text" wire:model="newBayName" class="w-full p-2 border rounded-md">
+                        </div>
+
+                        <!-- Nama Penghantar -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Nama Penghantar</label>
+                            <input type="text" wire:model="newNamaPenghantar" class="w-full p-2 border rounded-md">
                         </div>
 
                         <!-- Status -->

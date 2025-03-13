@@ -15,6 +15,7 @@ class Bay extends Model
     protected $fillable = [
         'gi_id',
         'name',
+        'nama_penghantar',
         'status',
         'tanggal_operasi',
         'tegangan_id',

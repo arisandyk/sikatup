@@ -15,7 +15,10 @@ use App\Livewire\Menu\Users;
 use App\Livewire\Menu\Control;
 use App\Livewire\Menu\Devices;
 use App\Livewire\Menu\Location;
+use App\Livewire\Menu\Master\Penghantar;
+use App\Livewire\Menu\Master\Upt;
 use App\Livewire\Menu\Simulator;
+use App\Livewire\Menu\Tower;
 use App\Livewire\Settings\EditProfile;
 use App\Livewire\Settings\Profile;
 use App\Models\Alarm;
@@ -40,6 +43,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/alarm', AlarmLog::class)->name('alarm');
     Route::get('/profile', Profile::class)->name('profile');
     Route::get('/edit-profile', EditProfile::class)->name('edit-profile');
+    Route::get('/master/penghantar', Penghantar::class)->name('master-penghantar');
+    Route::get('/tower', Tower::class)->name('tower');
     Route::get('/logout', function () {
         Auth::guard('web')->logout(); // Log out from the session
         return redirect()->route('login');

@@ -68,6 +68,22 @@
                     <span>Devices</span>
                 </a>
             </li>
+            <li class="flex items-center border-b lg:border-none pb-4">
+                <a href="{{ route('tower') }}"
+                    class="{{ request()->routeIs('tower') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
+                    <i class="flex mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-devices">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" />
+                            <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" />
+                            <path d="M16 9h2" />
+                        </svg>
+                    </i>
+                    <span>Tower</span>
+                </a>
+            </li>
         @endif
         <li class="flex items-center border-b lg:border-none pb-4">
             <a href="{{ route('control') }}"
@@ -133,6 +149,26 @@
             </a>
         </li>
     </ul>
+    @if (Auth::check() && Auth::user()->role == 'admin')
+        <div class="mt-4">
+            <h4 class="text-lg mb-5">Master</h4>
+            <li class="flex items-center border-b lg:border-none pb-4">
+                <a href="{{ route('master-penghantar') }}"
+                    class="{{ request()->routeIs('master-penghantar') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
+                    <i class="flex mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                        </svg>
+                    </i>
+                    <span>Penghantar</span>
+                </a>
+            </li>
+        </div>
+    @endif
     <!-- Footer Section -->
     <div class="mt-4">
         <h4 class="text-lg mb-5">Settings</h4>

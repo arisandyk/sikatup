@@ -39,6 +39,7 @@ class Devices extends Component
     public $breadcrumb = [];
     public $currentView = 'apps'; // Default view
     public $newBayName = '';
+    public $newNamaPenghantar = '';
     public $newBayStatus = '';
     public $newBayTanggalOperasi = '';
     public $newBayTeganganId = null;
@@ -214,6 +215,7 @@ class Devices extends Component
         Bay::create([
             'gi_id' => $this->selectedGarduInduk,
             'name' => $this->newBayName,
+            'nama_penghantar' => $this->newNamaPenghantar,
             'status' => $this->newBayStatus,
             'tanggal_operasi' => $this->newBayTanggalOperasi,
             'tegangan_id' => $this->newBayTeganganId,
@@ -274,6 +276,7 @@ class Devices extends Component
             $this->selectedGarduInduk = $bay->gardu_induks->id ?? null;
 
             $this->newBayName = $bay->name;
+            $this->newNamaPenghantar = $bay->nama_penghantar;
             $this->newBayStatus = $bay->status;
             $this->newBayTanggalOperasi = $bay->tanggal_operasi;
             $this->newBayTeganganId = $bay->tegangan_id;
@@ -299,6 +302,7 @@ class Devices extends Component
             $bay->update([
                 'gi_id' => $this->selectedGarduInduk,
                 'name' => $this->newBayName,
+                'nama_penghantar' => $this->newNamaPenghantar,
                 'status' => $this->newBayStatus,
                 'tanggal_operasi' => $this->newBayTanggalOperasi,
                 'tegangan_id' => $this->newBayTeganganId,
