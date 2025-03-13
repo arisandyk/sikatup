@@ -19,7 +19,8 @@
         Route::is('simulator') ||
         Route::is('log') ||
         Route::is('master-penghantar') ||
-        Route::is('tower'))
+        Route::is('tower') ||
+        Route::is('tower-alert'))
     <script src="{{ asset('assets/js/header.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
 @endif

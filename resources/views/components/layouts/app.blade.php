@@ -31,7 +31,8 @@
             'simulator',
             'log',
             'master-penghantar',
-            'tower'
+            'tower',
+            'tower-alert'
         ];
     @endphp
 

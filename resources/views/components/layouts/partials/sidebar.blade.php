@@ -148,6 +148,22 @@
                 <span>Alert</span>
             </a>
         </li>
+        <li class="flex items-center border-b lg:border-none pb-4">
+            <a href="{{ route('tower-alert') }}"
+                class="{{ request()->routeIs('tower-alert') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
+                <i class="flex mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-urgent">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M8 16v-4a4 4 0 0 1 8 0v4" />
+                        <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+                        <path d="M6 16m0 1a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1z" />
+                    </svg>
+                </i>
+                <span>Tower Alert</span>
+            </a>
+        </li>
     </ul>
     @if (Auth::check() && Auth::user()->role == 'admin')
         <div class="mt-4">
