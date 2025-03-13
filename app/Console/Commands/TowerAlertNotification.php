@@ -57,7 +57,7 @@ class TowerAlertNotification extends Command
         } catch (\Exception $e) {
             Log::error('Failed to connect to MQTT broker or loop failed', ['error' => $e->getMessage()]);
         } finally {
-            // $this->mqttClient->disconnect();
+            $this->mqttClient->disconnect();
             Log::info('Disconnected from MQTT broker');
         }
     }
@@ -76,6 +76,10 @@ class TowerAlertNotification extends Command
 
             if ($data == 1) {
                 $this->createAlert();
+            } else if ($data != 1 || $data != 0) {
+                $this->mqttClient->disconnect();
+                $this->info("Command stopped.");
+                return;
             }
         } catch (\Exception $e) {
             Log::error('Failed to process message', ['error' => $e->getMessage(), 'data' => $message]);
