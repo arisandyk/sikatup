@@ -74,11 +74,13 @@
                     <i class="flex mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-devices">
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-building-lighthouse">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" />
-                            <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" />
-                            <path d="M16 9h2" />
+                            <path d="M12 3l2 3l2 15h-8l2 -15z" />
+                            <path d="M8 9l8 0" />
+                            <path d="M3 11l2 -2l-2 -2" />
+                            <path d="M21 11l-2 -2l2 -2" />
                         </svg>
                     </i>
                     <span>Tower</span>
@@ -106,8 +108,8 @@
                 <a href="{{ route('simulator') }}"
                     class="{{ request()->routeIs('simulator') ? 'text-yellow-300' : 'text-white' }} no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                     <i class="flex mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
                         </svg>
@@ -154,11 +156,11 @@
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-urgent">
+                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bell-bolt">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M8 16v-4a4 4 0 0 1 8 0v4" />
-                        <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
-                        <path d="M6 16m0 1a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1z" />
+                        <path d="M13.5 17h-9.5a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6a2 2 0 1 1 4 0a7 7 0 0 1 4 6v1" />
+                        <path d="M9 17v1a3 3 0 0 0 4.368 2.67" />
+                        <path d="M19 16l-2 3h4l-2 3" />
                     </svg>
                 </i>
                 <span>Tower Alert</span>
@@ -174,10 +176,19 @@
                     <i class="flex mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-abacus">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                            <path d="M5 3v18" />
+                            <path d="M19 21v-18" />
+                            <path d="M5 7h14" />
+                            <path d="M5 15h14" />
+                            <path d="M8 13v4" />
+                            <path d="M11 13v4" />
+                            <path d="M16 13v4" />
+                            <path d="M14 5v4" />
+                            <path d="M11 5v4" />
+                            <path d="M8 5v4" />
+                            <path d="M3 21h18" />
                         </svg>
                     </i>
                     <span>Penghantar</span>
@@ -219,7 +230,8 @@
             </li>
         @endif
         <li class="flex items-center pb-4">
-            <a href="#" id="logoutLink" class="no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
+            <a href="#" id="logoutLink"
+                class="no-underline flex items-center text-base rounded-lg hover:text-yellow-500">
                 <i class="flex mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

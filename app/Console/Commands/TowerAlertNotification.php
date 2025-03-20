@@ -150,16 +150,15 @@ class TowerAlertNotification extends Command
             "
 %s
 
-Anomali terdeteksi pada tower berikut:
+Terjadi aktivitas Pencurian/gangguan yang terdeteksi pada tower berikut:
 
 Tanggal: %s
-Nama Tower: %s
+Nama Penghantar: %s %s
 No Tower: %s
 Alamat: %s
 Latitude: %s
 Longitude %s
 
-Penghantar: %s
 APP: %s
 Unit Induk: %s
 Direktorat: %s
@@ -169,11 +168,11 @@ Direktorat: %s
             self::MESSAGE_TITLE,
             $formattedDate,
             $data->tower->name,
+            $data->tower->penghantar->name,
             $data->tower->no,
             $data->tower->alamat,
             $data->tower->latitude,
             $data->tower->longitude,
-            $data->tower->penghantar->name,
             $data->tower->penghantar->apps->name,
             $data->tower->penghantar->apps->unitInduk->name,
             $data->tower->penghantar->apps->unitInduk->direktorat->name,

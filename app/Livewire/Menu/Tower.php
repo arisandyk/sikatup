@@ -37,7 +37,7 @@ class Tower extends Component
     public function render()
     {
         return view('livewire.menu.tower', [
-            'towers' => ModelsTower::paginate(10)
+            'towers' => ModelsTower::paginate(10),
         ])->layout('components.layouts.app', [
             'title' => $this->title
         ]);
@@ -102,7 +102,7 @@ class Tower extends Component
         $this->idBeingEdited = $id;
         $this->loadBayData();
         $this->isEditModalOpen = true;
-        $this->dispatch('modalOpened');
+        $this->dispatch('editModalOpened');
     }
 
     protected $listeners = ['placeChanged'];

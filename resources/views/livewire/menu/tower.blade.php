@@ -229,7 +229,7 @@
 
         <!-- Offcanvas Modal -->
         <div
-            class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isEditModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
+            class="fixed top-0 right-0 w-1/2 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isEditModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
             <div class="p-6 text-sm h-full overflow-y-auto">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
@@ -297,7 +297,7 @@
                         <!-- Latitude -->
                         <div>
                             <label class="block text-sm font-medium mb-1">Latitude</label>
-                            <input type="text" wire:model="newLatitudeTower" class="w-full p-2 border rounded-md">
+                            <input type="text" wire:model="newLatitudeTower" class="w-full p-2 border rounded-md" id="editLatitude">
                             <div class="error">
                                 @error('newLatitudeTower')
                                     {{ $message }}
@@ -309,7 +309,7 @@
                         <div>
                             <label class="block text-sm font-medium mb-1">Longitude</label>
                             <input type="text" wire:model="newLongitudeTower"
-                                class="w-full p-2 border rounded-md">
+                                class="w-full p-2 border rounded-md" id="editLongitude">
                             <div class="error">
                                 @error('newLongitudeTower')
                                     {{ $message }}

@@ -25,11 +25,11 @@ class TowerAlertNotifier extends Component
     }
 
     public function shutAlert() {
+        $this->dispatch('tower-alarm-deleted');
         $this->alarm->update([
             'user_id' => Auth::user()->id,
         ]);
 
         $this->alarm->delete();
-        $this->dispatch('tower-alarm-deleted');
     }
 }

@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function initMap() {
         const position = {
-            lat: -6.920546885515135,
-            lng: 107.6108261373316
+            lat: -3.2442949,
+            lng: 125.3647324
         };
         // Request needed libraries.
         //@ts-ignore
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Initialize the map
         map = new Map(document.getElementById("map"), {
-            zoom: 19,
+            zoom: 5,
             center: position,
             mapId: "e7408814fc35d686",
             mapTypeId: "terrain",
@@ -60,19 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         var infoWindows = [];
         var contents = [];
 
-        const towerImg = document.createElement("img");
-
-        towerImg.src =
-            "https://svgsilh.com/svg_v2/310252.svg";
-        towerImg.width = 50;
-        towerImg.height = 50;
-
         towers.forEach((item, i) => {
             markers[i] = new AdvancedMarkerElement({
                 map: map,
                 position: new google.maps.LatLng(parseFloat(item.latitude), parseFloat(item.longitude)),
                 gmpClickable: true,
-                content: towerImg,
             });
 
             contents[i] = `

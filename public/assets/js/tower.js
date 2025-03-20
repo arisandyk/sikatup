@@ -35,11 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Map initialization function
     let map, map2, marker, marker2, geocoder, geocoder2;
 
-    async function initMap() {
-        const position = {
-            lat: -6.920546885515135,
-            lng: 107.6108261373316
-        };
+    async function initMap(center = {
+        lat: -3.2442949,
+        lng: 125.3647324
+    }) {
         // Request needed libraries.                
         const {
             Map
@@ -50,46 +49,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Initialize the map
         map = new Map(document.body.querySelector('#map'), {
-            zoom: 19,
-            center: position,
+            zoom: 5,
+            center: center,
             mapId: "e7408814fc35d686"
         });
 
         map2 = new Map(document.body.querySelector('#map2'), {
-            zoom: 19,
-            center: position,
+            zoom: 5,
+            center: center,
             mapId: "e7408814fc35d686"
         });
 
-        const towerImg = document.createElement("img");
-
-        towerImg.src =
-            "https://svgsilh.com/svg_v2/310252.svg";
-        towerImg.width = 50;
-        towerImg.height = 50;
-
         marker = new AdvancedMarkerElement({
-            position: position,
+            position: center,
             map: map,
             gmpDraggable: true,
-            content: towerImg,
         });
 
         marker2 = new AdvancedMarkerElement({
-            position: position,
+            position: center,
             map: map2,
             gmpDraggable: true,
-            content: towerImg,
         });
 
         marker.addListener('dragend', () => {
             const newPosition = marker.position;
-            getAddress(newPosition);
+            getAddress(newPosition, map);
         });
 
         marker2.addListener('dragend', () => {
             const newPosition = marker2.position;
-            getAddress2(newPosition);
+            getAddress2(newPosition, map2);
         });
 
         geocoder = new google.maps.Geocoder();
@@ -130,11 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             marker.map = map;
 
-            changePlace(place)
+            changePlace(place, map)
         });
 
         autocomplete2.addListener('place_changed', () => {
-            marker.map = null;
+            marker2.map = null;
 
             const place = autocomplete2.getPlace();
 
@@ -158,17 +148,17 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             marker2.map = map2;
 
-            changePlace(place)
+            changePlace(place, map2)
         });
     }
 
-    function getAddress(location) {
+    function getAddress(location, map) {
         geocoder.geocode({
             location: location
         }, (results, status) => {
             if (status === "OK") {
                 if (results[0]) {
-                    changePlace(results[0])
+                    changePlace(results[0], map)
                 } else {
                     alert("No results found");
                 }
@@ -178,13 +168,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function getAddress2(location) {
+    function getAddress2(location, map) {
         geocoder2.geocode({
             location: location
         }, (results, status) => {
             if (status === "OK") {
                 if (results[0]) {
-                    changePlace(results[0])
+                    changePlace(results[0], map)
                 } else {
                     alert("No results found");
                 }
@@ -194,17 +184,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function changePlace(data) {
+    function changePlace(data, map) {
         Livewire.dispatch("placeChanged", [
             data.formatted_address,
             data.geometry.location.lat(),
             data.geometry.location.lng()
         ])
+
+        map.setCenter(data.geometry.location);
+        map.setZoom(17);
     }
 
     Livewire.on('modalOpened', () => {
-        if (!map) {
-            initMap();
-        }
+        initMap();
     });
+
+    Livewire.on('editModalOpened', () => {
+        setTimeout(() => {     
+            var editLatitude = document.getElementById('editLatitude').value;
+            var editLongitude = document.getElementById('editLongitude').value;
+    
+            var center = {
+                lat: parseFloat(editLatitude),
+                lng: parseFloat(editLongitude)
+            }
+    
+            initMap(center);
+        }, 100);
+    })
 });
