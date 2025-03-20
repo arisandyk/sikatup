@@ -131,12 +131,23 @@ class TowerAlertNotification extends Command
 
         $fonnteService = new Fonnte();
 
+        $response = $fonnteService->sendLocation(
+            target: "120363412718052406@g.us",
+            data_id: $data->id,
+            type: "Tower Alert Notification",
+            location: [
+                $data->tower->latitude,
+                $data->tower->longitude,
+            ],
+            countryCode: 62,
+        );
+
         $response = $fonnteService->sendTextMessage(
             target: "120363412718052406@g.us",
             message: $message,
             data_id: $data->id,
             type: "Tower Alert Notification",
-            countryCode: 62
+            countryCode: 62,
         );
 
         return $response;

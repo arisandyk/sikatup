@@ -274,7 +274,7 @@ class Fonnte
         }
     }
 
-    public function sendTextMessage($target, $message, $countryCode = '62', $data_id = null, $type)
+    public function sendTextMessage($target, $message, $countryCode = 62, $data_id = null, $type)
     {
         try {
 
@@ -293,7 +293,7 @@ class Fonnte
                     'target' => $target,
                     'message' => $message,
                     'countryCode' => $countryCode,
-                    'delay' => '10-15'
+                    'delay' => '10-15',
                 ),
                 CURLOPT_HTTPHEADER => array(
                     "Authorization: {$this->deviceToken}"
@@ -346,6 +346,86 @@ class Fonnte
                     'message' => $message,
                     'countryCode' => $countryCode,
                     'delay' => '10-15'
+                ]),
+                'error' => json_encode($myResponse)
+            ]);
+
+            return $myResponse;
+        }
+    }
+
+    public function sendLocation($target, $countryCode = 62, $data_id = null, $type, $location = [])
+    {
+        try {
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "{$this->baseUrl}/send",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array(
+                    'target' => $target,
+                    'countryCode' => $countryCode,
+                    'delay' => '10-15',
+                    'location' => implode(',', $location)
+                ),
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: {$this->deviceToken}"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            if (curl_errno($curl)) {
+                throw new Exception(curl_error($curl));
+            }
+
+            curl_close($curl);
+
+            $myResponse = [
+                'success' => true,
+                'message' => json_decode($response, true)
+            ];
+
+            NotificationTracker::create([
+                'sender_id' => Sender::first()->id,
+                'data_id' => $data_id,
+                'type' => $type,
+                'status' => 'Success',
+                'request' => json_encode([
+                    'target' => $target,
+                    'countryCode' => $countryCode,
+                    'delay' => '10-15',
+                    'location' => implode(',', $location)
+                ]),
+                'success' => json_encode($myResponse)
+            ]);
+
+            return $myResponse;
+        } catch (Exception $e) {
+            curl_close($curl);
+
+            $myResponse = [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+
+            NotificationTracker::create([
+                'sender_id' => Sender::first()->id,
+                'data_id' => $data_id,
+                'type' => is_null($data_id) ? 'Daily Notification' : 'Alert Notification',
+                'status' => 'Error',
+                'request' => json_encode([
+                    'target' => $target,
+                    'countryCode' => $countryCode,
+                    'delay' => '10-15',
+                    'location' => implode(',', $location)
                 ]),
                 'error' => json_encode($myResponse)
             ]);
