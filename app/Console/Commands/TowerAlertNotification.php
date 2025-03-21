@@ -37,8 +37,17 @@ class TowerAlertNotification extends Command
      */
     public function handle()
     {
-        $this->mqttClient = new MqttClient(config('mqtt.host'), config('mqtt.port'));
-        $this->subscribe();
+        $endTime = Carbon::now()->addMinutes(5);
+
+        while (Carbon::now()->lt($endTime)) {
+            $this->process();
+            sleep(1);
+            $this->mqttClient = new MqttClient(config('mqtt.host'), config('mqtt.port'));
+            $this->subscribe();
+        }
+
+        $this->info('Command finished running after one minute.');
+        exit;
     }
 
     public function subscribe()
