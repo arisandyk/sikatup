@@ -40,10 +40,9 @@ class TowerAlertNotification extends Command
         $endTime = Carbon::now()->addMinutes(5);
 
         while (Carbon::now()->lt($endTime)) {
-            $this->process();
-            sleep(1);
             $this->mqttClient = new MqttClient(config('mqtt.host'), config('mqtt.port'));
             $this->subscribe();
+            sleep(1);
         }
 
         $this->info('Command finished running after one minute.');
@@ -88,7 +87,7 @@ class TowerAlertNotification extends Command
             } else if ($data != 1 || $data != 0) {
                 $this->mqttClient->disconnect();
                 $this->info("Command stopped.");
-                return;
+                exit;
             }
         } catch (\Exception $e) {
             Log::error('Failed to process message', ['error' => $e->getMessage(), 'data' => $message]);
