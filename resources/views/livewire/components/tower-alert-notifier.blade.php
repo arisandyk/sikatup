@@ -115,11 +115,13 @@
                         document.body.style.overflow = 'hidden';
                         alertElement.classList.add('flex');
                         alertElement.classList.remove('hidden');
+                        blockPageActions();
                     },
                     hide: () => {
                         document.body.style.overflow = 'auto';
                         alertElement.classList.add('hidden');
                         alertElement.classList.remove('flex');
+                        allowPageActions();
                     }
                 };
 

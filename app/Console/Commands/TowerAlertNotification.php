@@ -53,46 +53,11 @@ class TowerAlertNotification extends Command
         }
     }
 
-    public function checkUnprocessedAlert()
-    {
-        try {
-            // Acquire a lock to prevent overlapping execution
-            $lock = Cache::lock('check_unprocessed_alert', 10); // Lock for 10 seconds
-
-            if ($lock->get()) {
-                $towerAlert = TowerAlert::with('tower.penghantar.apps.unitInduk.direktorat')->latest()->first();
-                if (is_null($towerAlert)) {
-                    $this->info("No alert found.");
-                } else {
-                    $this->info("Alert found.");
-
-                    $response = $this->sendNotification($towerAlert);
-                    $this->notifyAlert();
-
-                    Log::info($response);
-                    $this->info("The command was successful! with {$response['message']['status']}");
-                }
-
-                // Release the lock
-                $lock->release();
-            } else {
-                $this->info("Another process is already checking for unprocessed alerts.");
-            }
-        } catch (\Throwable $e) {
-            Log::error('Failed to check unprocessed alert', ['error' => $e->getMessage()]);
-        }
-    }
-
     public function subscribe()
     {
         try {
             $this->mqttClient->connect();
             Log::info('Connected to MQTT broker');
-
-            $lastCheckTime = Carbon::now();
-
-            // Start a separate thread or timer for periodic checks
-            $this->startPeriodicCheck($lastCheckTime);
 
             // Subscribe to the MQTT topic
             $this->mqttClient->subscribe('/SIMOTES/0001', function (string $topic, string $message) {
@@ -107,20 +72,6 @@ class TowerAlertNotification extends Command
         } finally {
             $this->mqttClient->disconnect();
             Log::info('Disconnected from MQTT broker');
-        }
-    }
-
-    protected function startPeriodicCheck(&$lastCheckTime)
-    {
-        // Run a periodic check in a separate thread or process
-        while (true) {
-            if (Carbon::now()->diffInSeconds($lastCheckTime) >= 10) {
-                $this->checkUnprocessedAlert();
-                $lastCheckTime = Carbon::now();
-            }
-
-            // Sleep for a short duration to avoid excessive CPU usage
-            sleep(1);
         }
     }
 
