@@ -97,7 +97,7 @@
             document.addEventListener("livewire:init", () => {
                 var alertSound;
 
-                const alertElement = document.querySelector('body div#alert')
+                const alertElement = document.querySelector('body div#tower-alert')
 
                 const sound = () => {
                     const howlSound = new Howl({

@@ -45,6 +45,12 @@
         class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
         <div class="max-w-none md:max-w-screen-xl">
             <livewire:components.alarm-notifier />
+        </div>
+    </div>
+    
+    <div id="tower-alert"
+        class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
+        <div class="max-w-none md:max-w-screen-xl">
             <livewire:components.tower-alert-notifier />
         </div>
     </div>

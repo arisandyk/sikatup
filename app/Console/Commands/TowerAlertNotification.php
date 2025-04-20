@@ -49,6 +49,26 @@ class TowerAlertNotification extends Command
         exit;
     }
 
+    public function checkUnprocessedAlert()
+    {
+        try {
+            $towerAlert = TowerAlert::with('tower.penghantar.apps.unitInduk.direktorat')->latest()->first();
+            if (is_null($towerAlert)) {
+                $this->info("No alert found.");
+            } else {
+                $this->info("Alert found.");
+
+                $response = $this->sendNotification($towerAlert);
+                $this->notifyAlert();
+
+                Log::info($response);
+                $this->info("The command was successful! with {$response['message']['status']}");
+            }
+        } catch (\Throwable $e) {
+            Log::error('Failed to check unprocessed alert', ['error' => $e->getMessage()]);
+        }
+    }
+
     public function subscribe()
     {
         try {
@@ -84,10 +104,12 @@ class TowerAlertNotification extends Command
 
             if ($data == 1) {
                 $this->createAlert();
-            } else if ($data != 1 || $data != 0) {
+            } else if ($data != 1 && $data != 0) {
                 $this->mqttClient->disconnect();
                 $this->info("Command stopped.");
                 exit;
+            } else {
+                $this->checkUnprocessedAlert();
             }
         } catch (\Exception $e) {
             Log::error('Failed to process message', ['error' => $e->getMessage(), 'data' => $message]);
@@ -112,7 +134,6 @@ class TowerAlertNotification extends Command
 
             Log::info($response);
             $this->info("The command was successful! with {$response['message']['status']}");
-
         } catch (\Exception $e) {
             Log::error("Failed to create alert", [
                 'error' => $e->getMessage(),
