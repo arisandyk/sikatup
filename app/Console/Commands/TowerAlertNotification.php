@@ -8,6 +8,7 @@ use App\Models\TowerAlert;
 use App\Services\Fonnte;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\MqttClient;
 
@@ -37,32 +38,45 @@ class TowerAlertNotification extends Command
      */
     public function handle()
     {
-        $endTime = Carbon::now()->addMinutes(5);
-
-        while (Carbon::now()->lt($endTime)) {
+        try {
             $this->mqttClient = new MqttClient(config('mqtt.host'), config('mqtt.port'));
-            $this->subscribe();
-            sleep(1);
-        }
 
-        $this->info('Command finished running after one minute.');
-        exit;
+            // Subscribe to MQTT messages
+            $this->subscribe();
+
+            // The MQTT loop will handle incoming messages, and we can periodically check for unprocessed alerts
+            $this->info('MQTT subscription started. Listening for messages...');
+        } catch (\Exception $e) {
+            Log::error('Error in command execution', ['error' => $e->getMessage()]);
+            $this->error('An error occurred while executing the command: ' . $e->getMessage());
+            exit;
+        }
     }
 
     public function checkUnprocessedAlert()
     {
         try {
-            $towerAlert = TowerAlert::with('tower.penghantar.apps.unitInduk.direktorat')->latest()->first();
-            if (is_null($towerAlert)) {
-                $this->info("No alert found.");
+            // Acquire a lock to prevent overlapping execution
+            $lock = Cache::lock('check_unprocessed_alert', 10); // Lock for 10 seconds
+
+            if ($lock->get()) {
+                $towerAlert = TowerAlert::with('tower.penghantar.apps.unitInduk.direktorat')->latest()->first();
+                if (is_null($towerAlert)) {
+                    $this->info("No alert found.");
+                } else {
+                    $this->info("Alert found.");
+
+                    $response = $this->sendNotification($towerAlert);
+                    $this->notifyAlert();
+
+                    Log::info($response);
+                    $this->info("The command was successful! with {$response['message']['status']}");
+                }
+
+                // Release the lock
+                $lock->release();
             } else {
-                $this->info("Alert found.");
-
-                $response = $this->sendNotification($towerAlert);
-                $this->notifyAlert();
-
-                Log::info($response);
-                $this->info("The command was successful! with {$response['message']['status']}");
+                $this->info("Another process is already checking for unprocessed alerts.");
             }
         } catch (\Throwable $e) {
             Log::error('Failed to check unprocessed alert', ['error' => $e->getMessage()]);
@@ -75,12 +89,18 @@ class TowerAlertNotification extends Command
             $this->mqttClient->connect();
             Log::info('Connected to MQTT broker');
 
+            $lastCheckTime = Carbon::now();
+
+            // Start a separate thread or timer for periodic checks
+            $this->startPeriodicCheck($lastCheckTime);
+
+            // Subscribe to the MQTT topic
             $this->mqttClient->subscribe('/SIMOTES/0001', function (string $topic, string $message) {
                 Log::info('MQTT message received', ['topic' => $topic, 'message' => $message]);
                 $this->processAndHandleMessage($message);
             }, config('mqtt.qos', 0));
 
-            $this->mqttClient->loop(true);
+            $this->mqttClient->loop(true); // Start the MQTT loop
             Log::info('MQTT loop started');
         } catch (\Exception $e) {
             Log::error('Failed to connect to MQTT broker or loop failed', ['error' => $e->getMessage()]);
@@ -90,26 +110,50 @@ class TowerAlertNotification extends Command
         }
     }
 
-    protected function processAndHandleMessage($message)
+    protected function startPeriodicCheck(&$lastCheckTime)
+    {
+        // Run a periodic check in a separate thread or process
+        while (true) {
+            if (Carbon::now()->diffInSeconds($lastCheckTime) >= 10) {
+                $this->checkUnprocessedAlert();
+                $lastCheckTime = Carbon::now();
+            }
+
+            // Sleep for a short duration to avoid excessive CPU usage
+            sleep(1);
+        }
+    }
+
+    public function processAndHandleMessage($message)
     {
         Log::info('Received message from MQTT', ['message' => $message]);
         try {
-            $data = json_decode($message, true);
+            // Acquire a lock to prevent overlapping execution
+            $lock = Cache::lock('process_mqtt_message', 10); // Lock for 10 seconds
 
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON data received');
-            }
+            if ($lock->get()) {
+                $data = json_decode($message, true);
 
-            Log::info('Decoded message from MQTT', ['data' => $data]);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Invalid JSON data received');
+                }
 
-            if ($data == 1) {
-                $this->createAlert();
-            } else if ($data != 1 && $data != 0) {
-                $this->mqttClient->disconnect();
-                $this->info("Command stopped.");
-                exit;
+                Log::info('Decoded message from MQTT', ['data' => $data]);
+
+                if ($data == 1) {
+                    $this->createAlert();
+                } else if ($data != 1 || $data != 0) {
+                    $this->mqttClient->disconnect();
+                    $this->info("Command stopped.");
+                    exit;
+                } else {
+                    $this->checkUnprocessedAlert();
+                }
+
+                // Release the lock
+                $lock->release();
             } else {
-                $this->checkUnprocessedAlert();
+                $this->info("Another process is already handling an MQTT message.");
             }
         } catch (\Exception $e) {
             Log::error('Failed to process message', ['error' => $e->getMessage(), 'data' => $message]);
