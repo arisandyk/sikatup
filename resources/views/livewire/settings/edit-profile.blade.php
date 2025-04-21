@@ -1,4 +1,9 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('message'))
+        <div class="alert-danger">
+            {{ session('message') }}
+        </div>
+    @endif
     {{-- Segment Buttons --}}
     <ul class="flex gap-4 my-5">
         <li class="cursor-pointer" wire:click="$set('activeTab', 'account')">
@@ -22,8 +27,8 @@
                     <div class="flex flex-col gap-4 lg:grid lg:grid-cols-3">
                         <div class="text-center">
                             <div class="mx-auto mb-3">
-                                <img src="{{ 'storage/' . Auth::user()->image }}" alt="User Image"
-                                    class="w-full h-full object-cover rounded-lg shadow-lg">
+                                <img src="{{ 'storage/' . Auth::user()->image ?? asset('assets/img/avatars/user.png') }}"
+                                    alt="User Image" class="w-full h-full object-cover rounded-lg shadow-lg">
                                 <input type="file" id="profilePicture" class="hidden" wire:model="profilePicture">
                             </div>
                             <button type="button"
@@ -125,7 +130,8 @@
                     there
                     is no going back. Please be certain.</p>
                 <div class="form-check">
-                    <input type="checkbox" class="w-[15px] h-[15px] border-gray-400" id="confirmDelete" wire:model="confirmDelete">
+                    <input type="checkbox" class="w-[15px] h-[15px] border-gray-400" id="confirmDelete"
+                        wire:model="confirmDelete">
                     <label class="cursor-pointer" for="confirmDelete">I confirm my account deactivation</label>
                 </div>
                 <button class="p-4 bg-red-500 rounded-lg text-white w-full cursor-pointer" wire:click="deleteAccount"
@@ -162,13 +168,13 @@
             </div>
         </div>
 
-        <div class="w-full mb-5 border-none shadow-lg bg-white p-4 rounded-lg mt-4">
+        {{-- <div class="w-full mb-5 border-none shadow-lg bg-white p-4 rounded-lg mt-4">
             <div class="space-y-4">
                 <h4 class="font-medium text-2xl">Two-steps verification</h4>
                 <p class="text-gray-600">Two-factor authentication is not enabled yet.</p>
                 <button class="p-4 bg-secondary rounded-lg text-white w-full" wire:click="enableTwoFactor">Enable Two-Factor
                     Authentication</button>
             </div>
-        </div>
+        </div> --}}
     @endif
 </div>

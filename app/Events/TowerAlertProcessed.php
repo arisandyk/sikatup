@@ -31,7 +31,7 @@ class TowerAlertProcessed implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            'tower-alert',
+           new PrivateChannel('tower-alert'.$this->towerAlert->tower->penghantar->apps->id),
         ];
     }
 

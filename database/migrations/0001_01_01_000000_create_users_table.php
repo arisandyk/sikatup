@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('mobile_number');
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
-            $table->string('image')->defaullt('user.png');
+            $table->string('image')->default('user.png');
             $table->string('nip')->nullable();
             $table->enum('account_status', ['pending', 'approved','active', 'inactive'])->default('pending');
             $table->enum('work_status',['pending','active', 'resigned'])->nullable();

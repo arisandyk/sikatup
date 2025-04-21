@@ -8,6 +8,7 @@ use App\Models\Basecamp;
 use App\Models\GarduInduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -26,7 +27,7 @@ class EditProfile extends Component
     public $editApp = false;
     public $editBasecamp = false;
     public $editGarduInduk = false;
-    public $profilePicture;
+    public $profilePicture = null;
 
 
     public function mount()
@@ -120,50 +121,51 @@ class EditProfile extends Component
 
     public function saveProfile()
     {
-        $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'nip' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::id())],
-            'mobileNumber' => ['required', 'string', 'max:15'],
-            'profilePicture' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:800'], // Validasi gambar
-            'unitInduk' => ['nullable', 'exists:unit_induks,id'],
-            'app' => ['nullable', 'exists:apps,id'],
-            'basecamp' => ['nullable', 'exists:basecamps,id'],
-            'garduInduk' => ['nullable', 'exists:gardu_induks,id'],
-        ]);
+        try {
+            $this->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'nip' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::id())],
+                'mobileNumber' => ['required', 'string', 'max:15'],
+                'profilePicture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:800'], // Validasi gambar
+                'unitInduk' => ['nullable', 'exists:unit_induks,id'],
+                'app' => ['nullable', 'exists:apps,id'],
+                'basecamp' => ['nullable', 'exists:basecamps,id'],
+                'garduInduk' => ['nullable', 'exists:gardu_induks,id'],
+            ]);
+    
+            $user = Auth::user();
+    
+            // Tangani upload avatar jika ada
+            if (!is_null($this->profilePicture)) {
+                $user->image = $this->handleAvatarUpload($this->profilePicture, $user);
+            }
+    
+            // Susun current_workplace
+            $currentWorkplace = implode(', ', array_filter([
+                $this->unitInduk,
+                $this->app,
+                $this->basecamp,
+                $this->garduInduk,
+            ]));
+    
+            // Update profil pengguna
+            $user->update([
+                'name' => $this->name,
+                'nip' => $this->nip,
+                'email' => $this->email,
+                'mobile_number' => $this->mobileNumber,
+                'image' => $user->image,
+                'current_workplace' => $currentWorkplace, // Simpan current_workplace
+            ]);
 
-        $user = Auth::user();
-
-        // Tangani upload avatar jika ada
-        if ($this->profilePicture) {
-            $user->image = $this->handleAvatarUpload($this->profilePicture, $user);
+            session()->flash('success', 'Profile updated successfully.');
+            return redirect()->route('profile');
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            session()->flash('message', 'Failed to update profile: ' . $e->getMessage());
+            return;
         }
-
-        // Susun current_workplace
-        $unitIndukName = UnitInduk::find($this->unitInduk)->name ?? null;
-        $appName = App::find($this->app)->name ?? null;
-        $basecampName = Basecamp::find($this->basecamp)->name ?? null;
-        $garduIndukName = GarduInduk::find($this->garduInduk)->name ?? null;
-
-        $currentWorkplace = implode(', ', array_filter([
-            $unitIndukName,
-            $appName,
-            $basecampName,
-            $garduIndukName,
-        ]));
-
-        // Update profil pengguna
-        $user->update([
-            'name' => $this->name,
-            'nip' => $this->nip,
-            'email' => $this->email,
-            'mobile_number' => $this->mobileNumber,
-            'image' => $user->image,
-            'current_workplace' => $currentWorkplace, // Simpan current_workplace
-        ]);
-
-        session()->flash('message', 'Profile updated successfully.');
-        return redirect()->route('profile');
     }
 
 
@@ -173,13 +175,13 @@ class EditProfile extends Component
         $defaultAvatar = $avatarPath . 'user.png'; // Gambar default
 
         // Pastikan direktori avatar ada
-        if (!File::exists(public_path($avatarPath))) {
-            File::makeDirectory(public_path($avatarPath), 0755, true);
+        if (!Storage::exists($avatarPath)) {
+            Storage::makeDirectory($avatarPath);
         }
 
         // Hapus avatar lama jika bukan avatar default
-        if ($user->image && $user->image !== $defaultAvatar && File::exists(public_path($user->image))) {
-            File::delete(public_path($user->image));
+        if (($user->image !== $defaultAvatar) && Storage::exists($user->image)) {
+            Storage::delete($user->image);
         }
 
         // Generate nama unik untuk avatar baru

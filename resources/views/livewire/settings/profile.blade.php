@@ -1,4 +1,15 @@
 <div class="mt-36 lg:mt-24 p-4 lg:ml-[280px]">
+    @if (session()->has('message'))
+        <div class="alert-danger">
+            {{ session('message') }}
+        </div>
+    @endif
+
+    @if (session()->has('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="bg-white rounded-md shadow-lg overflow-hidden mb-[30px] w-full">
         <div class="h-[200px] bg-gradient-to-r from-[#F7E43E] to-[#FFFDC3]"></div>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center p-5 relative -mt-[50px]">
@@ -39,8 +50,11 @@
                                 </span>
                                 @php
                                     $workplace = Auth::user()->current_workplace;
-                                    $city = explode(',', $workplace)[1];
-                                    $city = str_replace('App', '', $city);
+                                    $city = "-";
+                                    if (!is_null($workplace)) {
+                                        $city = App\Models\App::where('id', explode(',', $workplace)[1])->first();
+                                        $city = str_replace('App', '', $city->name);
+                                    }
                                 @endphp
                                 {{ $city }}
                             </div>

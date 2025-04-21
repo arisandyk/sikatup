@@ -67,10 +67,15 @@
                     </i>
                     @php
                         $workplace = Auth::user()->current_workplace;
-                        $unitInduk = explode(',', $workplace)[0];
-                        $unitInduk = str_replace('Unit Induk ', '', $unitInduk);
-                        $app = explode(',', $workplace)[1];
-                        $app = str_replace('App ', '', $app);
+                        $unitInduk = "-";
+                        $app = "-";  
+                        if (!is_null($workplace)) {
+                            $unitInduk = App\Models\UnitInduk::where('id', explode(',', $workplace)[0])->first();
+                            $unitInduk = str_replace('Unit Induk ', '', $unitInduk->name);
+
+                            $app = App\Models\App::where('id', explode(',', $workplace)[1])->first();
+                            $app = str_replace('App ', '', $app->name);
+                        }
                     @endphp
                     <strong>Unit Induk:</strong> {{ $unitInduk }}
                 </li>
