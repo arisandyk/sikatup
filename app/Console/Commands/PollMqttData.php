@@ -172,6 +172,12 @@ class PollMqttData extends Command
                     $alarm->event_type = $description;
                     $alarm->voice = $this->getAlarmSoundForEvent($description);
                     $alarm->save();
+                    
+                    event(new AlarmTriggered(
+                        $alarm,
+                        $event->bays->gardu_induks->basecamps->apps->id,
+                        $event->bays->name,
+                    ));
 
                     Log::info("Created");
                     Log::info(json_encode($alarm));

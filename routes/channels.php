@@ -19,3 +19,14 @@ Broadcast::channel('tower-alert.{appId}', function (Auth $auth, int $appId) {
         return $app === $appId;
     }
 });
+
+Broadcast::channel('alert.{appId}', function (User $user, int $appId) {
+    if ($user->role === 'admin') {
+        return true;
+    } else {
+        $workplace = $user->current_workplace;
+        $app = explode(',', $workplace)[1] ?? null;
+
+        return $app === $appId;
+    }
+});

@@ -17,16 +17,25 @@ class AlarmTriggered implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $alarm;
+    public $appId;
+    public $bayName;
 
-    public function __construct(Alarm $alarm)
+    public function __construct($alarm, $appId, $bayName)
     {
         $this->alarm = $alarm;
+        $this->appId = $appId;
+        $this->bayName = $bayName;
     }
 
     public function broadcastOn()
     {
         return [
-            new Channel('channel-reverb')
+            new PrivateChannel('alert.'.$this->appId),
         ];
+    }
+
+    public function broadcastAs()
+    {
+        return 'alert-processed';
     }
 }
