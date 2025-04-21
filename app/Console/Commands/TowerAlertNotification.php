@@ -122,10 +122,10 @@ class TowerAlertNotification extends Command
                 'description' => 'Anomali terdeteksi',
             ]);
 
-            $towerAlert = TowerAlert::with('tower.penghantar.apps.unitInduk.direktorat')->latest()->first(); //Get the correct alert.
+            $towerAlert = TowerAlert::latest()->first(); //Get the correct alert.
 
-            $response = $this->sendNotification($towerAlert);
-            $this->notifyAlert();
+            $response = $this->sendNotification($towerAlert->load('tower.penghantar.apps.unitInduk.direktorat'));
+            $this->notifyAlert($towerAlert);
 
             Log::info($response);
             $this->info("The command was successful! with {$response['message']['status']}");
@@ -136,12 +136,10 @@ class TowerAlertNotification extends Command
         }
     }
 
-    protected function notifyAlert()
+    protected function notifyAlert($towerAlert)
     {
         try {
-            $towerAlert = TowerAlert::with('tower')->latest()->first();
-
-            event(new TowerAlertProcessed($towerAlert));
+            event(new TowerAlertProcessed($towerAlert->load('tower'), $towerAlert->tower->penghantar->apps->id));
         } catch (\Exception $e) {
             Log::error("Failed to notify alert", [
                 'error' => $e->getMessage(),

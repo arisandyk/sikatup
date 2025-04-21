@@ -9,11 +9,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('tower-alert.{appId}', function (Auth $auth, int $appId) {
-    if ($auth->user()->role === 'admin') {
+Broadcast::channel('tower-alert.{appId}', function (User $user, int $appId) {
+    if ($user->role === 'admin') {
         return true;
     } else {
-        $workplace = $auth->user()->current_workplace;
+        $workplace = $user->current_workplace;
         $app = explode(',', $workplace)[1] ?? null;
 
         return $app === $appId;

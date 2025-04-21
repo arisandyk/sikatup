@@ -171,8 +171,6 @@
 
                 var channel = pusher.subscribe(`private-alert.${appId}`)
                 channel.bind('alert-processed', function(data) {
-                    console.log(data);
-                    
                     Livewire.dispatch('new-alarm', {
                         data: data?.alarm?.id
                     })

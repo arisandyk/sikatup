@@ -95,7 +95,7 @@
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
         <script>
             document.addEventListener("livewire:init", () => {
-                var alertSound;
+                var alertSound, appId = "{{ $appId }}";
 
                 const alertElement = document.querySelector('body div#tower-alert')
 
@@ -148,10 +148,13 @@
                 }
 
                 var pusher = new Pusher('ab5937f7e0fb0066866e', {
-                    cluster: 'ap1'
+                    cluster: 'ap1',
+                    channelAuthorization: {
+                        endpoint: "/broadcasting/auth",
+                    },
                 });
 
-                var channel = pusher.subscribe('tower-alert')
+                var channel = pusher.subscribe(`private-tower-alert.${appId}`)
                 channel.bind('tower-alert-processed', function(data) {
                     Livewire.dispatch('new-tower-alarm', {
                         data: data?.towerAlert?.id
@@ -159,6 +162,7 @@
                     alertUI.show();
                     alertSound = sound();
                     alertSound.play();
+
                     notify(`Anomali terekam di tower ${data?.towerAlert.tower.name} no ${data?.towerAlert.tower.no}`,
                         `{{ url('/') }}`)
                 })

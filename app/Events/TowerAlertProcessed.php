@@ -15,12 +15,14 @@ class TowerAlertProcessed implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $towerAlert;
+    public $appId;
     /**
      * Create a new event instance.
      */
-    public function __construct($towerAlert)
+    public function __construct($towerAlert, $appId)
     {
         $this->towerAlert = $towerAlert;
+        $this->appId = $appId;
     }
 
     /**
@@ -31,7 +33,7 @@ class TowerAlertProcessed implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-           new PrivateChannel('tower-alert'.$this->towerAlert->tower->penghantar->apps->id),
+           new PrivateChannel('tower-alert.'.$this->appId),
         ];
     }
 

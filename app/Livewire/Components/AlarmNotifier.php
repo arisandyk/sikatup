@@ -19,7 +19,8 @@ class AlarmNotifier extends Component
     }
     
     public function render()
-    {   $currentAppId = explode(',', Auth::user()->current_workplace)[1] ?? null;
+    {   
+        $currentAppId = explode(',', Auth::user()->current_workplace)[1] ?? null;
         $appId = App::where('id', $currentAppId)->first();
 
         return view('livewire.components.alarm-notifier', [
