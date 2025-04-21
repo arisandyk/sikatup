@@ -97,8 +97,6 @@ class TowerAlertNotification extends Command
                     $this->mqttClient->disconnect();
                     $this->info("Command stopped.");
                     exit;
-                } else {
-                    $this->checkUnprocessedAlert();
                 }
 
                 // Release the lock
