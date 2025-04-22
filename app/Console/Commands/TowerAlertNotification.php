@@ -136,8 +136,10 @@ class TowerAlertNotification extends Command
 
     protected function notifyAlert($towerAlert)
     {
+        $this->info("Notifying alert with ID: {$towerAlert->tower->penghantar}");
         try {
             event(new TowerAlertProcessed($towerAlert->load('tower'), $towerAlert->tower->penghantar->apps->id));
+            $this->info("The command was successful! with {$towerAlert->id}");
         } catch (\Exception $e) {
             Log::error("Failed to notify alert", [
                 'error' => $e->getMessage(),

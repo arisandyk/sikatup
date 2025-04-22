@@ -29,6 +29,6 @@ class Tower extends Model
 
     public function penghantar()
     {
-        return $this->belongsTo(Penghantar::class,'penghantar_id', 'id');
+        return $this->belongsTo(Penghantar::class, 'penghantar_id', 'id');
     }
 }

@@ -42,19 +42,21 @@
     @endif
 
     @auth
-        <div id="alert"
-            class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
-            <div class="max-w-none md:max-w-screen-xl">
-                <livewire:components.alarm-notifier />
+        @if (request()->route()->getName() !== 'edit-profile')
+            <div id="alert"
+                class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
+                <div class="max-w-none md:max-w-screen-xl">
+                    <livewire:components.alarm-notifier />
+                </div>
             </div>
-        </div>
 
-        <div id="tower-alert"
-            class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
-            <div class="max-w-none md:max-w-screen-xl">
-                <livewire:components.tower-alert-notifier />
+            <div id="tower-alert"
+                class="w-full h-screen bg-black/50 fixed top-0 left-0 z-[1000] hidden justify-center items-center p-4">
+                <div class="max-w-none md:max-w-screen-xl">
+                    <livewire:components.tower-alert-notifier />
+                </div>
             </div>
-        </div>
+        @endif
     @endauth
 
 
@@ -95,6 +97,64 @@
                 }
             });
         }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        function notify(message, targetURL) {
+            if (!Notification) {
+                alert('Browser kamu belum mendukung web notifikasi.');
+                return;
+            }
+
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission();
+            } else {
+                var notifikasi = new Notification("{{ url('/') }}", {
+                    body: message,
+                });
+
+                notifikasi.onclick = function() {
+                    window.open(targetURL);
+                };
+                setTimeout(function() {
+                    notifikasi.close();
+                }, 10000);
+            }
+        }
+
+        const sound = (voice = "The-purge-siren.mp3") => {
+            const howlSound = new Howl({
+                src: [`${window.location.origin}/assets/audio/${voice}`],
+                loop: true
+            });
+            return {
+                play: () => howlSound.play(),
+                stop: () => howlSound.stop()
+            };
+        };
+
+        const alertUI = (alertElement) => ({
+            show: () => {
+                document.body.style.overflow = 'hidden';
+                alertElement.classList.add('flex');
+                alertElement.classList.remove('hidden');
+                blockPageActions();
+            },
+            hide: () => {
+                document.body.style.overflow = 'auto';
+                alertElement.classList.add('hidden');
+                alertElement.classList.remove('flex');
+                allowPageActions();
+            }
+        });
+
+        var pusher = new Pusher('ab5937f7e0fb0066866e', {
+            cluster: 'ap1',
+            channelAuthorization: {
+                endpoint: "/broadcasting/auth",
+            },
+        });
     </script>
     @stack('script')
 </body>

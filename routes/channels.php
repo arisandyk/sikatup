@@ -10,23 +10,15 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('tower-alert.{appId}', function (User $user, int $appId) {
-    if ($user->role === 'admin') {
-        return true;
-    } else {
-        $workplace = $user->current_workplace;
-        $app = explode(',', $workplace)[1] ?? null;
+    $workplace = $user->current_workplace;
+    $app = explode(',', $workplace)[1] ?? null;
 
-        return $app === $appId;
-    }
+    return (int) $app === (int) $appId;
 });
 
 Broadcast::channel('alert.{appId}', function (User $user, int $appId) {
-    if ($user->role === 'admin') {
-        return true;
-    } else {
-        $workplace = $user->current_workplace;
-        $app = explode(',', $workplace)[1] ?? null;
+    $workplace = $user->current_workplace;
+    $app = explode(',', $workplace)[1] ?? null;
 
-        return $app === $appId;
-    }
+    return (int) $app === (int) $appId;
 });

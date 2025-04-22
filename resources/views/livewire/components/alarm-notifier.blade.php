@@ -106,84 +106,36 @@
     @endif
 
     @push('script')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
         <script>
             document.addEventListener("livewire:init", () => {
-                var alertSound, appId = "{{ $appId }}";
+                var handleUI, alertSound, channelString = "{{ $channelString }}";
 
                 const alertElement = document.querySelector('body div#alert')
 
-                const sound = (voice) => {
-                    const howlSound = new Howl({
-                        src: [`${window.location.origin}/assets/audio/${voice}`],
-                        loop: true
-                    });
-                    return {
-                        play: () => howlSound.play(),
-                        stop: () => howlSound.stop()
-                    };
-                };
-
-                const alertUI = {
-                    show: () => {
-                        document.body.style.overflow = 'hidden';
-                        alertElement.classList.add('flex');
-                        alertElement.classList.remove('hidden');
-                        blockPageActions();
-                    },
-                    hide: () => {
-                        document.body.style.overflow = 'auto';
-                        alertElement.classList.add('hidden');
-                        alertElement.classList.remove('flex');
-                        allowPageActions();
-                    }
-                };
-
-                function notify(message, targetURL) {
-                    if (!Notification) {
-                        alert('Browser kamu belum mendukung web notifikasi.');
-                        return;
-                    }
-
-                    if (Notification.permission !== "granted") {
-                        Notification.requestPermission();
-                    } else {
-                        var notifikasi = new Notification("{{ url('/') }}", {
-                            body: message,
-                        });
-
-                        notifikasi.onclick = function() {
-                            window.open(targetURL);
-                        };
-                        setTimeout(function() {
-                            notifikasi.close();
-                        }, 10000);
-                    }
-                }
-
-                var pusher = new Pusher('ab5937f7e0fb0066866e', {
-                    cluster: 'ap1',
-                    channelAuthorization: {
-                        endpoint: "/broadcasting/auth",
-                    },
-                });
-
-                var channel = pusher.subscribe(`private-alert.${appId}`)
+                var channel = pusher.subscribe(`${channelString}`)
                 channel.bind('alert-processed', function(data) {
                     Livewire.dispatch('new-alarm', {
                         data: data?.alarm?.id
                     })
-                    alertUI.show();
-                    alertSound = sound();
+
+                    handleUI = alertUI(alertElement)
+                    handleUI.show();
+
+                    alertSound = sound(data.alarm.voice);
                     alertSound.play();
 
                     notify(`New event detected from bays ${data.bayName}`, "{{ url('/alarm') }}")
                 })
 
                 Livewire.on('alarm-deleted', () => {
-                    alertSound.stop();
-                    alertUI.hide();
+                    if (alertSound) {
+                        alertSound.stop();
+                        alertSound = null; // Reset alertSound
+                    }
+                    if (handleUI) {
+                        handleUI.hide();
+                        handleUI = null; // Reset handleUI
+                    }
                 });
             })
         </script>

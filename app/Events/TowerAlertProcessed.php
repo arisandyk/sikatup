@@ -34,6 +34,7 @@ class TowerAlertProcessed implements ShouldBroadcast
     {
         return [
            new PrivateChannel('tower-alert.'.$this->appId),
+           new Channel('tower-alert'),
         ];
     }
 

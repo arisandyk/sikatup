@@ -31,6 +31,7 @@ class AlarmTriggered implements ShouldBroadcast
     {
         return [
             new PrivateChannel('alert.'.$this->appId),
+            new Channel('alert'),
         ];
     }
 

@@ -18,14 +18,32 @@ class TowerAlertNotifier extends Component
         $this->alarm = TowerAlert::with('tower.penghantar.apps.unitInduk.direktorat')->find($data);
     }
 
+    public function mount()
+    {
+        $currentAppId = explode(',', Auth::user()->current_workplace)[1] ?? null;
+        $appId = App::where('id', $currentAppId)->first();
+
+        if (!$appId && request()->route()->getName() !== 'edit-profile') {
+            session()->flash('message', 'Akun belum terkait ke APP. Silahkan pilih APP yang telah tersedia untuk mengaitkan akun Anda.');
+            return redirect()->route('edit-profile');
+        }
+    }
+
     public function render()
     {   
         $currentAppId = explode(',', Auth::user()->current_workplace)[1] ?? null;
         $appId = App::where('id', $currentAppId)->first();
-        
+
+        $channelString = null;
+        if (Auth::user()->hasRole('admin')) {
+            $channelString = 'tower-alert';
+        } else {
+            $channelString = 'private-tower-alert.'.$appId->id;
+        }
+
         return view('livewire.components.tower-alert-notifier', [
             'alarm' => $this->alarm,
-            'appId' => $appId->id
+            'channelString' => $channelString
         ]);
     }
 
