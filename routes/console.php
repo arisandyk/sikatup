@@ -13,3 +13,7 @@ Schedule::command('app:poll-mqtt-data')
     ->everySecond()
     ->sendOutputTo(storage_path('logs/poll-mqtt-data.log'))
     ->runInBackground();
+
+Schedule::command('queue:work --sleep=3 --tries=3')
+    ->everyMinute()
+    ->withoutOverlapping();
