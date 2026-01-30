@@ -5,10 +5,10 @@
         </div>
     @endif
 
-    <div class="relative my-5">
+    <div class="relative my-5 overflow-x-scroll">
         <div class="flex items-center sm:justify-center">
             <table class="w-full border-collapse bg-white rounded-3xl shadow-lg mb-5">
-                <thead class="sr-only md:not-sr-only">
+                <thead>
                     <tr class="title-row">
                         <th colspan="16" id="title" class="text-lg p-5 text-center bg-[#fffdc3] rounded-t-3xl">
                             <div class="flex justify-between items-center mt-3 relative">
@@ -33,7 +33,7 @@
 
                                         <!-- Offcanvas Modal -->
                                         <div
-                                            class="fixed top-0 right-0 w-1/2 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isAddModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
+                                            class="fixed top-0 right-0 w-full md:w-1/3 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isAddModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
                                             <div class="p-6 text-sm h-full overflow-y-auto">
                                                 <!-- Header -->
                                                 <div class="flex justify-between items-center mb-6">
@@ -172,7 +172,7 @@
                 </thead>
                 <tbody>
                     @foreach ($towers as $tower)
-                        <tr class="tr-class">
+                        <tr>
                             <td class="td-class text-center">
                                 {{ $loop->index + 1 }}
                             </td>
@@ -183,7 +183,7 @@
                             <td class="td-class">{{ $tower->longitude }}</td>
                             <td class="td-class">{{ $tower->latitude }}</td>
                             </td>
-                            <td class="td-class sr-only md:not-sr-only">
+                            <td class="td-class">
                                 <div class="flex justify-center gap-3">
                                     <!-- Tombol Edit -->
                                     <button wire:click="showEditModal({{ $tower->id }})" class="btn-action">
@@ -229,7 +229,7 @@
 
         <!-- Offcanvas Modal -->
         <div
-            class="fixed top-0 right-0 w-1/2 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isEditModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
+            class="fixed top-0 right-0 w-full md:w-1/3 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out {{ $isEditModalOpen ? 'translate-x-0' : 'translate-x-full' }}">
             <div class="p-6 text-sm h-full overflow-y-auto">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">

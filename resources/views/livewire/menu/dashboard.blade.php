@@ -111,10 +111,11 @@
             </div>
         </div>
 
-        <div class="text-left space-y-2 col-span-3">
-            <h2 class="text-lg font-medium text-secondary">Location</h2>
-            <div class="w-full h-[800px] rounded-lg border shadow-lg" id="map"></div>
-        </div>
+    </div>
+    
+    <div class="text-left space-y-2 col-span-3">
+        <h2 class="text-lg font-medium text-secondary">Location</h2>
+        <div class="w-full h-[800px] rounded-lg border shadow-lg" id="map"></div>
     </div>
 
     <script>

@@ -57,7 +57,7 @@
         @endforeach
     </div>
 
-    <div class="grid grid-rows-2 gap-3 my-5 md:grid-rows-1 md:grid-cols-3 lg:grid-cols-4 items-center">
+    <div class="grid gap-3 my-5 grid-rows-1 md:grid-cols-3 lg:grid-cols-4 items-center">
         <!-- Filter Dropdowns -->
         <div class="flex flex-col md:flex-row gap-3 justify-between w-full md:col-span-2 lg:col-span-3">
             <select wire:model.live="filterRole"
@@ -99,22 +99,23 @@
             </div>
         </div>
     </div>
-    <div class="relative my-5">
-        <!-- Search and Per Page Selection -->
-        <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
-            <input type="text" wire:model.debounce.300ms="search" wire:change="loadUsers" placeholder="Search..."
-                class="flex-grow p-3 rounded-lg border text-sm min-w-52">
-            <select wire:model="perPage" wire:change="loadUsers" class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-        </div>
+    <!-- Search and Per Page Selection -->
+    <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
+        <input type="text" wire:model.debounce.300ms="search" wire:change="loadUsers" placeholder="Search..."
+            class="flex-grow p-3 rounded-lg border text-sm min-w-52">
+        <select wire:model="perPage" wire:change="loadUsers" class="p-3 rounded-lg border text-sm bg-[#f9f9f9] cursor-pointer">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+    
+    <div class="relative my-5 overflow-x-scroll">
 
         <div class="flex items-center sm:justify-center">
             <table class="w-full border-collapse bg-white rounded-3xl shadow-lg mb-5">
-                <thead class="sr-only md:not-sr-only">
+                <thead>
                     <tr class="title-row">
                         <th class="text-lg p-5 text-center bg-[#fffdc3] rounded-tl-3xl">
                             <input type="checkbox" id="select-all">
@@ -130,7 +131,7 @@
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
-                        <tr class="tr-class">
+                        <tr>
                             <td class="td-class text-center">
                                 <input type="checkbox" class="user-checkbox">
                             </td>

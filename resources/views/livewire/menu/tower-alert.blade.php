@@ -5,10 +5,10 @@
         </div>
     @endif
 
-    <div class="relative my-5">
+    <div class="relative my-5 overflow-x-scroll">
         <div class="flex items-center sm:justify-center">
             <table class="w-full border-collapse bg-white rounded-3xl shadow-lg mb-5">
-                <thead class="sr-only md:not-sr-only">
+                <thead>
                     <tr class="title-row">
                         <th colspan="16" id="title" class="text-lg p-5 text-center bg-[#fffdc3] rounded-t-3xl">
                             <div class="flex justify-between items-center mt-3 relative">
@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                     @foreach ($towerAlerts as $item)
-                        <tr class="tr-class">
+                        <tr>
                             <td class="td-class text-center">
                                 {{ $loop->index + 1 }}
                             </td>
